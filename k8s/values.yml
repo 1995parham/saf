@@ -1,0 +1,6 @@
+---
+replicaCount: 3
+auth:
+  enabled: false
+securityContext:
+  enabled: false
