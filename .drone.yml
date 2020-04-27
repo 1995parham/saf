@@ -1,0 +1,26 @@
+---
+kind: pipeline
+name: default
+type: docker
+
+steps:
+  - name: lint
+    image: golangci/golangci-lint
+    commands:
+      - golangci-lint run --enable-all
+  - name: test
+    image: golang
+    commands:
+      - go test -v ./...
+  - name: docker
+    image: plugins/docker
+    settings:
+      username: 1995parham
+      password:
+        from_secret: docker_password
+      repo: 1995parham/nats101
+      tags: latest
+
+services:
+  - name: broker
+    image: nats
