@@ -49,7 +49,7 @@ func main() {
 	<-ch
 }
 
-// Register subscriber command
+// Register subscriber command.
 func Register(root *cobra.Command) {
 	root.AddCommand(
 		&cobra.Command{
