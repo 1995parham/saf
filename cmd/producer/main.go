@@ -26,8 +26,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func main() {
-	nc, err := nats.Connect("nats://127.0.0.1:4222")
+func main(server string) {
+	nc, err := nats.Connect(server)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -82,14 +82,14 @@ func main() {
 }
 
 // Register producer command.
-func Register(root *cobra.Command) {
-	root.AddCommand(
-		&cobra.Command{
-			Use:   "producer",
-			Short: "Produce messages to NATS",
-			Run: func(cmd *cobra.Command, args []string) {
-				main()
-			},
+func Register(root *cobra.Command, server *string) {
+	cmd := &cobra.Command{
+		Use:   "producer",
+		Short: "Produce messages to NATS",
+		Run: func(cmd *cobra.Command, args []string) {
+			main(*server)
 		},
-	)
+	}
+
+	root.AddCommand(cmd)
 }

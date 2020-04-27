@@ -18,6 +18,7 @@ import (
 
 	"github.com/1995parham/nats101/cmd/producer"
 	"github.com/1995parham/nats101/cmd/subscriber"
+	"github.com/nats-io/nats.go"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -33,8 +34,11 @@ func Execute() {
 		Short: "Have fun with NATS on Kubernetes",
 	}
 
-	producer.Register(root)
-	subscriber.Register(root)
+	server := new(string)
+	root.PersistentFlags().StringVarP(server, "server", "s", nats.DefaultURL, "nats server url e.g. nats://127.0.0.1:4222")
+
+	producer.Register(root, server)
+	subscriber.Register(root, server)
 
 	if err := root.Execute(); err != nil {
 		logrus.Errorf("failed to execute root command: %s", err.Error())
