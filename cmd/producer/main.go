@@ -43,6 +43,7 @@ func main() {
 
 	for {
 		fmt.Print("> ")
+
 		line, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
@@ -80,7 +81,7 @@ func main() {
 	}
 }
 
-// Register producer command
+// Register producer command.
 func Register(root *cobra.Command) {
 	root.AddCommand(
 		&cobra.Command{
