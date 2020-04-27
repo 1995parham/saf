@@ -23,9 +23,9 @@ LABEL maintainer="Parham Alvani <parham.alvani@gmail.com>"
 
 WORKDIR /root/
 
-COPY --from=builder /nats .
+COPY --from=builder /nats101 .
 
-ENTRYPOINT ["./nats"]
+ENTRYPOINT ["./nats101"]
 
 # Run server
 CMD ["subscriber"]
