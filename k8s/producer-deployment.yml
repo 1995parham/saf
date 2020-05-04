@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nats101
+  name: nats101-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nats101-producer
+  template:
+    metadata:
+      labels:
+        app: nats101-producer
+    spec:
+      containers:
+      - name: nats101
+        image: 1995parham/nats101
+        imagePullPolicy: Always
+        stdin: true
+        tty: true
+        args:
+          - producer
+          - --server
+          - nats://nats-headless:4222

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nats101
+  name: nats101-subscriber
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nats101-subscriber
+  template:
+    metadata:
+      labels:
+        app: nats101-subscriber
+    spec:
+      containers:
+      - name: nats101
+        image: 1995parham/nats101
+        tty: true
+        imagePullPolicy: Always
+        args:
+          - subscriber
+          - --server
+          - nats://nats-client:4222
