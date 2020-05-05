@@ -17,6 +17,8 @@ import (
 	"os"
 
 	"github.com/1995parham/nats101/cmd/producer"
+	"github.com/1995parham/nats101/cmd/sproducer"
+	"github.com/1995parham/nats101/cmd/ssubscriber"
 	"github.com/1995parham/nats101/cmd/subscriber"
 	"github.com/nats-io/nats.go"
 	"github.com/sirupsen/logrus"
@@ -39,6 +41,9 @@ func Execute() {
 
 	producer.Register(root, server)
 	subscriber.Register(root, server)
+
+	sproducer.Register(root, server)
+	ssubscriber.Register(root, server)
 
 	if err := root.Execute(); err != nil {
 		logrus.Errorf("failed to execute root command: %s", err.Error())
