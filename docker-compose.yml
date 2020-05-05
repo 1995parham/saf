@@ -5,3 +5,7 @@ services:
     image: nats
     ports:
       - 4222:4222
+  nats-streaming:
+    image: nats-streaming
+    ports:
+      - 4223:4222
