@@ -23,4 +23,4 @@ spec:
         args:
           - producer
           - --server
-          - nats://nats-headless:4222
+          - nats://nats-client:4222
