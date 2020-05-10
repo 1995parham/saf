@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,12 +16,21 @@ spec:
         app: nats101-producer
     spec:
       containers:
-      - name: nats101
-        image: 1995parham/nats101
-        imagePullPolicy: Always
-        stdin: true
-        tty: true
-        args:
-          - producer
-          - --server
-          - nats://nats-headless:4222
+        - name: nats101-streaming
+          image: 1995parham/nats101
+          imagePullPolicy: Always
+          stdin: true
+          tty: true
+          args:
+            - sproducer
+            - --server
+            - nats://nats-headless:4222
+        - name: nats101
+          image: 1995parham/nats101
+          imagePullPolicy: Always
+          stdin: true
+          tty: true
+          args:
+            - producer
+            - --server
+            - nats://nats-headless:4222
