@@ -32,7 +32,7 @@ func main(server string) {
 	rand.Seed(time.Now().UnixNano())
 	id := rand.Int63()
 
-	nc, err := stan.Connect("test-cluster", fmt.Sprintf("elahe-%d", id), stan.NatsURL(server))
+	nc, err := stan.Connect("elahe", fmt.Sprintf("elahe-%d", id), stan.NatsURL(server))
 	if err != nil {
 		log.Fatal(err)
 	}
