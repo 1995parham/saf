@@ -23,4 +23,4 @@ spec:
             - --cluster_id
             - elahe
             - --nats_server
-            - nats://nats-cluster:6222
+            - nats://nats:4222
