@@ -1,6 +1,8 @@
+# https://github.com/nats-io/k8s/tree/master/helm/charts
 ---
-replicaCount: 3
-auth:
-  enabled: false
-securityContext:
+natsbox:
+  enabled: true
+cluster:
+  enabled: true
+reloader:
   enabled: false

@@ -24,7 +24,7 @@ spec:
           args:
             - sproducer
             - --server
-            - nats://nats-headless:4222
+            - nats://nats:4222
         - name: nats101
           image: 1995parham/nats101
           imagePullPolicy: Always
@@ -33,4 +33,4 @@ spec:
           args:
             - producer
             - --server
-            - nats://nats-headless:4222
+            - nats://nats:4222

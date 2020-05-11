@@ -23,7 +23,7 @@ spec:
           args:
             - ssubscriber
             - --server
-            - nats://nats-client:4222
+            - nats://nats:4222
         - name: nats101
           image: 1995parham/nats101
           tty: true
@@ -31,4 +31,4 @@ spec:
           args:
             - subscriber
             - --server
-            - nats://nats-client:4222
+            - nats://nats:4222
