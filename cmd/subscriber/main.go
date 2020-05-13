@@ -28,6 +28,8 @@ func main(server string) {
 		log.Fatal(err)
 	}
 
+	fmt.Printf("Connected to %s from %v\n", nc.ConnectedAddr(), nc.DiscoveredServers())
+
 	c, err := nats.NewEncodedConn(nc, nats.GOB_ENCODER)
 	if err != nil {
 		log.Fatal(err)
