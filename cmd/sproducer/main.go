@@ -92,7 +92,12 @@ func Register(root *cobra.Command, server *string) {
 		Use:   "sproducer",
 		Short: "Produce messages to streaming NATS",
 		Run: func(cmd *cobra.Command, args []string) {
-			main(*server, cmd.Flags().GetString("cluster"))
+			cid, err := cmd.Flags().GetString("cluster")
+			if err != nil {
+				log.Printf("invalid cluster argument %s", err)
+			}
+
+			main(*server, cid)
 		},
 	}
 
