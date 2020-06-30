@@ -37,6 +37,8 @@ func main(server string, cid string) {
 		log.Fatal(err)
 	}
 
+	fmt.Printf("Connected to %s from %v\n", nc.NatsConn().ConnectedAddr(), nc.NatsConn().DiscoveredServers())
+
 	defer nc.Close()
 
 	reader := bufio.NewReader(os.Stdin)
