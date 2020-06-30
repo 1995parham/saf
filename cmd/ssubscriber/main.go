@@ -25,11 +25,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func main(server string) {
+func main(server string, cid string) {
 	rand.Seed(time.Now().UnixNano())
 	id := rand.Int63()
 
-	nc, err := stan.Connect("elahe", fmt.Sprintf("elahe-%d", id), stan.NatsURL(server))
+	nc, err := stan.Connect(cid, fmt.Sprintf("elahe-%d", id), stan.NatsURL(server))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -63,9 +63,11 @@ func Register(root *cobra.Command, server *string) {
 		Use:   "ssubscriber",
 		Short: "Subscribe to messages from streaming NATS",
 		Run: func(cmd *cobra.Command, args []string) {
-			main(*server)
+			main(*server, cmd.Flags().GetString("cluster"))
 		},
 	}
+
+	cmd.Flags().StringP("cluster", "c", "elahe", "nats streaming cluster-id")
 
 	root.AddCommand(cmd)
 }
