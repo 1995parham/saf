@@ -1,7 +1,6 @@
 package subscriber
 
 import (
-	"NATS/model"
 	"fmt"
 	"log"
 
@@ -28,22 +27,30 @@ func Subscribe() {
 		log.Fatal(err)
 	}
 
-	c, err := nats.NewEncodedConn(nc, nats.GOB_ENCODER)
-	if err != nil {
-		log.Fatal(err)
+	defer nc.Close()
+
+	//c, err := nats.NewEncodedConn(nc, nats.GOB_ENCODER)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//
+	//defer c.Close()
+
+	ch := make(chan *nats.Msg)
+
+	for {
+		if _, err := nc.ChanQueueSubscribe("parham", "raha", ch); err != nil {
+			log.Fatal(err)
+		}
+
+		//if _, err := c.Subscribe("parham", func(m *model.Message) {
+		//	ch<- m
+		//});err != nil {
+		//	log.Fatal(err)
+		//}
+
+		fmt.Println(<-ch)
 	}
-
-	defer c.Close()
-
-	ch := make(chan *model.Message)
-
-	if _, err := c.Subscribe("parham", func(m *model.Message) {
-		ch<- m
-	});err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(<-ch)
 }
 
 
