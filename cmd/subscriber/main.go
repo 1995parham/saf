@@ -49,7 +49,9 @@ func Subscribe() {
 		//	log.Fatal(err)
 		//}
 
-		fmt.Println(<-ch)
+		m := <-ch
+
+		fmt.Println(string(m.Data))
 	}
 }
 
