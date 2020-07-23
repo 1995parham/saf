@@ -28,18 +28,20 @@ func Subscribe() {
 		log.Fatal(err)
 	}
 
-	defer nc.Close()
+	//defer nc.Close()
 
-	//c, err := nats.NewEncodedConn(nc, nats.GOB_ENCODER)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//
-	//defer c.Close()
+	c, err := nats.NewEncodedConn(nc, nats.GOB_ENCODER)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer c.Close()
 
 	ch := make(chan *nats.Msg)
 
-	if _, err := nc.ChanQueueSubscribe(subjects.Topic, subjects.Group, ch); err != nil {
+	if _, err := c.QueueSubscribe(subjects.Topic, subjects.Group, func(msg *nats.Msg) {
+		ch<- msg
+	}); err != nil {
 		log.Fatal(err)
 	}
 
