@@ -1,6 +1,7 @@
 package subscriber
 
 import (
+	"NATS/handler"
 	"NATS/model"
 	"NATS/subjects"
 	"fmt"
@@ -53,8 +54,10 @@ func Subscribe() {
 		//	log.Fatal(err)
 		//}
 
-		m := <-ch
+		<-ch
 
-		fmt.Println(m.Message)
+		fmt.Println("start")
+		handler.Job()
+		fmt.Println("end")
 	}
 }
