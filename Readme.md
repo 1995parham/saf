@@ -1,3 +1,5 @@
+[![Build Status](https://cloud.drone.io/api/badges/elahe-dastan/NATS/status.svg)](https://cloud.drone.io/elahe-dastan/NATS)
+
 ## NATS
 In this repository I want to learn NATS and write a very simple code
 
