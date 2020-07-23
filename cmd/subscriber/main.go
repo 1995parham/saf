@@ -47,15 +47,15 @@ func Subscribe() {
 		log.Fatal(err)
 	}
 
-	for {
-		//if _, err := c.Subscribe("parham", func(m *model.Message) {
-		//	ch<- m
-		//});err != nil {
-		//	log.Fatal(err)
-		//}
+	for i := 0 ; i < 3; i++ {
+		go worker(ch)
+	}
 
-		<-ch
+	select {}
+}
 
+func worker(ch chan model.Message)  {
+	for _ = range ch {
 		fmt.Println("start")
 		handler.Job()
 		fmt.Println("end")
