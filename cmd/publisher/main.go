@@ -2,6 +2,7 @@ package publisher
 
 import (
 	"NATS/model"
+	"NATS/subjects"
 	"log"
 	"time"
 
@@ -35,7 +36,7 @@ func Publish() {
 
 	defer c.Close()
 
-	err = c.Publish("parham", model.Message{
+	err = c.Publish(subjects.Topic, model.Message{
 		Message:   "Hello",
 		CreatedAt: time.Now(),
 	})

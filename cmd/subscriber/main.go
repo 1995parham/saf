@@ -1,6 +1,7 @@
 package subscriber
 
 import (
+	"NATS/subjects"
 	"fmt"
 	"log"
 
@@ -39,7 +40,7 @@ func Subscribe() {
 	ch := make(chan *nats.Msg)
 
 	for {
-		if _, err := nc.ChanQueueSubscribe("parham", "raha", ch); err != nil {
+		if _, err := nc.ChanQueueSubscribe(subjects.Topic, subjects.Group, ch); err != nil {
 			log.Fatal(err)
 		}
 
