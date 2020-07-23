@@ -2,6 +2,7 @@ package publisher
 
 import (
 	"NATS/model"
+	"NATS/service"
 	"NATS/subjects"
 	"log"
 	"time"
@@ -14,7 +15,8 @@ func Register(root *cobra.Command) {
 	c := cobra.Command{
 		Use: "publish",
 		Run: func(cmd *cobra.Command, args []string) {
-			Publish()
+			service.Run()
+			//Publish()
 		},
 	}
 
