@@ -11,7 +11,7 @@ import (
 
 func Register(root *cobra.Command) {
 	c := cobra.Command{
-		Use:"publish",
+		Use: "publish",
 		Run: func(cmd *cobra.Command, args []string) {
 			Publish()
 		},
@@ -43,4 +43,3 @@ func Publish() {
 		log.Fatal(err)
 	}
 }
-

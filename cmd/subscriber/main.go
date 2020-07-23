@@ -10,7 +10,7 @@ import (
 
 func Register(root *cobra.Command) {
 	c := cobra.Command{
-		Use:"subscribe",
+		Use: "subscribe",
 		Run: func(cmd *cobra.Command, args []string) {
 			Subscribe()
 		},
@@ -54,5 +54,3 @@ func Subscribe() {
 		fmt.Println(string(m.Data))
 	}
 }
-
-
