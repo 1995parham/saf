@@ -19,4 +19,5 @@ works as a load balancer
 ## Usage
 To show the usage of nats as a load balancer I created a GET endpoint, each time it's called a heavy calculation<br/>
 (simulated by 5 second sleeping) will be done, then I used nats and when GET endpoint is called the task is published<br/>
-then one subscriber among a few subscribers is chosen to do the task 
+then one subscriber among a few subscribers is chosen to do the task, If all the subscribers are busy the task will <br/>
+stay in the queue till one subscriber becomes free.
