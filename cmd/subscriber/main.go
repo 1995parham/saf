@@ -1,6 +1,7 @@
 package subscriber
 
 import (
+	"NATS/model"
 	"NATS/subjects"
 	"fmt"
 	"log"
@@ -37,9 +38,9 @@ func Subscribe() {
 
 	defer c.Close()
 
-	ch := make(chan *nats.Msg)
+	ch := make(chan model.Message)
 
-	if _, err := c.QueueSubscribe(subjects.Topic, subjects.Group, func(msg *nats.Msg) {
+	if _, err := c.QueueSubscribe(subjects.Topic, subjects.Group, func(msg model.Message) {
 		ch<- msg
 	}); err != nil {
 		log.Fatal(err)
@@ -54,6 +55,6 @@ func Subscribe() {
 
 		m := <-ch
 
-		fmt.Println(string(m.Data))
+		fmt.Println(m.Message)
 	}
 }
