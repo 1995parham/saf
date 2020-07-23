@@ -39,11 +39,11 @@ func Subscribe() {
 
 	ch := make(chan *nats.Msg)
 
-	for {
-		if _, err := nc.ChanQueueSubscribe(subjects.Topic, subjects.Group, ch); err != nil {
-			log.Fatal(err)
-		}
+	if _, err := nc.ChanQueueSubscribe(subjects.Topic, subjects.Group, ch); err != nil {
+		log.Fatal(err)
+	}
 
+	for {
 		//if _, err := c.Subscribe("parham", func(m *model.Message) {
 		//	ch<- m
 		//});err != nil {
