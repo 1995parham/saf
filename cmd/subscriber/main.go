@@ -22,7 +22,7 @@ func Register(root *cobra.Command) {
 }
 
 func Subscribe() {
-	nc, err := nats.Connect(nats.DefaultURL)
+	nc, err := nats.Connect("nats://localhost:4221")
 	if err != nil {
 		log.Fatal(err)
 	}
