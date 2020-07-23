@@ -15,3 +15,7 @@ message to that subject and all the ones who have subscribed that subject get th
 the I used Queue Subscriber in which the ones who have subscribed a subject form a group and each time the publisher<br/>
 publishes a message one the subscribers is randomly chosen to get the message so as you have probably guessed this <br/>
 works as a load balancer
+
+## Usage
+To show the usage of nats as a load balancer I created a GET endpoint, each time it's called a heavy calculation<br/>
+(simulated by 5 second sleeping) will be done 
