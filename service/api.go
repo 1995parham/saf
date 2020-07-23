@@ -33,8 +33,6 @@ func (c *Conn) Publish() {
 		log.Fatal(err)
 	}
 
-	defer ec.Close()
-
 	err = ec.Publish(subjects.Topic, model.Message {
 		Message:   "Hello",
 		CreatedAt: time.Now(),
