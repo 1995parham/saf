@@ -1,5 +1,5 @@
 # nats101
-[![Drone (cloud)](https://img.shields.io/drone/build/1995parham/nats101.svg?style=flat-square)](https://cloud.drone.io/1995parham/nats101)
+[![Drone (cloud)](https://img.shields.io/drone/build/1995parham/nats101.svg?style=flat-square&logo=drone)](https://cloud.drone.io/1995parham/nats101)
 
 ## Introduction
 NATS is message broker that works as a dial tone between services.
