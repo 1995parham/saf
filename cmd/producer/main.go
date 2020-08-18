@@ -49,6 +49,7 @@ func main(server string) {
 		line, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
+
 			continue
 		}
 

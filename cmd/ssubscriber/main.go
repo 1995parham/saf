@@ -27,6 +27,7 @@ import (
 
 func main(server string, cid string) {
 	rand.Seed(time.Now().UnixNano())
+	// nolint: gosec
 	id := rand.Int63()
 
 	nc, err := stan.Connect(cid, fmt.Sprintf("elahe-%d", id), stan.NatsURL(server))
@@ -44,6 +45,7 @@ func main(server string, cid string) {
 		var m model.Message
 		if err := json.Unmarshal(msg.Data, &m); err != nil {
 			log.Print(err)
+
 			return
 		}
 

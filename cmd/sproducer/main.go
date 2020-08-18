@@ -30,6 +30,7 @@ import (
 
 func main(server string, cid string) {
 	rand.Seed(time.Now().UnixNano())
+	// nolint:gosec
 	id := rand.Int63()
 
 	nc, err := stan.Connect(cid, fmt.Sprintf("elahe-%d", id), stan.NatsURL(server))
@@ -49,6 +50,7 @@ func main(server string, cid string) {
 		line, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
+
 			continue
 		}
 
