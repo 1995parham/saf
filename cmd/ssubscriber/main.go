@@ -1,16 +1,3 @@
-/*
- *
- * In The Name of God
- *
- * +===============================================
- * | Author:        Parham Alvani <parham.alvani@gmail.com>
- * |
- * | Creation Date: 27-04-2020
- * |
- * | File Name:     main.go
- * +===============================================
- */
-
 package ssubscriber
 
 import (
@@ -20,13 +7,14 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/1995parham/nats101/model"
-	stan "github.com/nats-io/stan.go"
+	"github.com/nats-io/stan.go"
+	"github.com/nats-ir/nats101/model"
 	"github.com/spf13/cobra"
 )
 
 func main(server string, cid string) {
 	rand.Seed(time.Now().UnixNano())
+
 	// nolint: gosec
 	id := rand.Int63()
 
@@ -41,6 +29,7 @@ func main(server string, cid string) {
 
 	ch := make(chan struct{})
 
+	//nolint:gomnd
 	if _, err := nc.Subscribe("message", func(msg *stan.Msg) {
 		var m model.Message
 		if err := json.Unmarshal(msg.Data, &m); err != nil {
@@ -76,7 +65,7 @@ func Register(root *cobra.Command, server *string) {
 		},
 	}
 
-	cmd.Flags().StringP("cluster", "c", "elahe", "nats streaming cluster-id")
+	cmd.Flags().StringP("cluster", "c", "nats-ir", "nats streaming cluster-id")
 
 	root.AddCommand(cmd)
 }
