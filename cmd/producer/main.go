@@ -1,16 +1,3 @@
-/*
- *
- * In The Name of God
- *
- * +===============================================
- * | Author:        Parham Alvani <parham.alvani@gmail.com>
- * |
- * | Creation Date: 26-04-2020
- * |
- * | File Name:     main.go
- * +===============================================
- */
-
 package producer
 
 import (
@@ -21,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/1995parham/nats101/model"
 	"github.com/nats-io/nats.go"
+	"github.com/nats-ir/nats101/model"
 	"github.com/spf13/cobra"
 )
 
@@ -58,6 +45,8 @@ func main(server string) {
 		splited := strings.SplitN(line, " ", 2)
 
 		var cmd, args string
+
+		//nolint:gomnd
 		if len(splited) > 1 {
 			cmd, args = splited[0], splited[1]
 		} else {

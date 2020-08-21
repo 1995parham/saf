@@ -1,16 +1,3 @@
-/*
- *
- * In The Name of God
- *
- * +===============================================
- * | Author:        Parham Alvani <parham.alvani@gmail.com>
- * |
- * | Creation Date: 26-04-2020
- * |
- * | File Name:     main.go
- * +===============================================
- */
-
 package sproducer
 
 import (
@@ -23,13 +10,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/1995parham/nats101/model"
 	"github.com/nats-io/stan.go"
+	"github.com/nats-ir/nats101/model"
 	"github.com/spf13/cobra"
 )
 
+//nolint:funlen
 func main(server string, cid string) {
 	rand.Seed(time.Now().UnixNano())
+
 	// nolint:gosec
 	id := rand.Int63()
 
@@ -59,6 +48,8 @@ func main(server string, cid string) {
 		splited := strings.SplitN(line, " ", 2)
 
 		var cmd, args string
+
+		//nolint:gomnd
 		if len(splited) > 1 {
 			cmd, args = splited[0], splited[1]
 		} else {
@@ -105,7 +96,7 @@ func Register(root *cobra.Command, server *string) {
 		},
 	}
 
-	cmd.Flags().StringP("cluster", "c", "elahe", "nats streaming cluster-id")
+	cmd.Flags().StringP("cluster", "c", "nats-ir", "nats streaming cluster-id")
 
 	root.AddCommand(cmd)
 }

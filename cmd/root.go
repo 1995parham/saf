@@ -1,26 +1,13 @@
-/*
- *
- * In The Name of God
- *
- * +===============================================
- * | Author:        Parham Alvani <parham.alvani@gmail.com>
- * |
- * | Creation Date: 26-04-2020
- * |
- * | File Name:     root.go
- * +===============================================
- */
-
 package cmd
 
 import (
 	"os"
 
-	"github.com/1995parham/nats101/cmd/producer"
-	"github.com/1995parham/nats101/cmd/sproducer"
-	"github.com/1995parham/nats101/cmd/ssubscriber"
-	"github.com/1995parham/nats101/cmd/subscriber"
 	"github.com/nats-io/nats.go"
+	"github.com/nats-ir/nats101/cmd/producer"
+	"github.com/nats-ir/nats101/cmd/sproducer"
+	"github.com/nats-ir/nats101/cmd/ssubscriber"
+	"github.com/nats-ir/nats101/cmd/subscriber"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
