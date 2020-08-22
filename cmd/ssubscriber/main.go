@@ -29,7 +29,6 @@ func main(server string, cid string) {
 
 	ch := make(chan struct{})
 
-	//nolint:gomnd
 	if _, err := nc.Subscribe("message", func(msg *stan.Msg) {
 		var m model.Message
 		if err := json.Unmarshal(msg.Data, &m); err != nil {
