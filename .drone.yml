@@ -18,7 +18,7 @@ steps:
       username: 1995parham
       password:
         from_secret: docker_password
-      repo: nats-ir/nats101
+      repo: natsir/nats101
       tags: latest
 
 services:
