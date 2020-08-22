@@ -49,7 +49,6 @@ func main(server string, cid string) {
 
 		var cmd, args string
 
-		//nolint:gomnd
 		if len(splited) > 1 {
 			cmd, args = splited[0], splited[1]
 		} else {
