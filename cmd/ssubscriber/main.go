@@ -7,8 +7,8 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/nats-io/stan.go"
 	"github.com/4lie/nats101/model"
+	"github.com/nats-io/stan.go"
 	"github.com/spf13/cobra"
 )
 

@@ -1,6 +1,6 @@
 module github.com/4lie/nats101
 
-go 1.14
+go 1.15
 
 require (
 	github.com/nats-io/nats-server/v2 v2.1.6 // indirect
