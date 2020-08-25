@@ -13,6 +13,6 @@ services:
     container_name: nats-streaming
     command:
       - --cluster_id
-      - nats-ir
+      - 4lie
     ports:
       - 4223:4222
