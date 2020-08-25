@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: nats101-streaming
-          image: 1995parham/nats101
+          image: 4lie/nats101
           tty: true
           imagePullPolicy: Always
           args:
@@ -25,7 +25,7 @@ spec:
             - --server
             - nats://nats:4222
         - name: nats101
-          image: 1995parham/nats101
+          image: 4lie/nats101
           tty: true
           imagePullPolicy: Always
           args:

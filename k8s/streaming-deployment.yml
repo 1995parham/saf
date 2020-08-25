@@ -21,6 +21,6 @@ spec:
           imagePullPolicy: Always
           args:
             - --cluster_id
-            - elahe
+            - 4lie
             - --nats_server
             - nats://nats:4222
