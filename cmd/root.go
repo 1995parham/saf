@@ -3,11 +3,11 @@ package cmd
 import (
 	"os"
 
-	"github.com/nats-io/nats.go"
 	"github.com/4lie/nats101/cmd/producer"
 	"github.com/4lie/nats101/cmd/sproducer"
 	"github.com/4lie/nats101/cmd/ssubscriber"
 	"github.com/4lie/nats101/cmd/subscriber"
+	"github.com/nats-io/nats.go"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
