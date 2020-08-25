@@ -4,10 +4,10 @@ import (
 	"os"
 
 	"github.com/nats-io/nats.go"
-	"github.com/nats-ir/nats101/cmd/producer"
-	"github.com/nats-ir/nats101/cmd/sproducer"
-	"github.com/nats-ir/nats101/cmd/ssubscriber"
-	"github.com/nats-ir/nats101/cmd/subscriber"
+	"github.com/4lie/nats101/cmd/producer"
+	"github.com/4lie/nats101/cmd/sproducer"
+	"github.com/4lie/nats101/cmd/ssubscriber"
+	"github.com/4lie/nats101/cmd/subscriber"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )

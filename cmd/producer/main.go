@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/nats-io/nats.go"
-	"github.com/nats-ir/nats101/model"
+	"github.com/4lie/nats101/model"
 	"github.com/spf13/cobra"
 )
 

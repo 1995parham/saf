@@ -1,4 +1,4 @@
-module github.com/nats-ir/nats101
+module github.com/4lie/nats101
 
 go 1.14
 

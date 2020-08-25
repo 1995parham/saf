@@ -13,7 +13,7 @@
 
 package main
 
-import "github.com/nats-ir/nats101/cmd"
+import "github.com/4lie/nats101/cmd"
 
 func main() {
 	cmd.Execute()

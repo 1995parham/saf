@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/nats-io/stan.go"
-	"github.com/nats-ir/nats101/model"
+	"github.com/4lie/nats101/model"
 	"github.com/spf13/cobra"
 )
 
@@ -95,7 +95,7 @@ func Register(root *cobra.Command, server *string) {
 		},
 	}
 
-	cmd.Flags().StringP("cluster", "c", "nats-ir", "nats streaming cluster-id")
+	cmd.Flags().StringP("cluster", "c", "4lie", "nats streaming cluster-id")
 
 	root.AddCommand(cmd)
 }
