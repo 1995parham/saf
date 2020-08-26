@@ -12,7 +12,7 @@ services:
     hostname: nats-streaming
     container_name: nats-streaming
     command:
+      - --nats_server
+      - nats://nats:4222
       - --cluster_id
       - 4lie
-    ports:
-      - 4223:4222
