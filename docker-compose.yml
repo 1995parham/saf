@@ -11,6 +11,8 @@ services:
     image: nats-streaming
     hostname: nats-streaming
     container_name: nats-streaming
+    depends_on:
+      - nats
     command:
       - --nats_server
       - nats://nats:4222
