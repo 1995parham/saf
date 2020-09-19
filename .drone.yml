@@ -8,10 +8,12 @@ steps:
     image: golangci/golangci-lint
     commands:
       - golangci-lint run --enable-all
+
   - name: test
     image: golang
     commands:
       - go test -v ./...
+  
   - name: docker
     image: plugins/docker
     settings:
