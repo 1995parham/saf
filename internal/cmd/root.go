@@ -5,6 +5,7 @@ import (
 
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/logger"
+	"github.com/1995parham/saf/internal/telemetry/trace"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 )
@@ -18,6 +19,8 @@ func Execute() {
 	cfg := config.New()
 
 	logger := logger.New(cfg.Logger)
+
+	_ = trace.New(cfg.Telemetry.Trace)
 
 	// nolint: exhaustivestruct
 	root := &cobra.Command{
