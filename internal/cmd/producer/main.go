@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/1995parham/saf/internal/cmq"
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/http/handler"
 	"github.com/1995parham/saf/internal/metric"
@@ -19,6 +20,11 @@ import (
 
 func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 	metric.NewServer(cfg.Monitoring).Start(logger.Named("metrics"))
+
+	_, err := cmq.New(cfg.NATS, logger)
+	if err != nil {
+		logger.Fatal("nats initiation failed", zap.Error(err))
+	}
 
 	app := echo.New()
 

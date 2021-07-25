@@ -4,6 +4,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/1995parham/saf/internal/cmq"
 	"github.com/1995parham/saf/internal/logger"
 	"github.com/1995parham/saf/internal/metric"
 	telemetry "github.com/1995parham/saf/internal/telemetry/config"
@@ -25,6 +26,7 @@ type (
 		Logger     logger.Config    `koanf:"logger"`
 		Telemetry  telemetry.Config `koanf:"telemetry"`
 		Monitoring metric.Config    `koanf:"monitoring"`
+		NATS       cmq.Config       `koanf:"nats"`
 	}
 )
 
