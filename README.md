@@ -13,3 +13,9 @@ Saf gets events from its producer side and publish them into NATS. The consumer 
 
 1. We have event on the producer side but there isn't any available server so we need to send an error.
 2. There is no consumer available so events must be available on NATS until they gets back.
+
+## APIs
+
+```sh
+curl -X POST -d '{ "subject": "hello" }' -H 'Content-Type: application/json' http://127.0.0.1:1378/api/event
+```
