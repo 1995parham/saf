@@ -52,7 +52,7 @@ func (h Event) Receive(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	if _, err := h.CMQ.JConn.Publish("event", msg); err != nil {
+	if _, err := h.CMQ.JConn.Publish(cmq.EventsChannel, msg); err != nil {
 		span.RecordError(err)
 
 		return echo.NewHTTPError(http.StatusServiceUnavailable, err.Error())
