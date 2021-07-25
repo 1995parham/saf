@@ -12,13 +12,13 @@ const (
 )
 
 // Event represents a event request payload.
-type Register struct {
+type Event struct {
 	Subject string
 	Payload []byte
 }
 
-// Validate register request payload.
-func (r Register) Validate() error {
+// Validate event request payload.
+func (r Event) Validate() error {
 	if err := validation.ValidateStruct(&r,
 		validation.Field(&r.Subject, validation.Required),
 		validation.Field(&r.Payload, validation.Required),
