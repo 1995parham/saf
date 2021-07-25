@@ -21,9 +21,13 @@ import (
 func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 	metric.NewServer(cfg.Monitoring).Start(logger.Named("metrics"))
 
-	_, err := cmq.New(cfg.NATS, logger)
+	cmq, err := cmq.New(cfg.NATS, logger)
 	if err != nil {
 		logger.Fatal("nats initiation failed", zap.Error(err))
+	}
+
+	if err := cmq.Streams(); err != nil {
+		logger.Fatal("nats stream creation failed", zap.Error(err))
 	}
 
 	app := echo.New()
