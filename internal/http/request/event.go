@@ -21,7 +21,6 @@ type Event struct {
 func (r Event) Validate() error {
 	if err := validation.ValidateStruct(&r,
 		validation.Field(&r.Subject, validation.Required),
-		validation.Field(&r.Payload, validation.Required),
 	); err != nil {
 		return fmt.Errorf("event request validation failed: %w", err)
 	}
