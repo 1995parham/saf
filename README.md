@@ -1,5 +1,5 @@
 # saf
 
 ## Introduction
-Saf in persian means Queue. One the problem that we face is deploying rabbitmq on the cloud and it brings us many challengers.
-I want to see how nats with jetstream can work as queue to replace rabbitmq.
+Saf in Persian means Queue. One of the problems, that we face on projects with queues is deploying RabbitMQ on the cloud which brings us many challenges for CPU load, etc.
+I want to see how NATS with Jetstream can work as the queue to replace RabbitMQ.
