@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/1995parham/saf/internal/logger"
+	"github.com/1995parham/saf/internal/metric"
+	telemetry "github.com/1995parham/saf/internal/telemetry/config"
 	"github.com/knadh/koanf"
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/env"
@@ -20,7 +22,9 @@ const (
 type (
 	// Config holds all configurations.
 	Config struct {
-		Logger logger.Config `koanf:"logger"`
+		Logger     logger.Config    `koanf:"logger"`
+		Telemetry  telemetry.Config `koanf:"telemetry"`
+		Monitoring metric.Config    `koanf:"monitoring"`
 	}
 )
 
