@@ -1,0 +1,11 @@
+---
+version: '3'
+services:
+  n1.1995parham.me:
+    container_name: n1
+    image: nats
+    dns_search: 1995parham.me
+    entrypoint: /nats-server
+    command: --name n1 --cluster_name raha --js --sd /data -p 4222
+    ports:
+      - 4222:4222
