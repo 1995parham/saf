@@ -11,6 +11,7 @@ require (
 	github.com/knadh/koanf v1.2.0
 	github.com/labstack/echo/v4 v4.4.0
 	github.com/mattn/go-isatty v0.0.13 // indirect
+	github.com/nats-io/nats.go v1.11.1-0.20210714175522-2b2bb8f326df // indirect
 	github.com/prometheus/client_golang v1.11.0
 	github.com/prometheus/common v0.29.0 // indirect
 	github.com/prometheus/procfs v0.7.1 // indirect
