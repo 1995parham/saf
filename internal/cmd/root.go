@@ -3,6 +3,7 @@ package cmd
 import (
 	"os"
 
+	"github.com/1995parham/saf/internal/cmd/producer"
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/logger"
 	"github.com/1995parham/saf/internal/telemetry/trace"
@@ -20,13 +21,15 @@ func Execute() {
 
 	logger := logger.New(cfg.Logger)
 
-	_ = trace.New(cfg.Telemetry.Trace)
+	tracer := trace.New(cfg.Telemetry.Trace)
 
 	// nolint: exhaustivestruct
 	root := &cobra.Command{
 		Use:   "saf",
 		Short: "Queue with NATS Jetstream to remove all the erlangs from cloud",
 	}
+
+	producer.Register(root, cfg, logger, tracer)
 
 	if err := root.Execute(); err != nil {
 		logger.Error("failed to execute root command", zap.Error(err))
