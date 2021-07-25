@@ -39,6 +39,12 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 		Tracer: tracer,
 	}.Register(app.Group(""))
 
+	handler.Event{
+		CMQ:    cmq,
+		Logger: logger.Named("handler").Named("event"),
+		Tracer: tracer,
+	}.Register(app.Group("api"))
+
 	if err := app.Start(":1378"); !errors.Is(err, http.ErrServerClosed) {
 		logger.Fatal("echo initiation failed", zap.Error(err))
 	}
