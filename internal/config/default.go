@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/1995parham/saf/internal/cmq"
 	"github.com/1995parham/saf/internal/logger"
 	"github.com/1995parham/saf/internal/metric"
 	telemetry "github.com/1995parham/saf/internal/telemetry/config"
@@ -30,6 +31,9 @@ func Default() Config {
 					Port: "6831",
 				},
 			},
+		},
+		NATS: cmq.Config{
+			URL: "nats://127.0.0.1:4222",
 		},
 	}
 }
