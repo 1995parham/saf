@@ -14,6 +14,7 @@ require (
 	github.com/prometheus/common v0.29.0 // indirect
 	github.com/prometheus/procfs v0.7.1 // indirect
 	github.com/spf13/cobra v1.2.1
+	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/tchap/zapext/v2 v2.1.0
 	github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77 // indirect
 	go.opentelemetry.io/otel v1.0.0-RC1
