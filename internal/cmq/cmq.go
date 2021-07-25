@@ -46,14 +46,14 @@ func New(cfg Config, logger *zap.Logger) (*CMQ, error) {
 }
 
 func (c *CMQ) Streams() error {
-	info, err := c.JConn.StreamInfo("ORDERS")
+	info, err := c.JConn.StreamInfo(EventsChannel)
 
 	switch {
 	case errors.Is(err, nats.ErrStreamNotFound):
 		// nolint: exhaustivestruct
 		stream, err := c.JConn.AddStream(&nats.StreamConfig{
-			Name:     "events",
-			Subjects: []string{"events.>"},
+			Name:     EventsChannel,
+			Subjects: []string{EventsChannel},
 			MaxAge:   1 * time.Hour,
 			Storage:  nats.MemoryStorage,
 		})
