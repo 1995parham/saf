@@ -4,4 +4,8 @@ type Config struct {
 	URL string
 }
 
-const EventsChannel = "events"
+const (
+	EventsChannel = "events"
+	QueueName     = "saf"
+	DurableName   = "saf"
+)
