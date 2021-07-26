@@ -1,5 +1,7 @@
 # saf
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/1995parham/saf/ci?label=ci&logo=github&style=flat-square)
+
 ## Introduction
 
 Saf in Persian means Queue. One of the problems, that we face on projects with queues is deploying RabbitMQ on the cloud which brings us many challenges for CPU load, etc.
