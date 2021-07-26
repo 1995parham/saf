@@ -1,6 +1,7 @@
 package consumer
 
 import (
+	"context"
 	"os"
 	"os/signal"
 	"syscall"
@@ -10,11 +11,13 @@ import (
 	"github.com/1995parham/saf/internal/metric"
 	"github.com/nats-io/nats.go"
 	"github.com/spf13/cobra"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
 
-func main(cfg config.Config, logger *zap.Logger, _ trace.Tracer) {
+func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 	metric.NewServer(cfg.Monitoring).Start(logger.Named("metrics"))
 
 	c, err := cmq.New(cfg.NATS, logger)
@@ -27,6 +30,11 @@ func main(cfg config.Config, logger *zap.Logger, _ trace.Tracer) {
 	}
 
 	if _, err := c.JConn.QueueSubscribe(cmq.EventsChannel, cmq.QueueName, func(msg *nats.Msg) {
+		ctx := otel.GetTextMapPropagator().Extract(context.Background(), propagation.HeaderCarrier(msg.Header))
+
+		_, span := tracer.Start(ctx, "subscriber.events")
+		defer span.End()
+
 		metadata, _ := msg.Metadata()
 
 		logger.Named("subscriber").Info("receive new message",
