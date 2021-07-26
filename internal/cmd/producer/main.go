@@ -54,7 +54,7 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 	<-quit
 }
 
-// Register server command.
+// Register producer command.
 func Register(root *cobra.Command, cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 	root.AddCommand(
 		// nolint: exhaustivestruct
