@@ -1,0 +1,9 @@
+---
+logger:
+  level: "info"
+monitoring:
+  address: ":8080"
+  enabled: true
+telemetry:
+  trace:
+    enabled: true
