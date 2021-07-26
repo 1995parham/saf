@@ -1,7 +1,6 @@
 package consumer
 
 import (
-	"context"
 	"os"
 	"os/signal"
 	"syscall"
@@ -9,10 +8,9 @@ import (
 	"github.com/1995parham/saf/internal/cmq"
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/metric"
-	"github.com/nats-io/nats.go"
+	"github.com/1995parham/saf/internal/model"
+	"github.com/1995parham/saf/internal/subscriber"
 	"github.com/spf13/cobra"
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
@@ -29,20 +27,19 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 		logger.Fatal("nats stream creation failed", zap.Error(err))
 	}
 
-	if _, err := c.JConn.QueueSubscribe(cmq.EventsChannel, cmq.QueueName, func(msg *nats.Msg) {
-		ctx := otel.GetTextMapPropagator().Extract(context.Background(), propagation.HeaderCarrier(msg.Header))
+	sub := subscriber.New(c, logger, tracer)
 
-		_, span := tracer.Start(ctx, "subscriber.events")
-		defer span.End()
+	ch := make(chan model.Event)
+	sub.RegisterHandler(ch)
 
-		metadata, _ := msg.Metadata()
+	go func() {
+		for ev := range ch {
+			logger.Info("new event", zap.Any("event", ev))
+		}
+	}()
 
-		logger.Named("subscriber").Info("receive new message",
-			zap.String("timestamp", metadata.Timestamp.String()),
-			zap.ByteString("payload", msg.Data),
-		)
-	}, nats.AckExplicit(), nats.DeliverAll(), nats.Durable(cmq.DurableName)); err != nil {
-		logger.Fatal("subscription failed", zap.Error(err))
+	if err := sub.Subcribe(); err != nil {
+		logger.Fatal("nats subscription failed", zap.Error(err))
 	}
 
 	quit := make(chan os.Signal, 1)
