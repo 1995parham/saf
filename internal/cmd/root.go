@@ -3,6 +3,7 @@ package cmd
 import (
 	"os"
 
+	"github.com/1995parham/saf/internal/cmd/consumer"
 	"github.com/1995parham/saf/internal/cmd/producer"
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/logger"
@@ -30,6 +31,7 @@ func Execute() {
 	}
 
 	producer.Register(root, cfg, logger, tracer)
+	consumer.Register(root, cfg, logger, tracer)
 
 	if err := root.Execute(); err != nil {
 		logger.Error("failed to execute root command", zap.Error(err))
