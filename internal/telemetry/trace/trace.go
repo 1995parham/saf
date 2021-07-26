@@ -7,6 +7,7 @@ import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/jaeger"
 	stdout "go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
+	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
@@ -46,6 +47,11 @@ func New(cfg config.Trace) trace.Tracer {
 	tp := sdktrace.NewTracerProvider(sdktrace.WithSpanProcessor(bsp), sdktrace.WithResource(res))
 
 	otel.SetTracerProvider(tp)
+
+	// register the TraceContext propagator globally.
+	var tc propagation.TraceContext
+
+	otel.SetTextMapPropagator(tc)
 
 	tracer := otel.Tracer("1995parham.me/saf")
 
