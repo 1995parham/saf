@@ -52,6 +52,8 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
+
+	cmq.Conn.Close()
 }
 
 // Register producer command.
