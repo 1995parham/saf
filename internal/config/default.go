@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/1995parham/saf/internal/channel"
 	"github.com/1995parham/saf/internal/cmq"
 	"github.com/1995parham/saf/internal/logger"
 	"github.com/1995parham/saf/internal/metric"
@@ -34,6 +35,10 @@ func Default() Config {
 		},
 		NATS: cmq.Config{
 			URL: "nats://127.0.0.1:4222",
+		},
+		Channels: channel.Config{
+			Enabled:        []string{},
+			Configurations: map[string]interface{}{},
 		},
 	}
 }
