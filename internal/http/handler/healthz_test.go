@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/1995parham/saf/internal/http/handler"
-	"github.com/labstack/echo/v4"
+	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/suite"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
@@ -15,11 +15,11 @@ import (
 type HealthzSuite struct {
 	suite.Suite
 
-	engine *echo.Echo
+	engine *fiber.App
 }
 
 func (suite *HealthzSuite) SetupSuite() {
-	suite.engine = echo.New()
+	suite.engine = fiber.New()
 
 	handler.Healthz{
 		Logger: zap.NewNop(),
@@ -30,12 +30,13 @@ func (suite *HealthzSuite) SetupSuite() {
 func (suite *HealthzSuite) TestHandler() {
 	require := suite.Require()
 
-	w := httptest.NewRecorder()
 	req := httptest.NewRequest("GET", "/healthz", nil)
-	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
 
-	suite.engine.ServeHTTP(w, req)
-	require.Equal(http.StatusNoContent, w.Code)
+	resp, err := suite.engine.Test(req)
+	require.NoError(err)
+	require.Equal(http.StatusNoContent, resp.StatusCode)
+	require.NoError(resp.Body.Close())
 }
 
 func TestHealthzSuite(t *testing.T) {
