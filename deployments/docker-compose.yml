@@ -20,3 +20,9 @@ services:
       - target: 14268
         published: 14268
         protocol: tcp
+
+  emqx:
+    image: emqx/emqx
+    ports:
+      - 1883:1883
+      - 18083:18083
