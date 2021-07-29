@@ -32,6 +32,10 @@ func Default() Config {
 					Port: "6831",
 				},
 			},
+			Profiler: telemetry.Profiler{
+				Enabled: false,
+				Address: "http://127.0.0.1:4040",
+			},
 		},
 		NATS: cmq.Config{
 			URL: "nats://127.0.0.1:4222",
