@@ -19,13 +19,13 @@ type Subscriber struct {
 	Tracer trace.Tracer
 	Logger *zap.Logger
 
-	handlers []chan<- model.Event
+	handlers []chan<- model.ChanneledEvent
 }
 
 func New(c *cmq.CMQ, logger *zap.Logger, tracer trace.Tracer) *Subscriber {
 	var subscriber Subscriber
 
-	subscriber.handlers = make([]chan<- model.Event, 0)
+	subscriber.handlers = make([]chan<- model.ChanneledEvent, 0)
 	subscriber.CMQ = c
 	subscriber.Tracer = tracer
 	subscriber.Logger = logger.Named("subscriber")
@@ -61,15 +61,13 @@ func (s *Subscriber) handler(msg *nats.Msg) {
 		s.Logger.Error("cannot parse the event", zap.Error(err))
 	}
 
+	cev := model.ChanneledEvent{Event: ev, Context: ctx}
+
 	for _, c := range s.handlers {
-		go func(ctx context.Context, c chan<- model.Event) {
-			// the handler may rename the context
-			_, ev.Span = s.Tracer.Start(ctx, "subscriber.handler")
-			c <- ev
-		}(ctx, c)
+		c <- cev
 	}
 }
 
-func (s *Subscriber) RegisterHandler(c chan<- model.Event) {
+func (s *Subscriber) RegisterHandler(c chan<- model.ChanneledEvent) {
 	s.handlers = append(s.handlers, c)
 }
