@@ -10,12 +10,15 @@ import (
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/metric"
 	"github.com/1995parham/saf/internal/subscriber"
+	"github.com/1995parham/saf/internal/telemetry/profiler"
 	"github.com/spf13/cobra"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
 
 func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
+	profiler.Start(cfg.Telemetry.Profiler, "consumer")
+
 	metric.NewServer(cfg.Monitoring).Start(logger.Named("metrics"))
 
 	c, err := cmq.New(cfg.NATS, logger)
