@@ -7,3 +7,8 @@ monitoring:
 telemetry:
   trace:
     enabled: true
+channels:
+  enabled:
+    - "printer"
+  configurations:
+    printer: {}
