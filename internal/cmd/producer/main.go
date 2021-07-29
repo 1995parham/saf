@@ -11,9 +11,8 @@ import (
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/http/handler"
 	"github.com/1995parham/saf/internal/metric"
-	"github.com/labstack/echo/v4"
+	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cobra"
-	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
@@ -30,9 +29,10 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 		logger.Fatal("nats stream creation failed", zap.Error(err))
 	}
 
-	app := echo.New()
-
-	app.Use(otelecho.Middleware("saf"))
+	// nolint: exhaustivestruct
+	app := fiber.New(fiber.Config{
+		AppName: "saf",
+	})
 
 	handler.Healthz{
 		Logger: logger.Named("handler").Named("healthz"),
@@ -45,7 +45,7 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 		Tracer: tracer,
 	}.Register(app.Group("api"))
 
-	if err := app.Start(":1378"); !errors.Is(err, http.ErrServerClosed) {
+	if err := app.Listen(":1378"); !errors.Is(err, http.ErrServerClosed) {
 		logger.Fatal("echo initiation failed", zap.Error(err))
 	}
 
