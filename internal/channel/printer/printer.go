@@ -22,10 +22,12 @@ func (p *Printer) Run() {
 	for i := 0; i < 10*runtime.GOMAXPROCS(0); i++ {
 		go func() {
 			for e := range p.ch {
+				e.Span.SetName("channels.printer")
 				p.logger.Info("receive event",
 					zap.Time("created", e.CreatedAt),
 					zap.String("subject", e.Subject),
 				)
+				e.Span.End()
 			}
 		}()
 	}
