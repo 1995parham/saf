@@ -10,5 +10,8 @@ telemetry:
 channels:
   enabled:
     - "printer"
+    - "mqtt"
   configurations:
     printer: {}
+    mqtt:
+      url: "tcp://127.0.0.1:1883"
