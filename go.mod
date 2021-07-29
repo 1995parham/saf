@@ -17,6 +17,7 @@ require (
 	github.com/prometheus/client_golang v1.11.0
 	github.com/prometheus/common v0.29.0 // indirect
 	github.com/prometheus/procfs v0.7.1 // indirect
+	github.com/pyroscope-io/pyroscope v0.0.35 // indirect
 	github.com/spf13/cobra v1.2.1
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/tchap/zapext/v2 v2.1.0
