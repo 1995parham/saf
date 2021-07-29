@@ -27,7 +27,7 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 		logger.Fatal("nats stream creation failed", zap.Error(err))
 	}
 
-	man := channel.New(logger.Named("channels"))
+	man := channel.New(logger.Named("channels"), tracer)
 	man.Setup(cfg.Channels.Enabled, cfg.Channels.Configurations)
 
 	sub := subscriber.New(c, logger, tracer)
