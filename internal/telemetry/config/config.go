@@ -1,7 +1,8 @@
 package config
 
 type Config struct {
-	Trace `koanf:"trace"`
+	Trace    `koanf:"trace"`
+	Profiler `koanf:"profiler"`
 }
 
 type Trace struct {
@@ -12,4 +13,9 @@ type Trace struct {
 type Agent struct {
 	Host string `koanf:"host"`
 	Port string `koanf:"port"`
+}
+
+type Profiler struct {
+	Enabled bool   `koanf:"enabled"`
+	Address string `koanf:"address"`
 }
