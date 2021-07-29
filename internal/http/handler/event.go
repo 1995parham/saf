@@ -46,7 +46,6 @@ func (h Event) Receive(c echo.Context) error {
 		Subject:   rq.Subject,
 		CreatedAt: time.Now(),
 		Payload:   rq.Payload,
-		Span:      nil,
 	}
 
 	data, err := json.Marshal(ev)
