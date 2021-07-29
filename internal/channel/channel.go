@@ -1,6 +1,7 @@
 package channel
 
 import (
+	"github.com/1995parham/saf/internal/channel/printer"
 	"github.com/1995parham/saf/internal/model"
 	"go.uber.org/zap"
 )
@@ -33,7 +34,9 @@ func New(logger *zap.Logger) *Manager {
 // Setup registers the given channel. please note that you should add each channel here.
 func (m *Manager) Setup(enabled []string, cfg map[string]interface{}) {
 	// list of available channles, please add each channel into this list to make them available.
-	channels := []Channel{}
+	channels := []Channel{
+		&printer.Printer{},
+	}
 
 	for _, p := range channels {
 		for _, e := range enabled {
