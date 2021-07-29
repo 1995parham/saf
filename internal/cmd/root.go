@@ -7,7 +7,6 @@ import (
 	"github.com/1995parham/saf/internal/cmd/producer"
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/logger"
-	"github.com/1995parham/saf/internal/telemetry/profiler"
 	"github.com/1995parham/saf/internal/telemetry/trace"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
@@ -24,8 +23,6 @@ func Execute() {
 	logger := logger.New(cfg.Logger)
 
 	tracer := trace.New(cfg.Telemetry.Trace)
-
-	profiler.Start(cfg.Telemetry.Profiler)
 
 	// nolint: exhaustivestruct
 	root := &cobra.Command{
