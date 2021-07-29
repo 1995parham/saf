@@ -5,10 +5,10 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/1995parham/saf/internal/channel"
 	"github.com/1995parham/saf/internal/cmq"
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/metric"
-	"github.com/1995parham/saf/internal/model"
 	"github.com/1995parham/saf/internal/subscriber"
 	"github.com/spf13/cobra"
 	"go.opentelemetry.io/otel/trace"
@@ -27,16 +27,14 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 		logger.Fatal("nats stream creation failed", zap.Error(err))
 	}
 
+	man := channel.New(logger.Named("channels"))
+	man.Setup(cfg.Channels.Enabled, cfg.Channels.Configurations)
+
 	sub := subscriber.New(c, logger, tracer)
 
-	ch := make(chan model.Event)
-	sub.RegisterHandler(ch)
-
-	go func() {
-		for ev := range ch {
-			logger.Info("new event", zap.Any("event", ev))
-		}
-	}()
+	for _, ch := range man.Channels() {
+		sub.RegisterHandler(ch)
+	}
 
 	if err := sub.Subcribe(); err != nil {
 		logger.Fatal("nats subscription failed", zap.Error(err))
