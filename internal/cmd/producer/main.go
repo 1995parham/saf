@@ -11,6 +11,7 @@ import (
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/http/handler"
 	"github.com/1995parham/saf/internal/metric"
+	"github.com/1995parham/saf/internal/telemetry/profiler"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cobra"
 	"go.opentelemetry.io/otel/trace"
@@ -18,6 +19,8 @@ import (
 )
 
 func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
+	profiler.Start(cfg.Telemetry.Profiler, "producer")
+
 	metric.NewServer(cfg.Monitoring).Start(logger.Named("metrics"))
 
 	cmq, err := cmq.New(cfg.NATS, logger)
