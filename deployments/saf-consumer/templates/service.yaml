@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: monitoring
       protocol: TCP
-      name: http
+      name: monitoring
   selector:
     {{- include "saf-consumer.selectorLabels" . | nindent 4 }}
