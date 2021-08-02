@@ -36,11 +36,18 @@ spec:
             httpGet:
               path: /metrics
               port: monitoring
+          volumeMounts:
+            - name: configuration
+              mountPath: "/app/config.yml"
+              subPath: "config.yaml"
+              readOnly: true
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          envFrom:
-            - configMapRef:
-                name: {{ include "saf-consumer.fullname" . }}
+      volumes:
+        - name: configuration
+          configMap:
+            defaultMode: 0440
+            name: {{ include "saf-consumer.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
