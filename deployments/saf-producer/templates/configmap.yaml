@@ -6,6 +6,19 @@ metadata:
   labels:
     {{- include "saf-producer.labels" . | nindent 4 }}
 data:
-  {{- range $key, $value := .Values.envs }}
-  saf_{{ $key | lower }}: {{ $value | quote }}
-  {{- end }}
+  config.yaml: |
+    monitoring:
+      enabled: true
+      address: ":8080"
+    {{ with .Values.nats }}
+    nats:
+      {{ toYaml . | nindent 6 }}
+    {{ end }}
+    {{ with .Values.logger }}
+    logger:
+      {{ toYaml . | nindent 6 }}
+    {{ end }}
+    {{ with .Values.telemetry }}
+    telemetry:
+      {{ toYaml . | nindent 6 }}
+    {{ end }}
