@@ -22,8 +22,10 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default latest }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - producer
           ports:
             - name: monitoring
               containerPort: 8080
