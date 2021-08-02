@@ -11,5 +11,8 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "saf-consumer.fullname" . }}:{{ .Values.service.port }}']
+      args:
+        - '-O'
+        - '-'
+        - '{{ include "saf-consumer.fullname" . }}:8080/metrics'
   restartPolicy: Never
