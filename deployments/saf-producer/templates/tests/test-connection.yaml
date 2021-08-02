@@ -11,5 +11,8 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "saf-producer.fullname" . }}:{{ .Values.service.port }}']
+      args:
+        - '-O'
+        - '-'
+        - '{{ include "saf-producer.fullname" . }}:{{ .Values.service.port }}/healthz'
   restartPolicy: Never
