@@ -1,7 +1,7 @@
 package cmq
 
 type Config struct {
-	URL string
+	URL string `koanf:"url"`
 }
 
 const (
