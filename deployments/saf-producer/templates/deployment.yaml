@@ -32,19 +32,29 @@ spec:
             - name: http
               containerPort: 1378
               protocol: TCP
+            - name: monitoring
+              containerPort: 8080
+              protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /metrics
+              port: monitoring
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /metrics
+              port: monitoring
+          volumeMounts:
+            - name: configuration
+              mountPath: "/app/config.yml"
+              subPath: "config.yaml"
+              readOnly: true
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          envFrom:
-            - configMapRef:
-                name: {{ include "saf-producer.fullname" . }}
+      volumes:
+        - name: configuration
+          configMap:
+            defaultMode: 0440
+            name: {{ include "saf-producer.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
