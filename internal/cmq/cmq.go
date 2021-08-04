@@ -26,7 +26,7 @@ func New(cfg Config, logger *zap.Logger) (*CMQ, error) {
 		zap.Strings("discovered-servers", nc.DiscoveredServers()))
 
 	nc.SetDisconnectErrHandler(func(c *nats.Conn, err error) {
-		logger.Warn("nats disconnected", zap.Error(err))
+		logger.Fatal("nats disconnected", zap.Error(err))
 	})
 
 	nc.SetReconnectHandler(func(c *nats.Conn) {
