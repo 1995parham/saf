@@ -13,6 +13,16 @@ entries:
     version: 1.1.0
   saf-producer:
   - apiVersion: v2
+    appVersion: 1.2.0
+    created: "2021-08-05T07:18:36.555013027Z"
+    description: Queue with NATS Jetstream to remove all the erlangs from cloud
+    digest: f62d4717be322ef8d44ecdea6d27de97bad9313f5f9e453e8117655dbe92c682
+    name: saf-producer
+    type: application
+    urls:
+    - https://github.com/1995parham/saf/releases/download/saf-producer-1.2.0/saf-producer-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
     appVersion: 1.1.0
     created: "2021-08-05T04:48:56.189259859Z"
     description: Queue with NATS Jetstream to remove all the erlangs from cloud
@@ -22,4 +32,4 @@ entries:
     urls:
     - https://github.com/1995parham/saf/releases/download/saf-producer-1.1.0/saf-producer-1.1.0.tgz
     version: 1.1.0
-generated: "2021-08-05T04:48:56.189631664Z"
+generated: "2021-08-05T07:18:36.555023528Z"
