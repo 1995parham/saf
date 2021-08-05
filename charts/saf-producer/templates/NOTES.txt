@@ -4,3 +4,4 @@ Producer sends events from its HTTP endpoint to the NATS jetstream.
 {{- range $host := .Values.ingress.hosts }}
   curl -X POST -d '{ "subject": "hello" }' -H 'Content-Type: application/json' http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}/api/event
 {{- end }}
+{{- end }}
