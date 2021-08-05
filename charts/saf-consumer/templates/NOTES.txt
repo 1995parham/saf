@@ -1,4 +1,5 @@
 Saf consumer, consumes messages from NATS jetstream and put them into the output channels.
+You have the following channels avaiable:
 
 {{ range $name, $configuration := .Values.channels }}
   - {{ $name }}
