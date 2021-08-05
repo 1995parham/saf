@@ -41,6 +41,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/metadata-action@v3
+        id: meta
         with:
           images: ghcr.io/1995parham/saf
           tags: |
