@@ -26,6 +26,7 @@ jobs:
         with:
           files: coverage.out
   docker:
+    name: docker
     runs-on: ubuntu-latest
     needs:
       - lint
@@ -56,6 +57,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   helm:
+    name: helm
     runs-on: ubuntu-latest
     needs:
       - lint
