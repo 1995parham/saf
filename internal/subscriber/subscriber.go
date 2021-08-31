@@ -45,7 +45,7 @@ func (s *Subscriber) Subcribe() error {
 func (s *Subscriber) handler(msg *nats.Msg) {
 	ctx := otel.GetTextMapPropagator().Extract(context.Background(), propagation.HeaderCarrier(msg.Header))
 
-	ctx, span := s.Tracer.Start(ctx, "subscriber.events")
+	ctx, span := s.Tracer.Start(ctx, "subscriber.events", trace.WithSpanKind(trace.SpanKindConsumer))
 	defer span.End()
 
 	metadata, _ := msg.Metadata()
