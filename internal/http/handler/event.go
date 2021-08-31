@@ -25,7 +25,9 @@ type Event struct {
 // Receive receives event from api and publish them to jetstream.
 // nolint: wrapcheck
 func (h Event) Receive(c *fiber.Ctx) error {
-	ctx, span := h.Tracer.Start(c.Context(), "handler.event")
+	ctx, span := h.Tracer.Start(c.Context(), "handler.event",
+		trace.WithSpanKind(trace.SpanKindServer),
+	)
 	defer span.End()
 
 	var rq request.Event
@@ -55,15 +57,15 @@ func (h Event) Receive(c *fiber.Ctx) error {
 		return fiber.NewError(http.StatusInternalServerError, err.Error())
 	}
 
-	msg := new(nats.Msg)
-
-	msg.Subject = cmq.EventsChannel
-	msg.Data = data
-	msg.Header = make(nats.Header)
-	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(msg.Header))
-
 	{
-		_, span := h.Tracer.Start(ctx, "handler.event.publish")
+		ctx, span := h.Tracer.Start(ctx, "handler.event.publish", trace.WithSpanKind(trace.SpanKindProducer))
+		msg := new(nats.Msg)
+
+		msg.Subject = cmq.EventsChannel
+		msg.Data = data
+		msg.Header = make(nats.Header)
+		otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(msg.Header))
+
 		if _, err := h.CMQ.JConn.PublishMsg(msg); err != nil {
 			span.RecordError(err)
 
