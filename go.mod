@@ -5,10 +5,10 @@ go 1.17
 require (
 	github.com/eclipse/paho.mqtt.golang v1.3.5
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
-	github.com/gofiber/fiber/v2 v2.17.0
+	github.com/gofiber/fiber/v2 v2.18.0
 	github.com/knadh/koanf v1.2.1
 	github.com/mitchellh/mapstructure v1.4.1
-	github.com/nats-io/nats.go v1.11.1-0.20210714175522-2b2bb8f326df
+	github.com/nats-io/nats.go v1.12.0
 	github.com/prometheus/client_golang v1.11.0
 	github.com/prometheus/common v0.30.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
@@ -41,7 +41,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/klauspost/compress v1.13.4 // indirect
+	github.com/klauspost/compress v1.13.5 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/go-ps v1.0.0 // indirect
