@@ -44,7 +44,11 @@ func New(cfg config.Trace) trace.Tracer {
 	}
 
 	bsp := sdktrace.NewBatchSpanProcessor(exporter)
-	tp := sdktrace.NewTracerProvider(sdktrace.WithSpanProcessor(bsp), sdktrace.WithResource(res))
+	tp := sdktrace.NewTracerProvider(
+		sdktrace.WithSampler(sdktrace.ParentBased(sdktrace.TraceIDRatioBased(cfg.Ratio))),
+		sdktrace.WithSpanProcessor(bsp),
+		sdktrace.WithResource(res),
+	)
 
 	otel.SetTracerProvider(tp)
 
