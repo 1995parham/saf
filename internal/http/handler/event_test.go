@@ -54,7 +54,7 @@ func (suite *EventSuite) TestHandler() {
 
 	resp, err := suite.engine.Test(req)
 	require.NoError(err)
-	require.Equal(http.StatusNoContent, resp.StatusCode)
+	require.Equal(http.StatusOK, resp.StatusCode)
 	require.NoError(resp.Body.Close())
 }
 
