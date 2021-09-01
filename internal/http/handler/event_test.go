@@ -31,6 +31,8 @@ func (suite *EventSuite) SetupSuite() {
 	cmq, err := cmq.New(cfg.NATS, zap.NewNop())
 	suite.Require().NoError(err)
 
+	suite.Require().NoError(cmq.Streams())
+
 	handler.Event{
 		CMQ:    cmq,
 		Logger: zap.NewNop(),
