@@ -33,7 +33,7 @@ func New(c *cmq.CMQ, logger *zap.Logger, tracer trace.Tracer) *Subscriber {
 	return &subscriber
 }
 
-func (s *Subscriber) Subcribe() error {
+func (s *Subscriber) Subscribe() error {
 	if _, err := s.CMQ.JConn.QueueSubscribe(cmq.EventsChannel, cmq.QueueName, s.handler,
 		nats.AckExplicit(), nats.DeliverAll(), nats.Durable(cmq.DurableName)); err != nil {
 		return fmt.Errorf("queue subscrption failed %w", err)
