@@ -39,7 +39,7 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 		sub.RegisterHandler(ch)
 	}
 
-	if err := sub.Subcribe(); err != nil {
+	if err := sub.Subscribe(); err != nil {
 		logger.Fatal("nats subscription failed", zap.Error(err))
 	}
 
