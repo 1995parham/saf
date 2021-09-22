@@ -34,6 +34,8 @@ func New(c *cmq.CMQ, logger *zap.Logger, tracer trace.Tracer) *Subscriber {
 }
 
 func (s *Subscriber) Subscribe() error {
+	// subscribe finds the stream name automatically based on given subject and also creates the consumer.
+	// we can create the consumer manually with nats.Bind or set the stream anme manually with nats.BindStream.
 	if _, err := s.CMQ.JConn.QueueSubscribe(cmq.EventsChannel, cmq.QueueName, s.handler,
 		nats.AckExplicit(), nats.DeliverAll(), nats.Durable(cmq.DurableName)); err != nil {
 		return fmt.Errorf("queue subscrption failed %w", err)
