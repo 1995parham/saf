@@ -30,3 +30,15 @@ nats pub ride.accepted 'i have a ride'
 ```
 
 Next upgrade its configuration to have gateway and also create a new cluster to form a super cluster and see how it works with jetstream.
+Then you can see streams in both regions but each stream has its leader in its cluster.
+
+```sh
+nats stream report
+nats server request gateways --user admin --password amdin | jq
+```
+
+Last step is to create a new stream in the new cluster to see it will be synced to the old cluster.
+
+```sh
+nats stream new murche --subjects 'ride.eta' --max-age '5m' --max-bytes '10m' --replicas 2 --storage memory --retention limits --discard old
+```
