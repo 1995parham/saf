@@ -18,3 +18,13 @@ auth:
           - user: admin
             password: amdin
 ```
+
+## Super-Cluster
+
+First create a simple cluster without any gateway configuration and then create the following stream:
+
+```sh
+nats stream new rides --subjects 'ride.accepted, ride.finish' --max-age '5m' --max-bytes '10m' --replicas 2 --storage memory --retention limits --discard old
+```
+
+Next upgrade its configuration to have gateway and also create a new cluster to form a super cluster and see how it works with jetstream.
