@@ -3,7 +3,7 @@ cluster:
   noAdvertise: true
   enabled: true
   replicas: 3
-  name: parham-testing-c1
+  name: parham-testing-c2
 
 commonLabels:
   app: jetstream
@@ -17,18 +17,18 @@ natsbox:
   enabled: false
 
 gateway:
-  enabled: false
-  name: parham-testing-c1
-  advertise: c1-nats:7522
+  enabled: true
+  name: parham-testing-c2
+  advertise: c2-nats:7522
   rejectUnknownCluster: true
   gateways:
-    - name: parham-testing-c2
+    - name: parham-testing-c1
       urls:
-        - nats://c2-nats:7522
+        - nats://c1-nats:7522
 
 nats:
   image: nats:2.8.0-alpine
-  serverNamePrefix: c1-
+  serverNamePrefix: c2-
 
   jetstream:
     enabled: true
