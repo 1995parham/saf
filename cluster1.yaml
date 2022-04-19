@@ -17,7 +17,7 @@ natsbox:
   enabled: false
 
 gateway:
-  enabled: false
+  enabled: true
   name: parham-testing-c1
   advertise: c1-nats:7522
   rejectUnknownCluster: true
