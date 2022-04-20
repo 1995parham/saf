@@ -69,8 +69,8 @@ auth:
     accounts:
       admin:
         users:
-          - user: admin
-            password: amdin
+          - user: parham
+            password: parham
 
 exporter:
   serviceMonitor:
