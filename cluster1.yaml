@@ -27,7 +27,7 @@ gateway:
         - nats://c2-nats:7522
 
 nats:
-  image: nats:2.8.0-alpine
+  image: nats:2.8.2-alpine
   serverNamePrefix: c1-
 
   jetstream:
