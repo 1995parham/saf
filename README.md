@@ -26,7 +26,7 @@ First create a simple cluster without any gateway configuration and then create 
 ```sh
 nats stream new rides --subjects 'ride.accepted, ride.finish' --max-age '5m' --max-bytes '10m' --replicas 2 --storage memory --retention limits --discard old
 
-nats pub ride.accepted 'i have a ride'
+nats pub --count 10 ride.accepted 'ride {{ID}} started on {{Time}}'
 ```
 
 Next upgrade its configuration to have gateway and also create a new cluster to form a super cluster and see how it works with jetstream.
