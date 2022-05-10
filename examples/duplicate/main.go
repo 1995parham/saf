@@ -1,10 +1,6 @@
 package main
 
 import (
-	"os"
-	"os/signal"
-	"syscall"
-
 	"github.com/nats-io/nats.go"
 	"github.com/pterm/pterm"
 )
@@ -62,9 +58,4 @@ so you should get only one new message on your stream
 
 		pterm.Info.Printf("%+v\n", ack)
 	}
-
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-
-	<-quit
 }
