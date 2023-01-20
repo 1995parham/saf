@@ -1,7 +1,11 @@
 # saf
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/1995parham/saf/ci.yaml?label=ci&logo=github&style=flat-square&branch=main)
-[![Codecov](https://img.shields.io/codecov/c/gh/1995parham/saf?logo=codecov&style=flat-square)](https://codecov.io/gh/1995parham/saf)
+<p align="center">
+
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/1995parham/saf/ci.yaml?label=ci&logo=github&style=for-the-badge&branch=main)
+[![Codecov](https://img.shields.io/codecov/c/gh/1995parham/saf?logo=codecov&style=for-the-badge)](https://codecov.io/gh/1995parham/saf)
+
+</p>
 
 ## Introduction
 
@@ -14,11 +18,11 @@ Saf gets events from its producer side and publish them into NATS. The consumer 
 
 ## Scenarios
 
-1. We have event on the producer side but there isn't any available server so we need to send an error.
-2. There is no consumer available so events must be available on NATS until they gets back.
+1. We have event on the producer side, but there isn't any available server, so we need to send an error.
+2. There is no consumer available so events must be available on NATS until it gets back.
 
 ## APIs
 
-```sh
+```bash
 curl -X POST -d '{ "subject": "hello" }' -H 'Content-Type: application/json' http://127.0.0.1:1378/api/event
 ```
