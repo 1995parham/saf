@@ -50,7 +50,7 @@ func (c *CMQ) Streams() error {
 
 	switch {
 	case errors.Is(err, nats.ErrStreamNotFound):
-		// nolint: exhaustivestruct
+		// nolint: exhaustruct
 		stream, err := c.JConn.AddStream(&nats.StreamConfig{
 			Name:     EventsChannel,
 			Subjects: []string{EventsChannel},

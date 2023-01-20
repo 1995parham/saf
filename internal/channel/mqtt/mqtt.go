@@ -76,7 +76,7 @@ func (p *MQTT) Init(logger *zap.Logger, tracer trace.Tracer, cfg interface{}) {
 	p.logger = logger
 	p.tracer = tracer
 
-	// nolint: exhaustivestruct
+	// nolint: exhaustruct
 	dc := &mapstructure.DecoderConfig{
 		DecodeHook: mapstructure.ComposeDecodeHookFunc(
 			mapstructure.StringToTimeDurationHookFunc()),

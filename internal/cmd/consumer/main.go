@@ -51,7 +51,7 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 // Register consumer command.
 func Register(root *cobra.Command, cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 	root.AddCommand(
-		// nolint: exhaustivestruct
+		// nolint: exhaustruct
 		&cobra.Command{
 			Use:   "consumer",
 			Short: "gets events from jetstream",

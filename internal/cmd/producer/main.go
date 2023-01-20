@@ -32,7 +32,7 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 		logger.Fatal("nats stream creation failed", zap.Error(err))
 	}
 
-	// nolint: exhaustivestruct
+	// nolint: exhaustruct
 	app := fiber.New(fiber.Config{
 		AppName: "saf",
 	})
@@ -62,7 +62,7 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 // Register producer command.
 func Register(root *cobra.Command, cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 	root.AddCommand(
-		// nolint: exhaustivestruct
+		// nolint: exhaustruct
 		&cobra.Command{
 			Use:   "producer",
 			Short: "gets events from http and produce them into nats",

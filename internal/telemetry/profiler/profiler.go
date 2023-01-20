@@ -10,7 +10,7 @@ import (
 
 func Start(cfg config.Profiler, component string) {
 	if cfg.Enabled {
-		// nolint: exhaustivestruct
+		// nolint: exhaustruct
 		if _, err := profiler.Start(profiler.Config{
 			ApplicationName: fmt.Sprintf("1995parham.saf.%s", component),
 			ServerAddress:   cfg.Address,

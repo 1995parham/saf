@@ -24,7 +24,7 @@ func Execute() {
 
 	tracer := trace.New(cfg.Telemetry.Trace)
 
-	// nolint: exhaustivestruct
+	// nolint: exhaustruct
 	root := &cobra.Command{
 		Use:   "saf",
 		Short: "Queue with NATS Jetstream to remove all the erlangs from cloud",
