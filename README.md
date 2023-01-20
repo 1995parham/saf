@@ -1,7 +1,7 @@
-# saf
+<h1 align="center">Saf</h1>
+<h6 align="center">Saf means Queue in Persian</h6>
 
 <p align="center">
-
 
 <img src="https://img.shields.io/github/actions/workflow/status/1995parham/saf/ci.yaml?label=ci&logo=github&style=for-the-badge&branch=main" alt="GitHub Workflow Status" />
 
