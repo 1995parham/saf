@@ -11,6 +11,7 @@ type Event struct {
 	Payload   []byte    `json:"payload"`
 }
 
+// nolint: containedctx
 type ChanneledEvent struct {
 	Event
 
