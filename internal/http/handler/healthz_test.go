@@ -30,7 +30,7 @@ func (suite *HealthzSuite) SetupSuite() {
 func (suite *HealthzSuite) TestHandler() {
 	require := suite.Require()
 
-	req := httptest.NewRequest("GET", "/healthz", nil)
+	req := httptest.NewRequest(http.MethodGet, "/healthz", nil)
 	req.Header.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
 
 	resp, err := suite.engine.Test(req)

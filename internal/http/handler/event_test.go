@@ -49,7 +49,7 @@ func (suite *EventSuite) TestHandler() {
 	})
 	require.NoError(err)
 
-	req := httptest.NewRequest("POST", "/event", bytes.NewBuffer(payload))
+	req := httptest.NewRequest(http.MethodPost, "/event", bytes.NewBuffer(payload))
 	req.Header.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
 
 	resp, err := suite.engine.Test(req)
