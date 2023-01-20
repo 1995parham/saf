@@ -47,8 +47,12 @@ nats stream new murche --subjects 'ride.eta' --max-age '5m' --max-bytes '10m' --
 
 <p align="center">
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/1995parham/saf/ci.yaml?label=ci&logo=github&style=for-the-badge&branch=main)
-[![Codecov](https://img.shields.io/codecov/c/gh/1995parham/saf?logo=codecov&style=for-the-badge)](https://codecov.io/gh/1995parham/saf)
+
+<img src="https://img.shields.io/github/actions/workflow/status/1995parham/saf/ci.yaml?label=ci&logo=github&style=for-the-badge&branch=main" alt="GitHub Workflow Status" />
+
+<a href="https://codecov.io/gh/1995parham/saf">
+<img src="https://img.shields.io/codecov/c/gh/1995parham/saf?logo=codecov&style=for-the-badge" alt="Codecov" />
+</a>
 
 </p>
 
