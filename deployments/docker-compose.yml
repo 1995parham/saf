@@ -4,7 +4,7 @@ services:
   nats:
     image: nats
     entrypoint: /nats-server
-    command: --name n1 --cluster_name raha --js --sd /data -p 4222
+    command: --name n1 --cluster_name elahe --js --sd /data -p 4222
     ports:
       - 4222:4222
 
