@@ -16,7 +16,7 @@ type Printer struct {
 	tracer trace.Tracer
 }
 
-func (p *Printer) Init(logger *zap.Logger, tracer trace.Tracer, cfg interface{}) {
+func (p *Printer) Init(logger *zap.Logger, tracer trace.Tracer, _ interface{}) {
 	p.logger = logger
 	p.tracer = tracer
 }
