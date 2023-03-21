@@ -75,6 +75,8 @@ Saf gets events from its producer side and publish them into NATS.
 The consumer side gets events from NATS and do the process which may takes time.
 The producer side here is an HTTP server.
 
+Produce uses a same channel for all subjects and marshals data into JSON.
+
 ## Scenarios
 
 1. We have event on the producer side, but there isn't any available server, so we need to send an error.
