@@ -24,12 +24,21 @@ I think RabbitMQ will work better.
 
 Saf gets events from its producer side and publish them into NATS.
 The consumer side gets events from NATS and do the process which may takes time.
-The producer side here is a HTTP APIs.
+The producer side here is an HTTP server.
 
 ## Scenarios
 
 1. We have event on the producer side, but there isn't any available server, so we need to send an error.
 2. There is no consumer available so events must be available on NATS until it gets back.
+
+## Up and Running
+
+Everything you need to test the project and gather some results are available
+in a single docker-compose:
+
+```bash
+cd deployment && docker compose up
+```
 
 ## APIs
 
