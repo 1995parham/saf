@@ -57,13 +57,14 @@ func (c *CMQ) Streams() error {
 		// Each stream contains multiple topics, here we use a
 		// same name for stream and its topic.
 		stream, err := c.JConn.AddStream(&nats.StreamConfig{
-			Name:      EventsChannel,
-			Discard:   nats.DiscardOld,
-			Retention: nats.LimitsPolicy,
-			Subjects:  []string{EventsChannel},
-			MaxAge:    1 * time.Hour,
-			Storage:   nats.MemoryStorage,
-			Replicas:  1,
+			Name:        EventsChannel,
+			Description: "Saf's event channel contains only events topic",
+			Discard:     nats.DiscardOld,
+			Retention:   nats.LimitsPolicy,
+			Subjects:    []string{EventsChannel},
+			MaxAge:      1 * time.Hour,
+			Storage:     nats.MemoryStorage,
+			Replicas:    1,
 		})
 		if err != nil {
 			return fmt.Errorf("cannot create stream %w", err)
