@@ -63,7 +63,7 @@ func (s *Subscriber) handler(msg *nats.Msg) {
 		s.Logger.Error("cannot parse the event", zap.Error(err))
 	}
 
-	cev := model.ChanneledEvent{Event: ev, Context: ctx}
+	cev := model.ChanneledEvent{Event: ev, SpanContext: trace.SpanContextFromContext(ctx)}
 
 	for _, c := range s.handlers {
 		c <- cev

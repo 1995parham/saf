@@ -1,6 +1,7 @@
 package printer
 
 import (
+	"context"
 	"runtime"
 
 	"github.com/1995parham/saf/internal/model"
@@ -25,7 +26,8 @@ func (p *Printer) Run() {
 	for i := 0; i < 10*runtime.GOMAXPROCS(0); i++ {
 		go func() {
 			for e := range p.ch {
-				_, span := p.tracer.Start(e.Context, "channels.printer")
+				ctx := trace.ContextWithSpanContext(context.Background(), e.SpanContext)
+				_, span := p.tracer.Start(ctx, "channels.printer")
 
 				p.logger.Info("receive event",
 					zap.Time("created", e.CreatedAt),
