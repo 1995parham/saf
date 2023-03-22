@@ -45,6 +45,7 @@ func (suite *EventSuite) TestHandler() {
 
 	payload, err := json.Marshal(request.Event{
 		Subject: "hello",
+		ID:      "",
 		Payload: []byte("from the otherside"),
 	})
 	require.NoError(err)
