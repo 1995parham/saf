@@ -66,7 +66,7 @@ func (h Event) Receive(c *fiber.Ctx) error {
 		msg.Header = make(nats.Header)
 		otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(msg.Header))
 
-		if _, err := h.CMQ.JConn.PublishMsg(msg); err != nil {
+		if _, err := h.CMQ.JConn.PublishMsg(msg, nats.MsgId(rq.ID)); err != nil {
 			span.RecordError(err)
 
 			return fiber.NewError(http.StatusServiceUnavailable, err.Error())
