@@ -42,3 +42,7 @@ Last step is to create a new stream in the new cluster to see it will be synced 
 ```sh
 nats stream new murche --subjects 'ride.eta' --max-age '5m' --max-bytes '10m' --replicas 2 --storage memory --retention limits --discard old
 ```
+
+# saf
+
+Queue with NATS Jetstream to remove all the erlangs from cloud
