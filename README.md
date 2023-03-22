@@ -62,8 +62,8 @@ nats stream new murche --subjects 'ride.eta' --max-age '5m' --max-bytes '10m' --
 
 ## Introduction
 
-One of the problems, that we face on projects with queues is deploying RabbitMQ on the cloud which brings us many challenges for CPU load, split brain, etc.
-I want to see how NATS with Jetstream can work as a queue manager to replace RabbitMQ.
+One of the problems, that we face on projects with queues is deploying [RabbitMQ](https://www.rabbitmq.com/) on the cloud which brings us many challenges for CPU load, split brain, etc.
+I want to see how [NATS](https://nats.io/) with [Jetstream](https://docs.nats.io/nats-concepts/jetstream) can work as a queue manager to replace RabbitMQ.
 Saf project here have been developed to show the Jetstream usage as a queue manager and also load test it.
 
 Meanwhile, we did some real-world tests and the results are not good, after the recent Erlang upgrades to make it cloud compatible,
@@ -73,8 +73,9 @@ I think RabbitMQ will work better.
 
 Saf gets events from its producer side and publish them into NATS.
 The consumer side gets events from NATS and do the process which may takes time.
-The producer side here is an HTTP server.
-Stream created by the consumer side, and it is defined in `internal/cmq/cmq.go`.
+The producer side here is an HTTP server which validate the given event request, then
+after embedding trace information, it publishes event into the Jetstream.
+[Stream](https://docs.nats.io/nats-concepts/jetstream/streams) created by the consumer side, and it is defined in `internal/cmq/cmq.go`.
 
 Produce uses a same channel for all subjects and marshals data into JSON.
 
