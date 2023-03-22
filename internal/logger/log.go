@@ -12,7 +12,8 @@ type Config struct {
 	Level string `koanf:"level"`
 }
 
-// New creates a zap logger for console and also setup an output for syslog.
+// New creates a zap logger for console.
+// based on: https://pkg.go.dev/go.uber.org/zap#hdr-Configuring_Zap
 func New(cfg Config) *zap.Logger {
 	var lvl zapcore.Level
 	if err := lvl.Set(cfg.Level); err != nil {
