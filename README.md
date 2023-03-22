@@ -138,6 +138,8 @@ State:
           Active Interest: Active using Queue Group saf
 ```
 
+Please note that we are using the [Push consumer](https://natsbyexample.com/examples/jetstream/push-consumer/go) here.
+
 ## Up and Running
 
 Everything you need to test the project and gather some results are available
@@ -145,6 +147,12 @@ in a single docker-compose:
 
 ```bash
 cd deployment && docker compose up
+```
+
+Then you can build and run:
+
+```bash
+cd cmd/saf && go build
 ```
 
 ## APIs
