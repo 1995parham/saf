@@ -138,7 +138,9 @@ State:
           Active Interest: Active using Queue Group saf
 ```
 
-Please note that we are using the [Push consumer](https://natsbyexample.com/examples/jetstream/push-consumer/go) here.
+Please note that we have the [Push consumer](https://natsbyexample.com/examples/jetstream/push-consumer/go)
+and [Pull Consumer](https://natsbyexample.com/examples/jetstream/pull-consumer/go) in code and,
+you can switch between them by commenting out the one you don't want.
 
 ## Up and Running
 
