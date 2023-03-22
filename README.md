@@ -2,13 +2,10 @@
 <h6 align="center">Saf means Queue in Persian</h6>
 
 <p align="center">
-
-<img src="https://img.shields.io/github/actions/workflow/status/1995parham/saf/ci.yaml?label=ci&logo=github&style=for-the-badge&branch=main" alt="GitHub Workflow Status" />
-
-<a href="https://codecov.io/gh/1995parham/saf">
-  <img src="https://img.shields.io/codecov/c/gh/1995parham/saf?logo=codecov&style=for-the-badge" alt="Codecov" />
-</a>
-
+  <img src="https://img.shields.io/github/actions/workflow/status/1995parham/saf/ci.yaml?label=ci&logo=github&style=for-the-badge&branch=main" alt="GitHub Workflow Status" />
+  <a href="https://codecov.io/gh/1995parham/saf">
+    <img src="https://img.shields.io/codecov/c/gh/1995parham/saf?logo=codecov&style=for-the-badge" alt="Codecov" />
+  </a>
 </p>
 
 ## Introduction
@@ -94,8 +91,8 @@ and [Pull Consumer](https://natsbyexample.com/examples/jetstream/pull-consumer/g
 you can switch between them by commenting out the one you don't want.
 
 In case of having not important consumers, you can use NATS core consume type from your subject
-(in this case, you don't need any stream). These consumers loss messages in their downtime
-(please note that, NATS use TCP and you will not loss any messages in case of healthy producer and consumer)
+(in this case, you don't need any stream). These consumers lose messages in their downtime
+(please note that, NATS use TCP and you will not lose any messages in case of healthy producer and consumer)
 but they have a little footprint on server.
 
 ## Up and Running
@@ -112,6 +109,9 @@ Then you can build and run:
 ```bash
 cd cmd/saf && go build
 ```
+
+You can also deploy NATS on Kubernetes cluster using [NATS helm chart](https://github.com/nats-io/k8s).
+Values for deploying two clusters are available in `./deployments/k8s/`.
 
 ## APIs
 
