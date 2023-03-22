@@ -89,6 +89,55 @@ On production, we need to handle two following scenarios when using a queue mana
 Jetstream stores messages for 1 hour in memory. So you can shut down the consumer
 and send events happily and then after consumer starts again consumes these events.
 
+The following description shows the stream that stores messages in memory:
+
+```bash
+# you can install natscli from https://github.com/nats-io/natscli
+nats stream ls
+```
+
+```
+╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│                                                     Streams                                                     │
+├────────┬────────────────────────────────────────────────┬─────────────────────┬──────────┬───────┬──────────────┤
+│ Name   │ Description                                    │ Created             │ Messages │ Size  │ Last Message │
+├────────┼────────────────────────────────────────────────┼─────────────────────┼──────────┼───────┼──────────────┤
+│ events │ Saf's event channel contains only events topic │ 2023-03-22 14:46:02 │ 1        │ 188 B │ 4m9s         │
+╰────────┴────────────────────────────────────────────────┴─────────────────────┴──────────┴───────┴──────────────╯
+```
+
+Also, you can see the description of the consumer:
+
+```bash
+nats consumer info events saf
+```
+
+```
+Information for Consumer events > saf created 2023-03-22T14:46:02+03:30
+
+Configuration:
+
+                Name: saf
+    Delivery Subject: _INBOX.u4ykdwReyQtmYjiZpxEJNM
+      Filter Subject: events
+      Deliver Policy: All
+ Deliver Queue Group: saf
+          Ack Policy: Explicit
+            Ack Wait: 30s
+       Replay Policy: Instant
+     Max Ack Pending: 1,000
+        Flow Control: false
+
+State:
+
+   Last Delivered Message: Consumer sequence: 1 Stream sequence: 1 Last delivery: 7m54s ago
+     Acknowledgment floor: Consumer sequence: 1 Stream sequence: 1 Last Ack: 7m54s ago
+         Outstanding Acks: 0 out of maximum 1,000
+     Redelivered Messages: 0
+     Unprocessed Messages: 0
+          Active Interest: Active using Queue Group saf
+```
+
 ## Up and Running
 
 Everything you need to test the project and gather some results are available
