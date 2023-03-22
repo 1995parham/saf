@@ -11,6 +11,6 @@ variable "TAG" {
 target "koochooloo" {
   dockerfile = "build/package/Dockerfile"
   tags = [
-    "ghcr.io/1995parham/koochooloo:${TAG}"
+    "ghcr.io/1995parham/saf:${TAG}"
   ]
 }
