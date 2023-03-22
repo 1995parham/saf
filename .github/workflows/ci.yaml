@@ -46,10 +46,10 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/bake-action@v2
+        env:
+          TAG: ${{ github.ref_name }}
         with:
           files: "build/package/docker-bake.hcl"
-          set: |
-            TAG=${GITHUB_REF_NAME}
           push: true
   helm:
     name: helm
