@@ -100,3 +100,17 @@ The following API call publishes an event to subject `hello`.
 ```bash
 curl -X POST -d '{ "subject": "hello" }' -H 'Content-Type: application/json' http://127.0.0.1:1378/api/event
 ```
+
+## Clustering
+
+One of the main issues about using Jetstream is how does its clustering work?
+There are three RAFT groups exist in a single Jetstream cluster:
+
+1. Meta Group: all servers join the Meta Group and the Jetstream API is managed by this group.
+   A leader is elected and this owns the API and takes care of server placement.
+
+2. Stream Group: each Stream creates a RAFT group, this group synchronizes state and data between its members.
+   The elected leader handles ACKs and so forth, if there is no leader the stream will not accept messages.
+
+3. Consumer Group: each Consumer creates a RAFT group, this group synchronizes consumer state between its members.
+   The group will live on the machines where the Stream Group is and handle consumption ACKs etc. Each Consumer will have their own group.
