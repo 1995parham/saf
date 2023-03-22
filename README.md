@@ -1,52 +1,3 @@
-<<<<<<< HEAD
-
-# nats-jetstream
-
-Test NATS Jetstream features before using them on production
-
-## How we can have a system account?
-
-Check out the `cluster1.yaml` to see how we can have system account in helm values.
-Please note that this doesn't affect applications and they can continue without authentication.
-
-```yaml
-auth:
-  enabled: true
-  systemAccount: admin
-  basic:
-    accounts:
-      admin:
-        users:
-          - user: admin
-            password: amdin
-```
-
-## Super-Cluster
-
-First create a simple cluster without any gateway configuration and then create the following stream:
-
-```sh
-nats stream new rides --subjects 'ride.accepted, ride.finish' --max-age '5m' --max-bytes '10m' --replicas 2 --storage memory --retention limits --discard old
-
-nats pub --count 10 ride.accepted 'ride {{ID}} started on {{Time}}'
-```
-
-Next upgrade its configuration to have gateway and also create a new cluster to form a super cluster and see how it works with jetstream.
-Then you can see streams in both regions but each stream has its leader in its cluster.
-
-```sh
-nats stream report
-nats server request gateways --user admin --password amdin | jq
-```
-
-Last step is to create a new stream in the new cluster to see it will be synced to the old cluster.
-
-```sh
-nats stream new murche --subjects 'ride.eta' --max-age '5m' --max-bytes '10m' --replicas 2 --storage memory --retention limits --discard old
-```
-
-# saf
-
 <h1 align="center">Saf</h1>
 <h6 align="center">Saf means Queue in Persian</h6>
 
@@ -55,7 +6,7 @@ nats stream new murche --subjects 'ride.eta' --max-age '5m' --max-bytes '10m' --
 <img src="https://img.shields.io/github/actions/workflow/status/1995parham/saf/ci.yaml?label=ci&logo=github&style=for-the-badge&branch=main" alt="GitHub Workflow Status" />
 
 <a href="https://codecov.io/gh/1995parham/saf">
-<img src="https://img.shields.io/codecov/c/gh/1995parham/saf?logo=codecov&style=for-the-badge" alt="Codecov" />
+  <img src="https://img.shields.io/codecov/c/gh/1995parham/saf?logo=codecov&style=for-the-badge" alt="Codecov" />
 </a>
 
 </p>
@@ -183,3 +134,44 @@ There are three RAFT groups exist in a single Jetstream cluster:
 
 3. Consumer Group: each Consumer creates a RAFT group, this group synchronizes consumer state between its members.
    The group will live on the machines where the Stream Group is and handle consumption ACKs etc. Each Consumer will have their own group.
+
+## Super-Cluster
+
+First create a simple cluster without any gateway configuration and then create the following stream:
+
+```bash
+nats stream new rides --subjects 'ride.accepted, ride.finish' --max-age '5m' --max-bytes '10m' --replicas 2 --storage memory --retention limits --discard old
+
+nats pub --count 10 ride.accepted 'ride {{ID}} started on {{Time}}'
+```
+
+Next upgrade its configuration to have gateway and also create a new cluster to form a super cluster and see how it works with Jetstream.
+Then you can see streams in both regions, but each stream has its leader in its cluster.
+
+```bash
+nats stream report
+nats server request gateways --user admin --password amdin | jq
+```
+
+Last step is to create a new stream in the new cluster to see it will be synced to the old cluster.
+
+```bash
+nats stream new murche --subjects 'ride.eta' --max-age '5m' --max-bytes '10m' --replicas 2 --storage memory --retention limits --discard old
+```
+
+## How we can have a system account?
+
+Check out the `cluster1.yaml` to see how we can have system account in Helm values.
+Please note that this doesn't affect applications, and they can continue working without authentication.
+
+```yaml
+auth:
+  enabled: true
+  systemAccount: admin
+  basic:
+    accounts:
+      admin:
+        users:
+          - user: admin
+            password: amdin
+```
