@@ -142,6 +142,11 @@ Please note that we have the [Push consumer](https://natsbyexample.com/examples/
 and [Pull Consumer](https://natsbyexample.com/examples/jetstream/pull-consumer/go) in code and,
 you can switch between them by commenting out the one you don't want.
 
+In case of having not important consumers, you can use NATS core consume type from your subject
+(in this case, you don't need any stream). These consumers loss messages in their downtime
+(please note that, NATS use TCP and you will not loss any messages in case of healthy producer and consumer)
+but they have a little footprint on server.
+
 ## Up and Running
 
 Everything you need to test the project and gather some results are available
