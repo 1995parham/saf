@@ -45,17 +45,25 @@ func New(cfg Config, logger *zap.Logger) (*CMQ, error) {
 	}, nil
 }
 
+// Streams creates required streams on jetstream.
+// On production you may want to create streams manually to have
+// more control. Stream creation process is like migration.
 func (c *CMQ) Streams() error {
 	info, err := c.JConn.StreamInfo(EventsChannel)
 
 	switch {
 	case errors.Is(err, nats.ErrStreamNotFound):
 		// nolint: exhaustruct
+		// Each stream contains multiple topics, here we use a
+		// same name for stream and its topic.
 		stream, err := c.JConn.AddStream(&nats.StreamConfig{
-			Name:     EventsChannel,
-			Subjects: []string{EventsChannel},
-			MaxAge:   1 * time.Hour,
-			Storage:  nats.MemoryStorage,
+			Name:      EventsChannel,
+			Discard:   nats.DiscardOld,
+			Retention: nats.LimitsPolicy,
+			Subjects:  []string{EventsChannel},
+			MaxAge:    1 * time.Hour,
+			Storage:   nats.MemoryStorage,
+			Replicas:  1,
 		})
 		if err != nil {
 			return fmt.Errorf("cannot create stream %w", err)
