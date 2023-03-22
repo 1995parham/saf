@@ -3,6 +3,7 @@ package subscriber
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -56,14 +57,32 @@ func (s *Subscriber) PushSubscribe() error {
 }
 
 func (s *Subscriber) PullSubscribe() error {
-	if _, err := s.CMQ.JConn.PullSubscribe(cmq.EventsChannel, cmq.DurableName,
+	sub, err := s.CMQ.JConn.PullSubscribe(cmq.EventsChannel, cmq.DurableName,
 		nats.AckExplicit(),
 		nats.DeliverAll(),
 		nats.BindStream(cmq.EventsChannel),
 		nats.InactiveThreshold(time.Hour), // remove durable consumer after 1 hour of inactivity
-	); err != nil {
+	)
+	if err != nil {
 		return fmt.Errorf("pull subscrption failed %w", err)
 	}
+
+	go func() {
+		for {
+			msg, err := sub.Fetch(1)
+			if err != nil {
+				if errors.Is(err, nats.ErrTimeout) {
+					continue
+				}
+
+				s.Logger.Error("fetching messages from a pull consumer failed", zap.Error(err))
+			}
+
+			for _, msg := range msg {
+				s.handler(msg)
+			}
+		}
+	}()
 
 	return nil
 }
