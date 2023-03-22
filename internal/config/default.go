@@ -20,7 +20,7 @@ func Default() Config {
 		},
 		Telemetry: telemetry.Config{
 			Trace: telemetry.Trace{
-				Enabled: false,
+				Enabled: true,
 				Ratio:   1.0,
 				Agent: telemetry.Agent{
 					Host: "127.0.0.1",
@@ -36,7 +36,9 @@ func Default() Config {
 			URL: "nats://127.0.0.1:4222",
 		},
 		Channels: channel.Config{
-			Enabled:        []string{},
+			Enabled: []string{
+				"printer",
+			},
 			Configurations: map[string]interface{}{},
 		},
 	}
