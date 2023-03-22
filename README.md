@@ -107,7 +107,9 @@ cd deployment && docker compose up
 Then you can build and run:
 
 ```bash
-cd cmd/saf && go build
+cd cmd/saf
+go build
+cp configs/config.example.yml config.yml
 ```
 
 You can also deploy NATS on Kubernetes cluster using [NATS helm chart](https://github.com/nats-io/k8s).
