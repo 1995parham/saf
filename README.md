@@ -74,6 +74,7 @@ I think RabbitMQ will work better.
 Saf gets events from its producer side and publish them into NATS.
 The consumer side gets events from NATS and do the process which may takes time.
 The producer side here is an HTTP server.
+Stream created by the consumer side, and it is defined in `internal/cmq/cmq.go`.
 
 Produce uses a same channel for all subjects and marshals data into JSON.
 
