@@ -13,8 +13,11 @@ const (
 )
 
 // Event represents a event request payload.
+// By providing an identification for event request
+// you can remove duplicate events.
 type Event struct {
 	Subject string
+	ID      string
 	Payload []byte
 }
 
