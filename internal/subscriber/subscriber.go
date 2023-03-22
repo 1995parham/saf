@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/1995parham/saf/internal/cmq"
 	"github.com/1995parham/saf/internal/model"
@@ -34,11 +35,34 @@ func New(c *cmq.CMQ, logger *zap.Logger, tracer trace.Tracer) *Subscriber {
 }
 
 func (s *Subscriber) Subscribe() error {
+	// change between pull and push consumers
+	// return s.PushSubscribe()
+	return s.PullSubscribe()
+}
+
+func (s *Subscriber) PushSubscribe() error {
 	// subscribe finds the stream name automatically based on given subject and also creates the consumer.
 	// we can create the consumer manually with nats.Bind or set the stream name manually with nats.BindStream.
 	if _, err := s.CMQ.JConn.QueueSubscribe(cmq.EventsChannel, cmq.QueueName, s.handler,
-		nats.AckExplicit(), nats.DeliverAll(), nats.Durable(cmq.DurableName)); err != nil {
+		nats.AckExplicit(),
+		nats.DeliverAll(),
+		nats.Durable(cmq.DurableName),
+		nats.InactiveThreshold(time.Hour), // remove durable consumer after 1 hour of inactivity
+	); err != nil {
 		return fmt.Errorf("queue subscrption failed %w", err)
+	}
+
+	return nil
+}
+
+func (s *Subscriber) PullSubscribe() error {
+	if _, err := s.CMQ.JConn.PullSubscribe(cmq.EventsChannel, cmq.DurableName,
+		nats.AckExplicit(),
+		nats.DeliverAll(),
+		nats.BindStream(cmq.EventsChannel),
+		nats.InactiveThreshold(time.Hour), // remove durable consumer after 1 hour of inactivity
+	); err != nil {
+		return fmt.Errorf("pull subscrption failed %w", err)
 	}
 
 	return nil
