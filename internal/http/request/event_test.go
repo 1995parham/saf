@@ -16,6 +16,7 @@ func TestEventValidation(t *testing.T) {
 		{
 			request: request.Event{
 				Subject: "",
+				ID:      "",
 				Payload: []byte{},
 			},
 			isValid: false,
@@ -23,6 +24,7 @@ func TestEventValidation(t *testing.T) {
 		{
 			request: request.Event{
 				Subject: "hello",
+				ID:      "",
 				Payload: []byte{},
 			},
 			isValid: true,
@@ -30,6 +32,7 @@ func TestEventValidation(t *testing.T) {
 		{
 			request: request.Event{
 				Subject: "hello",
+				ID:      "",
 				Payload: []byte("Hello World"),
 			},
 			isValid: true,
