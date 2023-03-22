@@ -175,3 +175,9 @@ auth:
           - user: admin
             password: amdin
 ```
+
+## Remove duplicate messages
+
+Clients may send a same request multiple times, Jetstream can remove duplicate message based on their ID.
+Each message has an ID header, and you can use your application logic to provide that ID, and ask Jetstream
+to remove those messages.
