@@ -46,7 +46,7 @@ nats stream new murche --subjects 'ride.eta' --max-age '5m' --max-bytes '10m' --
 # saf
 
 Queue with NATS Jetstream to remove all the erlangs from cloud
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/1995parham/saf/ci?label=ci&logo=github&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/1995parham/saf/ci.yaml?label=ci&logo=github&style=flat-square&branch=main)
 [![Codecov](https://img.shields.io/codecov/c/gh/1995parham/saf?logo=codecov&style=flat-square)](https://codecov.io/gh/1995parham/saf)
 
 ## Introduction
