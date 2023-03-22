@@ -47,7 +47,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/bake-action@v2
         with:
-          files: "build/package/docker-bake.json"
+          files: "build/package/docker-bake.hcl"
+          set: |
+            TAG=${GITHUB_REF_NAME}
           push: true
   helm:
     name: helm
