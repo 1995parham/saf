@@ -1,8 +1,9 @@
 package model
 
 import (
-	"context"
 	"time"
+
+	"go.opentelemetry.io/otel/trace"
 )
 
 type Event struct {
@@ -11,9 +12,8 @@ type Event struct {
 	Payload   []byte    `json:"payload"`
 }
 
-// nolint: containedctx
 type ChanneledEvent struct {
 	Event
 
-	Context context.Context
+	SpanContext trace.SpanContext
 }

@@ -1,6 +1,7 @@
 package mqtt
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"runtime"
@@ -106,7 +107,8 @@ func (p *MQTT) Run() {
 	for i := 0; i < 10*runtime.GOMAXPROCS(0); i++ {
 		go func() {
 			for e := range p.ch {
-				_, span := p.tracer.Start(e.Context, "channels.mqtt")
+				ctx := trace.ContextWithSpanContext(context.Background(), e.SpanContext)
+				_, span := p.tracer.Start(ctx, "channels.mqtt")
 
 				p.client.Publish(fmt.Sprintf("saf/%s", e.Subject), 1, true, e.Payload)
 
