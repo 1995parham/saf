@@ -181,3 +181,11 @@ auth:
 Clients may send a same request multiple times, Jetstream can remove duplicate message based on their ID.
 Each message has an ID header, and you can use your application logic to provide that ID, and ask Jetstream
 to remove those messages.
+
+Consider the following request:
+
+```bash
+curl -X POST -d '{ "subject": "hello", "data": "Hello World", "id": "1" }' -H 'Content-Type: application/json' http://127.0.0.1:1378/api/event
+```
+
+It sends a message with identification equals to 1, if your send another request you will not see that request on consumers.
