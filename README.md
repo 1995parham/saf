@@ -81,8 +81,13 @@ Produce uses a same channel for all subjects and marshals data into JSON.
 
 ## Scenarios
 
+On production, we need to handle two following scenarios when using a queue manager:
+
 1. We have event on the producer side, but there isn't any available server, so we need to send an error.
 2. There is no consumer available so events must be available on NATS until it gets back.
+
+Jetstream stores messages for 1 hour in memory. So you can shut down the consumer
+and send events happily and then after consumer starts again consumes these events.
 
 ## Up and Running
 
