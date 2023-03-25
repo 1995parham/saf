@@ -114,6 +114,7 @@ cp configs/config.example.yml config.yml
 
 You can also deploy NATS on Kubernetes cluster using [NATS helm chart](https://github.com/nats-io/k8s).
 Values for deploying two clusters are available in `./deployments/k8s/`.
+Official chart support NATS exporter by default, and it can setup a ServiceMonitor too.
 
 ## APIs
 
