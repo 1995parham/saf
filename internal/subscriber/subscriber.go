@@ -80,6 +80,7 @@ func (s *Subscriber) PullSubscribe() error {
 
 			for _, msg := range msg {
 				s.handler(msg)
+				_ = msg.Ack()
 			}
 		}
 	}()
