@@ -45,11 +45,6 @@ affinity: {}
 
 logger:
   level: "debug"
-  syslog:
-    enabled: "false"
-    network: "tcp"
-    tag: "saf"
-    address: "127.0.0.1:9000"
 
 nats:
   url: "nats://nats:4222"
