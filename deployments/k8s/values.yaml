@@ -1,0 +1,77 @@
+---
+nats:
+  cluster:
+    noAdvertise: true
+    enabled: true
+    replicas: 3
+    name: nats-testing
+
+  commonLabels:
+    app: jetstream
+
+  securityContext:
+    sysctls:
+      - name: net.core.somaxconn
+        value: "16384"
+
+  natsbox:
+    enabled: false
+
+  gateway:
+    enabled: false
+
+  nats:
+    serverNamePrefix: ts-2-
+
+    jetstream:
+      enabled: true
+      memStorage:
+        enabled: true
+        size: 1Gi
+      fileStorage:
+        enabled: false
+        storageDirectory: /data
+
+        # Set for use with existing PVC
+        # existingClaim: jetstream-pvc
+        # claimStorageSize: 1Gi
+
+        # Use below block to create new persistent volume
+        # only used if existingClaim is not specified
+        size: 12Gi
+        # storageClassName: ""
+        accessModes:
+          - ReadWriteOnce
+        annotations:
+        # key: "value"
+
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1500Mi
+        ephemeral-storage: 1Gi
+      limits:
+        cpu: 500m
+        memory: 1500Mi
+        ephemeral-storage: 1Gi
+
+  auth:
+    enabled: true
+    systemAccount: admin
+    basic:
+      accounts:
+        admin:
+          users:
+            - user: parham
+              password: parham
+
+  exporter:
+    serviceMonitor:
+      enabled: true
+
+  # Define a Pod Disruption Budget for the stateful set
+  # ref: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
+  podDisruptionBudget:
+    enabled: false
+    maxUnavailable: 1
+    # minAvailable: 1
