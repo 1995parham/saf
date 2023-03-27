@@ -8,7 +8,7 @@ import (
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/logger"
 	"github.com/1995parham/saf/internal/telemetry/trace"
-	"github.com/spf13/cobra"
+	"github.com/urfave/cli/v3"
 	"go.uber.org/zap"
 )
 
@@ -25,15 +25,20 @@ func Execute() {
 	tracer := trace.New(cfg.Telemetry.Trace)
 
 	// nolint: exhaustruct
-	root := &cobra.Command{
-		Use:   "saf",
-		Short: "Queue with NATS Jetstream to remove all the erlangs from cloud",
+	root := &cli.App{
+		Name:        "saf",
+		Description: "Using NATS Jetstream as queue manager to replace RabbitMQ, etc.",
+		Authors: []any{
+			"Parham Alvani <parham.alvani@gmail.com>",
+			"Elahe Dastan <elahe.dstn@gmail.com>",
+		},
+		Commands: []*cli.Command{
+			producer.Register(cfg, logger, tracer),
+			consumer.Register(cfg, logger, tracer),
+		},
 	}
 
-	producer.Register(root, cfg, logger, tracer)
-	consumer.Register(root, cfg, logger, tracer)
-
-	if err := root.Execute(); err != nil {
+	if err := root.Run(os.Args); err != nil {
 		logger.Error("failed to execute root command", zap.Error(err))
 
 		os.Exit(ExitFailure)
