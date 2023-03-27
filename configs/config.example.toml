@@ -1,0 +1,18 @@
+[logger]
+level = "info"
+[monitoring]
+address = ":8080"
+enabled = true
+
+[telemetry]
+[telemetry.trace]
+enabled = true
+[telemetry.profiler]
+enabled = true
+
+[channels]
+enabled = ["printer", "mqtt"]
+[channels.configurations]
+printer = {}
+[channels.configurations.mqtt]
+url = "tcp://127.0.0.1:1883"
