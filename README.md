@@ -138,7 +138,7 @@ Then you can build and run:
 ```bash
 cd cmd/saf
 go build
-cp configs/config.example.yml config.yml
+cp configs/config.example.toml config.toml
 ```
 
 ## on Kubernetes
