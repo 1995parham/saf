@@ -62,14 +62,15 @@ func New() Config {
 		log.Fatalf("error unmarshalling config: %s", err)
 	}
 
-	indent, _ := json.MarshalIndent(instance, "", "\t")
-	indent = pretty.Color(indent, nil)
-	tmpl := `
+	if indent, err := json.MarshalIndent(instance, "", "\t"); err == nil {
+		indent = pretty.Color(indent, nil)
+		tmpl := `
 	================ Loaded Configuration ================
 	%s
 	======================================================
 	`
-	log.Printf(tmpl, string(indent))
+		log.Printf(tmpl, string(indent))
+	}
 
 	return instance
 }
