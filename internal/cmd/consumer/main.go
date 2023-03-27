@@ -11,7 +11,7 @@ import (
 	"github.com/1995parham/saf/internal/metric"
 	"github.com/1995parham/saf/internal/subscriber"
 	"github.com/1995parham/saf/internal/telemetry/profiler"
-	"github.com/spf13/cobra"
+	"github.com/urfave/cli/v3"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
@@ -49,15 +49,16 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 }
 
 // Register consumer command.
-func Register(root *cobra.Command, cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
-	root.AddCommand(
-		// nolint: exhaustruct
-		&cobra.Command{
-			Use:   "consumer",
-			Short: "gets events from jetstream",
-			Run: func(cmd *cobra.Command, args []string) {
-				main(cfg, logger, tracer)
-			},
+func Register(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) *cli.Command {
+	// nolint: exhaustruct
+	return &cli.Command{
+		Name:        "consumer",
+		Aliases:     []string{"c"},
+		Description: "gets events from jetstream",
+		Action: func(_ *cli.Context) error {
+			main(cfg, logger, tracer)
+
+			return nil
 		},
-	)
+	}
 }
