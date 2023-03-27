@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  nats:
+    image: nats:latest
+    ports:
+    - 4221:4222
