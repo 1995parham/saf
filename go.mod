@@ -12,9 +12,11 @@ require (
 	github.com/knadh/koanf/providers/structs v0.1.0
 	github.com/knadh/koanf/v2 v2.0.0
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/nats-io/nats.go v1.24.0
+	github.com/nats-io/nats.go v1.25.0
 	github.com/prometheus/client_golang v1.14.0
 	github.com/pyroscope-io/pyroscope v0.37.2
+	github.com/stretchr/testify v1.8.2
+	github.com/tidwall/pretty v1.2.1
 	github.com/urfave/cli/v3 v3.0.0-alpha2
 	go.opentelemetry.io/otel v1.14.0
 	go.opentelemetry.io/otel/exporters/jaeger v1.14.0
@@ -83,9 +85,6 @@ require (
 	github.com/savsgio/dictpool v0.0.0-20221023140959-7bf2e61cea94 // indirect
 	github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee // indirect
 	github.com/shirou/gopsutil v3.21.8+incompatible // indirect
-	github.com/stretchr/objx v0.5.0 // indirect
-	github.com/stretchr/testify v1.8.2 // indirect
-	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.0 // indirect
