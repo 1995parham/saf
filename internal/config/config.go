@@ -9,11 +9,11 @@ import (
 	"github.com/1995parham/saf/internal/logger"
 	"github.com/1995parham/saf/internal/metric"
 	telemetry "github.com/1995parham/saf/internal/telemetry/config"
-	"github.com/knadh/koanf"
-	"github.com/knadh/koanf/parsers/yaml"
+	"github.com/knadh/koanf/parsers/toml"
 	"github.com/knadh/koanf/providers/env"
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/providers/structs"
+	"github.com/knadh/koanf/v2"
 )
 
 const (
@@ -44,8 +44,8 @@ func New() Config {
 	}
 
 	// load configuration from file
-	if err := k.Load(file.Provider("config.yml"), yaml.Parser()); err != nil {
-		log.Printf("error loading config.yml: %s", err)
+	if err := k.Load(file.Provider("config.toml"), toml.Parser()); err != nil {
+		log.Printf("error loading config.toml: %s", err)
 	}
 
 	// load environment variables
