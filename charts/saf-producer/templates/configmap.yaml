@@ -7,18 +7,22 @@ metadata:
     {{- include "saf-producer.labels" . | nindent 4 }}
 data:
   config.yaml: |
-    monitoring:
-      enabled: true
-      address: ":8080"
-    {{ with .Values.nats }}
-    nats:
-      {{ toYaml . | nindent 6 }}
-    {{ end }}
-    {{ with .Values.logger }}
-    logger:
-      {{ toYaml . | nindent 6 }}
-    {{ end }}
-    {{ with .Values.telemetry }}
-    telemetry:
-      {{ toYaml . | nindent 6 }}
-    {{ end }}
+    [monitoring]
+      enabled = true
+      address = ":8080"
+
+    {{- with .Values.nats }}
+    {{ toToml ( pick $.Values "nats" ) | nindent 4 }}
+    {{- end }}
+
+    {{- with .Values.logger }}
+    {{ toToml ( pick $.Values "logger" ) | nindent 4 }}
+    {{- end }}
+
+    {{- with .Values.telemetry }}
+    {{ toToml ( pick $.Values "telemetry" ) | nindent 4 }}
+    {{- end }}
+
+    {{- with .Values.channels }}
+    {{ toToml (dict "channels" ( dict "configurations" ( . ) "enabled" ( keys . ) ) ) | nindent 4 }}
+    {{- end }}
