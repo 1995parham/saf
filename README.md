@@ -112,9 +112,16 @@ go build
 cp configs/config.example.yml config.yml
 ```
 
+## on Kubernetes
+
 You can also deploy NATS on Kubernetes cluster using [NATS helm chart](https://github.com/nats-io/k8s).
 Values for deploying two clusters are available in `./deployments/k8s/`.
 Official chart support NATS exporter by default, and it can setup a ServiceMonitor too.
+
+Also, Saf itself has charts (for producer and consumer) in `./charts` that you
+can use to deploy it.
+
+After deployment, you can easily use port-forwarding to send events and test your environment.
 
 ## APIs
 
