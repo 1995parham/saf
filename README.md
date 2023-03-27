@@ -17,6 +17,13 @@ Saf project here have been developed to show the Jetstream usage as a queue mana
 Meanwhile, we did some real-world tests and the results are not good, after the recent Erlang upgrades to make it cloud compatible,
 I think RabbitMQ will work better.
 
+### What is NATS?
+
+NATS messaging enables the exchange of data that is segmented into messages among computer applications and services.
+These messages are addressed by subjects and do not depend on network location. This provides an abstraction layer
+between the application or service and the underlying physical network. Data is encoded and framed as a message and sent
+by a publisher. The message is received, decoded, and processed by one or more subscribers.
+
 ## Description
 
 Saf gets events from its producer side and publish them into NATS.
