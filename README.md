@@ -95,6 +95,28 @@ In case of having not important consumers, you can use NATS core consume type fr
 (please note that, NATS use TCP and you will not lose any messages in case of healthy producer and consumer)
 but they have a little footprint on server.
 
+### Channels
+
+After consuming messages from NATS, Saf send events into Channels.
+Channels are homemade concept of the Saf project. They are actually an interface defined as:
+
+```go
+type Channel interface {
+ Init(*zap.Logger, trace.Tracer, interface{})
+ Run()
+ SetChannel(<-chan model.ChanneledEvent)
+ Name() string
+}
+```
+
+Each channel has a name by which is referenced in configuration. They can accept arbitrary configuration (as an empty
+interface) and they must validate it in their initiation process. Each channel has a way to receive events, and it will
+be set by `SetChannel`. So we can describe a channel lifecycle as follows:
+
+```
+Init() -> SetChannel() -> Run()
+```
+
 ## Up and Running
 
 Everything you need to test the project and gather some results are available
