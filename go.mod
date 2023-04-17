@@ -13,7 +13,7 @@ require (
 	github.com/knadh/koanf/v2 v2.0.1
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/nats-io/nats.go v1.25.0
-	github.com/prometheus/client_golang v1.14.0
+	github.com/prometheus/client_golang v1.15.0
 	github.com/pyroscope-io/pyroscope v0.37.2
 	github.com/stretchr/testify v1.8.2
 	github.com/tidwall/pretty v1.2.1
@@ -81,6 +81,7 @@ require (
 	github.com/prometheus/procfs v0.9.0 // indirect
 	github.com/pyroscope-io/dotnetdiag v1.2.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
+	github.com/rogpeppe/go-internal v1.10.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/savsgio/dictpool v0.0.0-20221023140959-7bf2e61cea94 // indirect
 	github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee // indirect
