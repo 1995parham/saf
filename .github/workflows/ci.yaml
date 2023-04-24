@@ -45,7 +45,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/bake-action@v2
+      - uses: docker/bake-action@v3
         env:
           TAG: ${{ github.ref_name }}
         with:
