@@ -19,8 +19,8 @@ require (
 	github.com/tidwall/pretty v1.2.1
 	github.com/urfave/cli/v3 v3.0.0-alpha2
 	go.opentelemetry.io/otel v1.15.0
-	go.opentelemetry.io/otel/exporters/jaeger v1.14.0
-	go.opentelemetry.io/otel/sdk v1.14.0
+	go.opentelemetry.io/otel/exporters/jaeger v1.15.0
+	go.opentelemetry.io/otel/sdk v1.15.0
 	go.opentelemetry.io/otel/trace v1.15.0
 	go.uber.org/automaxprocs v1.5.2
 	go.uber.org/zap v1.24.0
