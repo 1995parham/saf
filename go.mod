@@ -13,7 +13,7 @@ require (
 	github.com/knadh/koanf/v2 v2.0.1
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/nats-io/nats.go v1.25.0
-	github.com/prometheus/client_golang v1.15.0
+	github.com/prometheus/client_golang v1.15.1
 	github.com/pyroscope-io/pyroscope v0.37.2
 	github.com/stretchr/testify v1.8.2
 	github.com/tidwall/pretty v1.2.1
