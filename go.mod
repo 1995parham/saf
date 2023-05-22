@@ -15,7 +15,7 @@ require (
 	github.com/nats-io/nats.go v1.25.0
 	github.com/prometheus/client_golang v1.15.1
 	github.com/pyroscope-io/pyroscope v0.37.2
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.3
 	github.com/tidwall/pretty v1.2.1
 	github.com/urfave/cli/v3 v3.0.0-alpha2
 	go.opentelemetry.io/otel v1.15.1
