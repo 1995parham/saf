@@ -12,7 +12,7 @@ require (
 	github.com/knadh/koanf/providers/structs v0.1.0
 	github.com/knadh/koanf/v2 v2.0.1
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/nats-io/nats.go v1.25.0
+	github.com/nats-io/nats.go v1.26.0
 	github.com/prometheus/client_golang v1.15.1
 	github.com/pyroscope-io/pyroscope v0.37.2
 	github.com/stretchr/testify v1.8.3
@@ -57,7 +57,7 @@ require (
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.16.3 // indirect
+	github.com/klauspost/compress v1.16.5 // indirect
 	github.com/knadh/koanf/maps v0.1.1 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
