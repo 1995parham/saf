@@ -8,8 +8,7 @@ import (
 	"github.com/1995parham/saf/internal/channel"
 	"github.com/1995parham/saf/internal/cmq"
 	"github.com/1995parham/saf/internal/logger"
-	"github.com/1995parham/saf/internal/metric"
-	telemetry "github.com/1995parham/saf/internal/telemetry/config"
+	"github.com/1995parham/saf/internal/telemetry"
 	"github.com/knadh/koanf/parsers/toml"
 	"github.com/knadh/koanf/providers/env"
 	"github.com/knadh/koanf/providers/file"
@@ -26,11 +25,10 @@ const (
 type (
 	// Config holds all configurations.
 	Config struct {
-		Logger     logger.Config    `koanf:"logger"`
-		Telemetry  telemetry.Config `koanf:"telemetry"`
-		Monitoring metric.Config    `koanf:"monitoring"`
-		NATS       cmq.Config       `koanf:"nats"`
-		Channels   channel.Config   `koanf:"channels"`
+		Logger    logger.Config    `koanf:"logger"`
+		Telemetry telemetry.Config `koanf:"telemetry"`
+		NATS      cmq.Config       `koanf:"nats"`
+		Channels  channel.Config   `koanf:"channels"`
 	}
 )
 
