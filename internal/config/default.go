@@ -14,6 +14,8 @@ func Default() Config {
 			Level: "debug",
 		},
 		Telemetry: telemetry.Config{
+			Namespace:   "1995parham.me",
+			ServiceName: "saf",
 			Meter: telemetry.Meter{
 				Address: ":8080",
 				Enabled: true,
