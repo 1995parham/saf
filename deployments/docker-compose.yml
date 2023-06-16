@@ -20,10 +20,3 @@ services:
     ports:
       - 1883:1883
       - 18083:18083
-
-  pyroscope:
-    image: pyroscope/pyroscope
-    ports:
-      - 4040:4040
-    command:
-      - server
