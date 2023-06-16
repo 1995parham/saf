@@ -10,19 +10,14 @@ import (
 	"github.com/1995parham/saf/internal/cmq"
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/http/handler"
-	"github.com/1995parham/saf/internal/metric"
-	"github.com/1995parham/saf/internal/telemetry/profiler"
+	"github.com/1995parham/saf/internal/telemetry"
 	"github.com/gofiber/fiber/v2"
 	"github.com/urfave/cli/v3"
-	"go.opentelemetry.io/otel/trace"
+	"go.opentelemetry.io/otel"
 	"go.uber.org/zap"
 )
 
-func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
-	profiler.Start(cfg.Telemetry.Profiler, "producer")
-
-	metric.NewServer(cfg.Monitoring).Start(logger.Named("metrics"))
-
+func main(cfg config.Config, logger *zap.Logger) {
 	cmq, err := cmq.New(cfg.NATS, logger)
 	if err != nil {
 		logger.Fatal("nats initiation failed", zap.Error(err))
@@ -39,13 +34,13 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 
 	handler.Healthz{
 		Logger: logger.Named("handler").Named("healthz"),
-		Tracer: tracer,
+		Tracer: otel.GetTracerProvider().Tracer("handler.healthz"),
 	}.Register(app.Group(""))
 
 	handler.Event{
 		CMQ:    cmq,
 		Logger: logger.Named("handler").Named("event"),
-		Tracer: tracer,
+		Tracer: otel.GetTracerProvider().Tracer("handler.event"),
 	}.Register(app.Group("api"))
 
 	if err := app.Listen(":1378"); !errors.Is(err, http.ErrServerClosed) {
@@ -60,14 +55,22 @@ func main(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) {
 }
 
 // Register producer command.
-func Register(cfg config.Config, logger *zap.Logger, tracer trace.Tracer) *cli.Command {
+func Register(cfg config.Config, logger *zap.Logger) *cli.Command {
+	tele := telemetry.New(cfg.Telemetry)
+	tele.Run()
+
 	// nolint: exhaustruct
 	return &cli.Command{
 		Name:        "producer",
 		Aliases:     []string{"p"},
 		Description: "gets events from http and produce them into nats",
 		Action: func(_ *cli.Context) error {
-			main(cfg, logger, tracer)
+			main(cfg, logger)
+
+			return nil
+		},
+		After: func(ctx *cli.Context) error {
+			tele.Shutdown(ctx.Context)
 
 			return nil
 		},
