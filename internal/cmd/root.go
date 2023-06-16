@@ -9,7 +9,6 @@ import (
 	"github.com/1995parham/saf/internal/cmd/producer"
 	"github.com/1995parham/saf/internal/config"
 	"github.com/1995parham/saf/internal/logger"
-	"github.com/1995parham/saf/internal/telemetry/trace"
 	"github.com/urfave/cli/v3"
 	"go.uber.org/zap"
 )
@@ -23,8 +22,6 @@ func Execute() {
 	cfg := config.New()
 
 	logger := logger.New(cfg.Logger)
-
-	tracer := trace.New(cfg.Telemetry.Trace)
 
 	// nolint: exhaustruct
 	root := &cli.App{
@@ -63,8 +60,8 @@ func Execute() {
 			return fmt.Sprintf("%s (%s)", revision, timestamp)
 		}(),
 		Commands: []*cli.Command{
-			producer.Register(cfg, logger, tracer),
-			consumer.Register(cfg, logger, tracer),
+			producer.Register(cfg, logger),
+			consumer.Register(cfg, logger),
 		},
 	}
 
