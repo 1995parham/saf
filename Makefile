@@ -25,6 +25,9 @@ dev-down:
 	docker compose -f deployments/docker-compose.yml down
 	docker compose -f deployments/docker-compose.yml rm
 
+dev-%:
+	docker compose -f deployments/docker-compose.yml $*
+
 test: dev-up
 	go test -v ./... -covermode=atomic -coverprofile=coverage.out
 
