@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"runtime/debug"
@@ -24,7 +25,7 @@ func Execute() {
 	logger := logger.New(cfg.Logger)
 
 	// nolint: exhaustruct
-	root := &cli.App{
+	root := &cli.Command{
 		Name:        "saf",
 		Description: "Using NATS Jetstream as queue manager to replace RabbitMQ, etc.",
 		Authors: []any{
@@ -65,7 +66,7 @@ func Execute() {
 		},
 	}
 
-	if err := root.Run(os.Args); err != nil {
+	if err := root.Run(context.Background(), os.Args); err != nil {
 		logger.Error("failed to execute root command", zap.Error(err))
 
 		os.Exit(ExitFailure)
