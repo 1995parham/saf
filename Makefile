@@ -28,7 +28,7 @@ dev-down:
 dev-%:
 	docker compose -f deployments/docker-compose.yml $*
 
-test: dev-up
+test: lint dev-up
 	go test -v ./... -covermode=atomic -coverprofile=coverage.out
 
 lint:
