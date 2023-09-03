@@ -46,6 +46,7 @@ func setupTraceExporter(cfg Config) trace.SpanExporter {
 	if err != nil {
 		log.Fatalf("failed to initialize export pipeline for traces (otlp with grpc): %v", err)
 	}
+
 	return exporter
 }
 
