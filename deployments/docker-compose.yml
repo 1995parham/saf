@@ -11,9 +11,15 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:latest
     ports:
-      - 6831:6831/udp
-      - 16686:16686
-      - 14268:14268
+      - target: 4317
+        published: 4317
+        protocol: tcp
+      - target: 16686
+        published: 16686
+        protocol: tcp
+      - target: 14268
+        published: 14268
+        protocol: tcp
 
   emqx:
     image: emqx/emqx
