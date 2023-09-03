@@ -21,12 +21,9 @@ func Default() Config {
 				Enabled: true,
 			},
 			Trace: telemetry.Trace{
-				Enabled: false,
-				Ratio:   1.0,
-				Agent: telemetry.Agent{
-					Host: "127.0.0.1",
-					Port: "6831",
-				},
+				Enabled:  false,
+				Ratio:    1.0,
+				Endpoint: "127.0.0.1:4317",
 			},
 		},
 		NATS: cmq.Config{
