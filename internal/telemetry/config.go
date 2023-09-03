@@ -13,12 +13,7 @@ type Meter struct {
 }
 
 type Trace struct {
-	Enabled bool    `koanf:"enabled"`
-	Ratio   float64 `koanf:"ratio"`
-	Agent   Agent   `koanf:"agent"`
-}
-
-type Agent struct {
-	Host string `koanf:"host"`
-	Port string `koanf:"port"`
+	Enabled  bool    `koanf:"enabled"`
+	Ratio    float64 `koanf:"ratio"`
+	Endpoint string  `koanf:"endpoint"`
 }
