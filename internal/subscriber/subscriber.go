@@ -3,13 +3,12 @@ package subscriber
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"time"
 
 	"github.com/1995parham/saf/internal/cmq"
 	"github.com/1995parham/saf/internal/model"
-	"github.com/nats-io/nats.go"
+	"github.com/nats-io/nats.go/jetstream"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
@@ -35,61 +34,31 @@ func New(c *cmq.CMQ, logger *zap.Logger, tracer trace.Tracer) *Subscriber {
 	return &subscriber
 }
 
+// Only pull consumers are supported in jetstream package. However, unlike the JetStream API in nats package,
+// pull consumers allow for continuous message retrieval (similarly to how nats.Subscribe() works).
+// Because of that, push consumers can be easily replace by pull consumers for most of the use cases.
 func (s *Subscriber) Subscribe() error {
-	// change between pull and push consumers
-	// return s.PushSubscribe()
-	return s.PullSubscribe()
-}
-
-func (s *Subscriber) PushSubscribe() error {
-	// subscribe finds the stream name automatically based on given subject and also creates the consumer.
-	// we can create the consumer manually with nats.Bind or set the stream name manually with nats.BindStream.
-	if _, err := s.CMQ.JConn.QueueSubscribe(cmq.EventsChannel, cmq.QueueName, s.handler,
-		nats.AckExplicit(),
-		nats.DeliverAll(),
-		nats.Durable(cmq.DurableName),
-		nats.InactiveThreshold(time.Hour), // remove durable consumer after 1 hour of inactivity
-	); err != nil {
-		return fmt.Errorf("queue subscrption failed %w", err)
-	}
-
-	return nil
-}
-
-func (s *Subscriber) PullSubscribe() error {
-	sub, err := s.CMQ.JConn.PullSubscribe(cmq.EventsChannel, cmq.DurableName,
-		nats.AckExplicit(),
-		nats.DeliverAll(),
-		nats.BindStream(cmq.EventsChannel),
-		nats.InactiveThreshold(time.Hour), // remove durable consumer after 1 hour of inactivity
-	)
+	// nolint: exhaustruct
+	con, err := s.CMQ.JConn.CreateOrUpdateConsumer(context.Background(), cmq.EventsChannel, jetstream.ConsumerConfig{
+		Name:              "",
+		AckPolicy:         jetstream.AckExplicitPolicy,
+		DeliverPolicy:     jetstream.DeliverLastPerSubjectPolicy,
+		InactiveThreshold: time.Hour, // remove durable consumer after 1 hour of inactivity
+		FilterSubject:     cmq.EventsChannel,
+	})
 	if err != nil {
-		return fmt.Errorf("pull subscrption failed %w", err)
+		return fmt.Errorf("consumer creation failed %w", err)
 	}
 
-	go func() {
-		for {
-			msg, err := sub.Fetch(1)
-			if err != nil {
-				if errors.Is(err, nats.ErrTimeout) {
-					continue
-				}
-
-				s.Logger.Error("fetching messages from a pull consumer failed", zap.Error(err))
-			}
-
-			for _, msg := range msg {
-				s.handler(msg)
-				_ = msg.Ack()
-			}
-		}
-	}()
+	if _, err := con.Consume(s.handler); err != nil {
+		return fmt.Errorf("consume failed %w", err)
+	}
 
 	return nil
 }
 
-func (s *Subscriber) handler(msg *nats.Msg) {
-	ctx := otel.GetTextMapPropagator().Extract(context.Background(), propagation.HeaderCarrier(msg.Header))
+func (s *Subscriber) handler(msg jetstream.Msg) {
+	ctx := otel.GetTextMapPropagator().Extract(context.Background(), propagation.HeaderCarrier(msg.Headers()))
 
 	ctx, span := s.Tracer.Start(ctx, "subscriber.events", trace.WithSpanKind(trace.SpanKindConsumer))
 	defer span.End()
@@ -98,12 +67,12 @@ func (s *Subscriber) handler(msg *nats.Msg) {
 
 	s.Logger.Info("receive new message",
 		zap.String("timestamp", metadata.Timestamp.String()),
-		zap.ByteString("payload", msg.Data),
+		zap.ByteString("payload", msg.Data()),
 	)
 
 	var ev model.Event
 
-	if err := json.Unmarshal(msg.Data, &ev); err != nil {
+	if err := json.Unmarshal(msg.Data(), &ev); err != nil {
 		s.Logger.Error("cannot parse the event", zap.Error(err))
 	}
 
