@@ -1,17 +1,19 @@
 package cmq
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"time"
 
 	"github.com/nats-io/nats.go"
+	"github.com/nats-io/nats.go/jetstream"
 	"go.uber.org/zap"
 )
 
 type CMQ struct {
 	Conn   *nats.Conn
-	JConn  nats.JetStreamContext
+	JConn  jetstream.JetStream
 	Logger *zap.Logger
 }
 
@@ -25,22 +27,22 @@ func New(cfg Config, logger *zap.Logger) (*CMQ, error) {
 		zap.String("connected-addr", nc.ConnectedAddr()),
 		zap.Strings("discovered-servers", nc.DiscoveredServers()))
 
-	nc.SetDisconnectErrHandler(func(c *nats.Conn, err error) {
+	nc.SetDisconnectErrHandler(func(_ *nats.Conn, err error) {
 		logger.Fatal("nats disconnected", zap.Error(err))
 	})
 
-	nc.SetReconnectHandler(func(c *nats.Conn) {
+	nc.SetReconnectHandler(func(_ *nats.Conn) {
 		logger.Warn("nats reconnected")
 	})
 
-	jsm, err := nc.JetStream()
+	js, err := jetstream.New(nc)
 	if err != nil {
 		return nil, fmt.Errorf("jetstream context extraction failed %w", err)
 	}
 
 	return &CMQ{
 		Conn:   nc,
-		JConn:  jsm,
+		JConn:  js,
 		Logger: logger,
 	}, nil
 }
@@ -49,21 +51,21 @@ func New(cfg Config, logger *zap.Logger) (*CMQ, error) {
 // On production you may want to create streams manually to have
 // more control. Stream creation process is like migration.
 func (c *CMQ) Streams() error {
-	info, err := c.JConn.StreamInfo(EventsChannel)
+	info, err := c.JConn.Stream(context.Background(), EventsChannel)
 
 	switch {
 	case errors.Is(err, nats.ErrStreamNotFound):
 		// nolint: exhaustruct
 		// Each stream contains multiple topics, here we use a
 		// same name for stream and its topic.
-		stream, err := c.JConn.AddStream(&nats.StreamConfig{
+		stream, err := c.JConn.CreateStream(context.Background(), jetstream.StreamConfig{
 			Name:        EventsChannel,
 			Description: "Saf's event channel contains only events topic",
-			Discard:     nats.DiscardOld,
-			Retention:   nats.LimitsPolicy,
+			Discard:     jetstream.DiscardOld,
+			Retention:   jetstream.LimitsPolicy,
 			Subjects:    []string{EventsChannel},
 			MaxAge:      1 * time.Hour,
-			Storage:     nats.MemoryStorage,
+			Storage:     jetstream.MemoryStorage,
 			Replicas:    1,
 		})
 		if err != nil {
