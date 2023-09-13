@@ -10,6 +10,7 @@ import (
 	"github.com/1995parham/saf/internal/model"
 	"github.com/gofiber/fiber/v2"
 	"github.com/nats-io/nats.go"
+	"github.com/nats-io/nats.go/jetstream"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
@@ -66,7 +67,7 @@ func (h Event) Receive(c *fiber.Ctx) error {
 		msg.Header = make(nats.Header)
 		otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(msg.Header))
 
-		if _, err := h.CMQ.JConn.PublishMsg(msg, nats.MsgId(rq.ID)); err != nil {
+		if _, err := h.CMQ.JConn.PublishMsg(ctx, msg, jetstream.WithMsgID(rq.ID)); err != nil {
 			span.RecordError(err)
 
 			return fiber.NewError(http.StatusServiceUnavailable, err.Error())
