@@ -7,6 +7,7 @@ import (
 	"github.com/1995parham/saf/internal/domain/model/event"
 	"github.com/1995parham/saf/internal/infra/cmq"
 	"github.com/1995parham/saf/internal/infra/output"
+	"github.com/nats-io/nats.go/jetstream"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -16,21 +17,43 @@ import (
 type Manager struct {
 	Plugins []output.Channel
 
-	logger *zap.Logger
-	tracer trace.Tracer
-	cmq    *cmq.CMQ
-
-	channels []chan output.TracedEvent
+	logger    *zap.Logger
+	tracer    trace.Tracer
+	cmq       *cmq.CMQ
+	consumers []jetstream.ConsumeContext
 }
 
 // Provide create new manager for output channels.
-func Provide(lc fx.Lifecycle, logger *zap.Logger, tracer trace.Tracer, cmq *cmq.CMQ) *Manager {
+func Provide(lc fx.Lifecycle, cfg output.Config, logger *zap.Logger, tracer trace.Tracer, cmq *cmq.CMQ) *Manager {
 	manager := &Manager{
-		Plugins: make([]output.Channel, 0),
-		logger:  logger,
-		tracer:  tracer,
-		cmq:     cmq,
+		Plugins:   make([]output.Channel, 0),
+		logger:    logger,
+		tracer:    tracer,
+		cmq:       cmq,
+		consumers: make([]jetstream.ConsumeContext, 0),
 	}
+
+	enabled := []string{}
+	for name := range cfg.Configurations {
+		enabled = append(enabled, name)
+	}
+
+	lc.Append(
+		fx.Hook{
+			OnStart: func(ctx context.Context) error {
+				manager.Setup(ctx, enabled, cfg.Configurations)
+
+				return nil
+			},
+			OnStop: func(_ context.Context) error {
+				for _, consumer := range manager.consumers {
+					consumer.Stop()
+				}
+
+				return nil
+			},
+		},
+	)
 
 	return manager
 }
@@ -55,7 +78,7 @@ func (m *Manager) Register(ctx context.Context, p output.Channel, cfg interface{
 
 	c := make(chan output.TracedEvent)
 
-	m.cmq.Subscribe(ctx, p.Name(), func(ctx context.Context, data []byte) {
+	con, err := m.cmq.Subscribe(ctx, p.Name(), func(ctx context.Context, data []byte) {
 		var ev event.Event
 
 		ctx, span := m.tracer.Start(ctx, "manager.subscriber", trace.WithSpanKind(trace.SpanKindConsumer))
@@ -72,6 +95,11 @@ func (m *Manager) Register(ctx context.Context, p output.Channel, cfg interface{
 		default:
 		}
 	})
+	if err != nil {
+		m.logger.Error("cannot create subscription", zap.Error(err))
+	}
+
+	m.consumers = append(m.consumers, con)
 
 	p.Init(m.logger.Named(p.Name()), m.tracer, cfg, c)
 
