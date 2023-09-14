@@ -4,7 +4,7 @@ import (
 	"context"
 	"runtime"
 
-	"github.com/1995parham/saf/internal/model"
+	"github.com/1995parham/saf/internal/infra/output"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
@@ -12,14 +12,15 @@ import (
 // Printer is a plugin for the saf app. this plugin consumes event
 // and log them.
 type Printer struct {
-	ch     <-chan model.ChanneledEvent
+	ch     <-chan output.TracedEvent
 	logger *zap.Logger
 	tracer trace.Tracer
 }
 
-func (p *Printer) Init(logger *zap.Logger, tracer trace.Tracer, _ interface{}) {
+func (p *Printer) Init(logger *zap.Logger, tracer trace.Tracer, _ interface{}, ch <-chan output.TracedEvent) {
 	p.logger = logger
 	p.tracer = tracer
+	p.ch = ch
 }
 
 func (p *Printer) Run() {
@@ -42,8 +43,4 @@ func (p *Printer) Run() {
 
 func (p *Printer) Name() string {
 	return "printer"
-}
-
-func (p *Printer) SetChannel(c <-chan model.ChanneledEvent) {
-	p.ch = c
 }

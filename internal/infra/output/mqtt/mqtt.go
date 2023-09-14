@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/1995parham/saf/internal/model"
+	"github.com/1995parham/saf/internal/infra/output"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/mitchellh/mapstructure"
 	"go.opentelemetry.io/otel/trace"
@@ -66,16 +66,17 @@ func (p *MQTT) options() *mqtt.ClientOptions {
 // MQTT is a plugin for the saf app. this plugin consumes event
 // and publish them over mqtt.
 type MQTT struct {
-	ch     <-chan model.ChanneledEvent
+	ch     <-chan output.TracedEvent
 	logger *zap.Logger
 	tracer trace.Tracer
 	cfg    Config
 	client mqtt.Client
 }
 
-func (p *MQTT) Init(logger *zap.Logger, tracer trace.Tracer, cfg interface{}) {
+func (p *MQTT) Init(logger *zap.Logger, tracer trace.Tracer, cfg interface{}, ch <-chan output.TracedEvent) {
 	p.logger = logger
 	p.tracer = tracer
+	p.ch = ch
 
 	// nolint: exhaustruct
 	dc := &mapstructure.DecoderConfig{
@@ -120,8 +121,4 @@ func (p *MQTT) Run() {
 
 func (p *MQTT) Name() string {
 	return "mqtt"
-}
-
-func (p *MQTT) SetChannel(c <-chan model.ChanneledEvent) {
-	p.ch = c
 }
