@@ -7,10 +7,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/1995parham/saf/internal/cmq"
-	"github.com/1995parham/saf/internal/config"
-	"github.com/1995parham/saf/internal/http/handler"
-	"github.com/1995parham/saf/internal/http/request"
+	"github.com/1995parham/saf/internal/infra/cmq"
+	"github.com/1995parham/saf/internal/infra/config"
+	"github.com/1995parham/saf/internal/infra/http/handler"
+	"github.com/1995parham/saf/internal/infra/http/request"
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/suite"
 	"go.opentelemetry.io/otel/trace"
@@ -26,9 +26,9 @@ type EventSuite struct {
 func (suite *EventSuite) SetupSuite() {
 	suite.engine = fiber.New()
 
-	cfg := config.New()
+	cfg := config.Provide()
 
-	cmq, err := cmq.New(cfg.NATS, zap.NewNop())
+	cmq, err := cmq.Provide(nil, cfg.NATS, zap.NewNop())
 	suite.Require().NoError(err)
 
 	suite.Require().NoError(cmq.Streams())
