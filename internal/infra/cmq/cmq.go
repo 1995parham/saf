@@ -8,6 +8,8 @@ import (
 
 	"github.com/nats-io/nats.go"
 	"github.com/nats-io/nats.go/jetstream"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/propagation"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )
@@ -105,6 +107,8 @@ func (c *CMQ) Streams(ctx context.Context) error {
 	return nil
 }
 
+type Handler func(context.Context, []byte)
+
 // Only pull consumers are supported in jetstream package. However, unlike the JetStream API in nats package,
 // pull consumers allow for continuous message retrieval (similarly to how nats.Subscribe() works).
 // Because of that, push consumers can be easily replace by pull consumers for most of the use cases.
@@ -115,7 +119,7 @@ func (c *CMQ) Streams(ctx context.Context) error {
 // after a period of inactivity, specifically when there are no subscriptions bound to the consumer.
 // By default, durables will remain even when there are periods
 // of inactivity (unless InactiveThreshold is set explicitly).
-func (c *CMQ) Subscribe(ctx context.Context, handler jetstream.MessageHandler) (jetstream.ConsumeContext, error) {
+func (c *CMQ) Subscribe(ctx context.Context, handler Handler) (jetstream.ConsumeContext, error) {
 	// nolint: exhaustruct
 	con, err := c.Jetstream.CreateOrUpdateConsumer(ctx, EventsChannel, jetstream.ConsumerConfig{
 		Name:              QueueName,
@@ -129,10 +133,40 @@ func (c *CMQ) Subscribe(ctx context.Context, handler jetstream.MessageHandler) (
 		return nil, fmt.Errorf("consumer creation failed %w", err)
 	}
 
-	conCtx, err := con.Consume(handler)
+	conCtx, err := con.Consume(c.handler(handler)) // nolint: contextcheck
 	if err != nil {
 		return nil, fmt.Errorf("consume failed %w", err)
 	}
 
 	return conCtx, nil
+}
+
+func (c *CMQ) handler(h Handler) jetstream.MessageHandler {
+	return func(msg jetstream.Msg) {
+		ctx := otel.GetTextMapPropagator().Extract(context.Background(), propagation.HeaderCarrier(msg.Headers()))
+
+		metadata, _ := msg.Metadata()
+
+		c.logger.Info("receive new message",
+			zap.String("timestamp", metadata.Timestamp.String()),
+			zap.ByteString("payload", msg.Data()),
+		)
+
+		h(ctx, msg.Data())
+	}
+}
+
+func (c *CMQ) Publish(ctx context.Context, id string, data []byte) error {
+	msg := new(nats.Msg)
+
+	msg.Subject = EventsChannel
+	msg.Data = data
+	msg.Header = make(nats.Header)
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(msg.Header))
+
+	if _, err := c.Jetstream.PublishMsg(ctx, msg, jetstream.WithMsgID(id)); err != nil {
+		return fmt.Errorf("jetstream publish message failed %w", err)
+	}
+
+	return nil
 }

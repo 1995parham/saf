@@ -5,14 +5,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/1995parham/saf/internal/doamin/model/event"
+	"github.com/1995parham/saf/internal/domain/model/event"
 	"github.com/1995parham/saf/internal/infra/cmq"
 	"github.com/1995parham/saf/internal/infra/http/request"
 	"github.com/gofiber/fiber/v2"
-	"github.com/nats-io/nats.go"
-	"github.com/nats-io/nats.go/jetstream"
-	"go.opentelemetry.io/otel"
-	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
@@ -60,18 +56,13 @@ func (h Event) Receive(c *fiber.Ctx) error {
 
 	{
 		ctx, span := h.Tracer.Start(ctx, "handler.event.publish", trace.WithSpanKind(trace.SpanKindProducer))
-		msg := new(nats.Msg)
 
-		msg.Subject = cmq.EventsChannel
-		msg.Data = data
-		msg.Header = make(nats.Header)
-		otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(msg.Header))
-
-		if _, err := h.CMQ.JConn.PublishMsg(ctx, msg, jetstream.WithMsgID(rq.ID)); err != nil {
+		if err := h.CMQ.Publish(ctx, rq.ID, data); err != nil {
 			span.RecordError(err)
 
 			return fiber.NewError(http.StatusServiceUnavailable, err.Error())
 		}
+
 		span.End()
 	}
 
