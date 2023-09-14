@@ -15,6 +15,7 @@ export default function () {
     group("send", () => {
       let payload = JSON.stringify({
         subject: "elahe",
+        service: "OfferService",
       });
 
       let res = http.post(`${baseURL}/api/event`, payload, {

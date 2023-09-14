@@ -61,7 +61,7 @@ func (c *CMQ) Streams(ctx context.Context) error {
 	info, err := c.jetstream.Stream(ctx, EventsChannel)
 
 	switch {
-	case errors.Is(err, nats.ErrStreamNotFound):
+	case errors.Is(err, jetstream.ErrStreamNotFound):
 		// Each stream contains multiple topics, here we use a
 		// same name for stream and its topic.
 		stream, err := c.jetstream.CreateStream(ctx, jetstream.StreamConfig{
@@ -151,6 +151,13 @@ func (c *CMQ) handler(h Handler) jetstream.MessageHandler {
 			zap.String("timestamp", metadata.Timestamp.String()),
 			zap.ByteString("payload", msg.Data()),
 		)
+
+		if err := msg.Ack(); err != nil {
+			c.logger.Error("cannot ack message",
+				zap.String("timestamp", metadata.Timestamp.String()),
+				zap.Error(err),
+			)
+		}
 
 		h(ctx, msg.Data())
 	}

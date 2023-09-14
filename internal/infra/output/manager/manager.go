@@ -7,7 +7,9 @@ import (
 	"github.com/1995parham/saf/internal/domain/model/event"
 	"github.com/1995parham/saf/internal/infra/cmq"
 	"github.com/1995parham/saf/internal/infra/output"
+	"github.com/1995parham/saf/internal/infra/telemetry"
 	"github.com/nats-io/nats.go/jetstream"
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -24,11 +26,11 @@ type Manager struct {
 }
 
 // Provide create new manager for output channels.
-func Provide(lc fx.Lifecycle, cfg output.Config, logger *zap.Logger, tracer trace.Tracer, cmq *cmq.CMQ) *Manager {
+func Provide(lc fx.Lifecycle, cfg output.Config, logger *zap.Logger, _ telemetry.Telemetery, cmq *cmq.CMQ) *Manager {
 	manager := &Manager{
 		Plugins:   make([]output.Channel, 0),
-		logger:    logger,
-		tracer:    tracer,
+		logger:    logger.Named("output").Named("manager"),
+		tracer:    otel.GetTracerProvider().Tracer("output.manager"),
 		cmq:       cmq,
 		consumers: make([]jetstream.ConsumeContext, 0),
 	}
@@ -63,6 +65,7 @@ func (m *Manager) Setup(ctx context.Context, enabled []string, cfg map[string]in
 	for _, p := range channels {
 		for _, e := range enabled {
 			if p.Name() == e {
+				m.logger.Info("register new plugin", zap.String("plugin", p.Name()))
 				m.Register(ctx, p, cfg[p.Name()])
 			}
 		}

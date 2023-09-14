@@ -14,6 +14,7 @@ import (
 	"go.opentelemetry.io/otel/exporters/prometheus"
 	"go.opentelemetry.io/otel/exporters/stdout/stdoutmetric"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
+	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/metric"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/sdk/trace"
@@ -103,6 +104,9 @@ func Provide(lc fx.Lifecycle, cfg Config) Telemetery {
 
 	otel.SetTracerProvider(tp)
 	otel.SetMeterProvider(mp)
+
+	var tc propagation.TraceContext
+	otel.SetTextMapPropagator(tc)
 
 	tel := Telemetery{
 		serviceName:   cfg.ServiceName,
