@@ -3,15 +3,13 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"runtime/debug"
 
 	"github.com/1995parham/saf/internal/cmd/consumer"
 	"github.com/1995parham/saf/internal/cmd/producer"
-	"github.com/1995parham/saf/internal/config"
-	"github.com/1995parham/saf/internal/logger"
 	"github.com/urfave/cli/v3"
-	"go.uber.org/zap"
 )
 
 // ExitFailure status code.
@@ -20,10 +18,6 @@ const ExitFailure = 1
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	cfg := config.New()
-
-	logger := logger.New(cfg.Logger)
-
 	// nolint: exhaustruct
 	root := &cli.Command{
 		Name:        "saf",
@@ -61,13 +55,13 @@ func Execute() {
 			return fmt.Sprintf("%s (%s)", revision, timestamp)
 		}(),
 		Commands: []*cli.Command{
-			producer.Register(cfg, logger),
-			consumer.Register(cfg, logger),
+			producer.Register(),
+			consumer.Register(),
 		},
 	}
 
 	if err := root.Run(context.Background(), os.Args); err != nil {
-		logger.Error("failed to execute root command", zap.Error(err))
+		log.Printf("failed to execute root command %s", err)
 
 		os.Exit(ExitFailure)
 	}

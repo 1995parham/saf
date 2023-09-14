@@ -5,9 +5,9 @@ import (
 	"log"
 	"strings"
 
-	"github.com/1995parham/saf/internal/infra/channel"
 	"github.com/1995parham/saf/internal/infra/cmq"
 	"github.com/1995parham/saf/internal/infra/logger"
+	"github.com/1995parham/saf/internal/infra/output"
 	"github.com/1995parham/saf/internal/infra/telemetry"
 	"github.com/knadh/koanf/parsers/toml"
 	"github.com/knadh/koanf/providers/env"
@@ -27,10 +27,10 @@ const (
 type Config struct {
 	fx.Out
 
-	Logger    logger.Config    `koanf:"logger"`
-	Telemetry telemetry.Config `koanf:"telemetry"`
-	NATS      cmq.Config       `koanf:"nats"`
-	Channels  channel.Config   `koanf:"channels"`
+	Logger    logger.Config    `json:"logger,omitempty"    koanf:"logger"`
+	Telemetry telemetry.Config `json:"telemetry,omitempty" koanf:"telemetry"`
+	NATS      cmq.Config       `json:"nats,omitempty"      koanf:"nats"`
+	Channels  output.Config    `json:"channels,omitempty"  koanf:"channels"`
 }
 
 func Provide() Config {

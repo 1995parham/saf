@@ -1,6 +1,28 @@
 ---
 name: saf
 services:
+  saf-consumer:
+    build:
+      dockerfile: ./build/package/Dockerfile
+      context: ..
+    environment:
+      saf_nats__url: nats://nats:4222
+      saf_telemetry__trace__endpoint: jaeger:4317
+    command: c
+
+  saf-producer:
+    build:
+      dockerfile: ./build/package/Dockerfile
+      context: ..
+    environment:
+      saf_nats__url: nats://nats:4222
+      saf_telemetry__trace__endpoint: jaeger:4317
+    ports:
+      - target: 1378
+        published: 1378
+        protocol: tcp
+    command: p
+
   nats:
     image: nats
     entrypoint: /nats-server
