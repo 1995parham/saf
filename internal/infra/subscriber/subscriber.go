@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/1995parham/saf/internal/cmq"
-	"github.com/1995parham/saf/internal/model"
+	"github.com/1995parham/saf/internal/domain/model/event"
+	"github.com/1995parham/saf/internal/infra/cmq"
 	"github.com/nats-io/nats.go/jetstream"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
@@ -20,13 +20,13 @@ type Subscriber struct {
 	Tracer trace.Tracer
 	Logger *zap.Logger
 
-	handlers []chan<- model.ChanneledEvent
+	handlers []chan<- event.ChanneledEvent
 }
 
 func New(c *cmq.CMQ, logger *zap.Logger, tracer trace.Tracer) *Subscriber {
 	var subscriber Subscriber
 
-	subscriber.handlers = make([]chan<- model.ChanneledEvent, 0)
+	subscriber.handlers = make([]chan<- event.ChanneledEvent, 0)
 	subscriber.CMQ = c
 	subscriber.Tracer = tracer
 	subscriber.Logger = logger.Named("subscriber")
@@ -37,10 +37,18 @@ func New(c *cmq.CMQ, logger *zap.Logger, tracer trace.Tracer) *Subscriber {
 // Only pull consumers are supported in jetstream package. However, unlike the JetStream API in nats package,
 // pull consumers allow for continuous message retrieval (similarly to how nats.Subscribe() works).
 // Because of that, push consumers can be easily replace by pull consumers for most of the use cases.
+//
+// a consumer can also be ephemeral or durable. A consumer is considered durable when an explicit name is set on
+// the Durable field when creating the consumer, otherwise it is considered ephemeral.
+// Durables and ephemeral behave exactly the same except that an ephemeral will be automatically cleaned up (deleted)
+// after a period of inactivity, specifically when there are no subscriptions bound to the consumer.
+// By default, durables will remain even when there are periods
+// of inactivity (unless InactiveThreshold is set explicitly)
 func (s *Subscriber) Subscribe() error {
 	// nolint: exhaustruct
-	con, err := s.CMQ.JConn.CreateOrUpdateConsumer(context.Background(), cmq.EventsChannel, jetstream.ConsumerConfig{
+	con, err := s.CMQ.Jetstream.CreateOrUpdateConsumer(context.Background(), cmq.EventsChannel, jetstream.ConsumerConfig{
 		Name:              "",
+		Durable:           "",
 		AckPolicy:         jetstream.AckExplicitPolicy,
 		DeliverPolicy:     jetstream.DeliverLastPerSubjectPolicy,
 		InactiveThreshold: time.Hour, // remove durable consumer after 1 hour of inactivity
