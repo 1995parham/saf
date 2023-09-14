@@ -5,40 +5,38 @@ import (
 	"log"
 	"strings"
 
-	"github.com/1995parham/saf/internal/channel"
-	"github.com/1995parham/saf/internal/cmq"
-	"github.com/1995parham/saf/internal/logger"
-	"github.com/1995parham/saf/internal/telemetry"
+	"github.com/1995parham/saf/internal/infra/channel"
+	"github.com/1995parham/saf/internal/infra/cmq"
+	"github.com/1995parham/saf/internal/infra/logger"
+	"github.com/1995parham/saf/internal/infra/telemetry"
 	"github.com/knadh/koanf/parsers/toml"
 	"github.com/knadh/koanf/providers/env"
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/providers/structs"
 	"github.com/knadh/koanf/v2"
 	"github.com/tidwall/pretty"
+	"go.uber.org/fx"
 )
 
 const (
-	// Prefix indicates environment variables prefix.
-	Prefix = "saf_"
+	// prefix indicates environment variables prefix.
+	prefix = "saf_"
 )
 
-type (
-	// Config holds all configurations.
-	Config struct {
-		Logger    logger.Config    `koanf:"logger"`
-		Telemetry telemetry.Config `koanf:"telemetry"`
-		NATS      cmq.Config       `koanf:"nats"`
-		Channels  channel.Config   `koanf:"channels"`
-	}
-)
+// Config holds all configurations.
+type Config struct {
+	fx.Out
 
-// New reads configuration with viper.
-func New() Config {
-	var instance Config
+	Logger    logger.Config    `koanf:"logger"`
+	Telemetry telemetry.Config `koanf:"telemetry"`
+	NATS      cmq.Config       `koanf:"nats"`
+	Channels  channel.Config   `koanf:"channels"`
+}
 
+func Provide() Config {
 	k := koanf.New(".")
 
-	// load default configuration from file
+	// load default configuration from default function
 	if err := k.Load(structs.Provider(Default(), "koanf"), nil); err != nil {
 		log.Fatalf("error loading default: %s", err)
 	}
@@ -49,26 +47,36 @@ func New() Config {
 	}
 
 	// load environment variables
-	if err := k.Load(env.Provider(Prefix, ".", func(s string) string {
-		return strings.ReplaceAll(strings.ToLower(
-			strings.TrimPrefix(s, Prefix)), "_", ".")
-	}), nil); err != nil {
+	if err := k.Load(
+		// replace __ with . in environment variables so you can reference field a in struct b
+		// as a__b.
+		env.Provider(prefix, ".", func(source string) string {
+			base := strings.ToLower(strings.TrimPrefix(source, prefix))
+
+			return strings.ReplaceAll(base, "__", ".")
+		}),
+		nil,
+	); err != nil {
 		log.Printf("error loading environment variables: %s", err)
 	}
 
+	var instance Config
 	if err := k.Unmarshal("", &instance); err != nil {
 		log.Fatalf("error unmarshalling config: %s", err)
 	}
 
-	if indent, err := json.MarshalIndent(instance, "", "\t"); err == nil {
-		indent = pretty.Color(indent, nil)
-		tmpl := `
-	================ Loaded Configuration ================
-	%s
-	======================================================
-	`
-		log.Printf(tmpl, string(indent))
+	indent, err := json.MarshalIndent(instance, "", "\t")
+	if err != nil {
+		panic(err)
 	}
+
+	indent = pretty.Color(indent, nil)
+
+	log.Printf(`
+================ Loaded Configuration ================
+%s
+======================================================
+	`, string(indent))
 
 	return instance
 }
