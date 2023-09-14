@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/1995parham/saf/internal/cmq"
-	"github.com/1995parham/saf/internal/http/request"
-	"github.com/1995parham/saf/internal/model"
+	"github.com/1995parham/saf/internal/doamin/model/event"
+	"github.com/1995parham/saf/internal/infra/cmq"
+	"github.com/1995parham/saf/internal/infra/http/request"
 	"github.com/gofiber/fiber/v2"
 	"github.com/nats-io/nats.go"
 	"github.com/nats-io/nats.go/jetstream"
@@ -45,7 +45,7 @@ func (h Event) Receive(c *fiber.Ctx) error {
 		return fiber.NewError(http.StatusBadRequest, err.Error())
 	}
 
-	ev := model.Event{
+	ev := event.Event{
 		Subject:   rq.Subject,
 		CreatedAt: time.Now(),
 		Payload:   rq.Payload,
