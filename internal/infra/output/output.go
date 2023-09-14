@@ -8,11 +8,12 @@ import (
 
 type TracedEvent struct {
 	event.Event
+
+	SpanContext trace.SpanContext
 }
 
 type Channel interface {
-	Init(*zap.Logger, trace.Tracer, interface{})
+	Init(*zap.Logger, trace.Tracer, interface{}, <-chan TracedEvent)
 	Run()
-	SetChannel(<-chan TracedEvent)
 	Name() string
 }

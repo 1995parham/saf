@@ -15,7 +15,7 @@ import (
 )
 
 type CMQ struct {
-	Jetstream jetstream.JetStream
+	jetstream jetstream.JetStream
 	nats      *nats.Conn
 	logger    *zap.Logger
 }
@@ -50,7 +50,7 @@ func Provide(lc fx.Lifecycle, cfg Config, logger *zap.Logger) (*CMQ, error) {
 	return &CMQ{
 		nats:      nc,
 		logger:    logger,
-		Jetstream: js,
+		jetstream: js,
 	}, nil
 }
 
@@ -58,13 +58,13 @@ func Provide(lc fx.Lifecycle, cfg Config, logger *zap.Logger) (*CMQ, error) {
 // On production you may want to create streams manually to have
 // more control. Stream creation process is like migration.
 func (c *CMQ) Streams(ctx context.Context) error {
-	info, err := c.Jetstream.Stream(ctx, EventsChannel)
+	info, err := c.jetstream.Stream(ctx, EventsChannel)
 
 	switch {
 	case errors.Is(err, nats.ErrStreamNotFound):
 		// Each stream contains multiple topics, here we use a
 		// same name for stream and its topic.
-		stream, err := c.Jetstream.CreateStream(ctx, jetstream.StreamConfig{
+		stream, err := c.jetstream.CreateStream(ctx, jetstream.StreamConfig{
 			Name:                 EventsChannel,
 			Description:          "Saf's event channel which only contains events topic",
 			Subjects:             []string{EventsChannel},
@@ -119,11 +119,11 @@ type Handler func(context.Context, []byte)
 // after a period of inactivity, specifically when there are no subscriptions bound to the consumer.
 // By default, durables will remain even when there are periods
 // of inactivity (unless InactiveThreshold is set explicitly).
-func (c *CMQ) Subscribe(ctx context.Context, handler Handler) (jetstream.ConsumeContext, error) {
+func (c *CMQ) Subscribe(ctx context.Context, name string, handler Handler) (jetstream.ConsumeContext, error) {
 	// nolint: exhaustruct
-	con, err := c.Jetstream.CreateOrUpdateConsumer(ctx, EventsChannel, jetstream.ConsumerConfig{
-		Name:              QueueName,
-		Durable:           DurableName,
+	con, err := c.jetstream.CreateOrUpdateConsumer(ctx, EventsChannel, jetstream.ConsumerConfig{
+		Name:              fmt.Sprintf("%s-%s", QueueName, name),
+		Durable:           fmt.Sprintf("%s-%s", DurableName, name),
 		AckPolicy:         jetstream.AckExplicitPolicy,
 		DeliverPolicy:     jetstream.DeliverLastPerSubjectPolicy,
 		InactiveThreshold: time.Hour, // remove durable consumer after 1 hour of inactivity
@@ -164,7 +164,7 @@ func (c *CMQ) Publish(ctx context.Context, id string, data []byte) error {
 	msg.Header = make(nats.Header)
 	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(msg.Header))
 
-	if _, err := c.Jetstream.PublishMsg(ctx, msg, jetstream.WithMsgID(id)); err != nil {
+	if _, err := c.jetstream.PublishMsg(ctx, msg, jetstream.WithMsgID(id)); err != nil {
 		return fmt.Errorf("jetstream publish message failed %w", err)
 	}
 
