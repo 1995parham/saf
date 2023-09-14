@@ -1,4 +1,4 @@
-package channel
+package output
 
 type Config struct {
 	Enabled        []string               `koanf:"enabled"`
