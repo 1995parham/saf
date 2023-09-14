@@ -1,27 +1,19 @@
-package channel
+package output
 
 import (
-	"github.com/1995parham/saf/internal/channel/mqtt"
-	"github.com/1995parham/saf/internal/channel/printer"
-	"github.com/1995parham/saf/internal/model"
+	"github.com/1995parham/saf/internal/infra/output/mqtt"
+	"github.com/1995parham/saf/internal/infra/output/printer"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
 
-type Channel interface {
-	Init(*zap.Logger, trace.Tracer, interface{})
-	Run()
-	SetChannel(<-chan model.ChanneledEvent)
-	Name() string
-}
-
-// Manager manages Channels.
+// Manager manages output channels.
 type Manager struct {
 	Plugins []Channel
 	logger  *zap.Logger
 	tracer  trace.Tracer
 
-	channels []chan model.ChanneledEvent
+	channels []chan TracedEvent
 }
 
 // New create new manager.
@@ -31,7 +23,7 @@ func New(logger *zap.Logger, tracer trace.Tracer) *Manager {
 		logger:  logger,
 		tracer:  tracer,
 
-		channels: make([]chan model.ChanneledEvent, 0),
+		channels: make([]chan TracedEvent, 0),
 	}
 }
 
@@ -59,7 +51,7 @@ func (m *Manager) Register(p Channel, cfg interface{}) {
 
 	m.Plugins = append(m.Plugins, p)
 
-	c := make(chan model.ChanneledEvent)
+	c := make(chan TracedEvent)
 
 	m.channels = append(m.channels, c)
 
@@ -70,8 +62,8 @@ func (m *Manager) Register(p Channel, cfg interface{}) {
 }
 
 // Channels return the channels to register them on subscriber in the main.
-func (m *Manager) Channels() []chan<- model.ChanneledEvent {
-	c := make([]chan<- model.ChanneledEvent, len(m.channels))
+func (m *Manager) Channels() []chan<- TracedEvent {
+	c := make([]chan<- TracedEvent, len(m.channels))
 	for i := range m.channels {
 		c[i] = m.channels[i]
 	}
