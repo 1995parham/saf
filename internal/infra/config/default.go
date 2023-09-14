@@ -1,10 +1,10 @@
 package config
 
 import (
-	"github.com/1995parham/saf/internal/channel"
-	"github.com/1995parham/saf/internal/cmq"
-	"github.com/1995parham/saf/internal/logger"
-	"github.com/1995parham/saf/internal/telemetry"
+	"github.com/1995parham/saf/internal/infra/channel"
+	"github.com/1995parham/saf/internal/infra/cmq"
+	"github.com/1995parham/saf/internal/infra/logger"
+	"github.com/1995parham/saf/internal/infra/telemetry"
 )
 
 // Default return default configuration.
@@ -22,7 +22,6 @@ func Default() Config {
 			},
 			Trace: telemetry.Trace{
 				Enabled:  false,
-				Ratio:    1.0,
 				Endpoint: "127.0.0.1:4317",
 			},
 		},
