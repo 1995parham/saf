@@ -104,3 +104,35 @@ func (c *CMQ) Streams(ctx context.Context) error {
 
 	return nil
 }
+
+// Only pull consumers are supported in jetstream package. However, unlike the JetStream API in nats package,
+// pull consumers allow for continuous message retrieval (similarly to how nats.Subscribe() works).
+// Because of that, push consumers can be easily replace by pull consumers for most of the use cases.
+//
+// a consumer can also be ephemeral or durable. A consumer is considered durable when an explicit name is set on
+// the Durable field when creating the consumer, otherwise it is considered ephemeral.
+// Durables and ephemeral behave exactly the same except that an ephemeral will be automatically cleaned up (deleted)
+// after a period of inactivity, specifically when there are no subscriptions bound to the consumer.
+// By default, durables will remain even when there are periods
+// of inactivity (unless InactiveThreshold is set explicitly).
+func (c *CMQ) Subscribe(ctx context.Context, handler jetstream.MessageHandler) (jetstream.ConsumeContext, error) {
+	// nolint: exhaustruct
+	con, err := c.Jetstream.CreateOrUpdateConsumer(ctx, EventsChannel, jetstream.ConsumerConfig{
+		Name:              QueueName,
+		Durable:           DurableName,
+		AckPolicy:         jetstream.AckExplicitPolicy,
+		DeliverPolicy:     jetstream.DeliverLastPerSubjectPolicy,
+		InactiveThreshold: time.Hour, // remove durable consumer after 1 hour of inactivity
+		FilterSubject:     EventsChannel,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("consumer creation failed %w", err)
+	}
+
+	conCtx, err := con.Consume(handler)
+	if err != nil {
+		return nil, fmt.Errorf("consume failed %w", err)
+	}
+
+	return conCtx, nil
+}
