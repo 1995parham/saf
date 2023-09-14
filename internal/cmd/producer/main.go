@@ -1,52 +1,37 @@
 package producer
 
 import (
-	"errors"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-
-	"github.com/1995parham/saf/internal/cmq"
-	"github.com/1995parham/saf/internal/config"
-	"github.com/1995parham/saf/internal/http/handler"
-	"github.com/1995parham/saf/internal/telemetry"
+	"github.com/1995parham/saf/internal/infra/cmq"
+	"github.com/1995parham/saf/internal/infra/config"
+	"github.com/1995parham/saf/internal/infra/http/server"
+	"github.com/1995parham/saf/internal/infra/logger"
+	"github.com/1995parham/saf/internal/infra/telemetry"
 	"github.com/gofiber/fiber/v2"
 	"github.com/urfave/cli/v3"
-	"go.opentelemetry.io/otel"
+	"go.uber.org/fx"
 	"go.uber.org/zap"
 )
 
-func main(cfg config.Config, logger *zap.Logger) {
-	cmq, err := cmq.New(cfg.NATS, logger)
-	if err != nil {
-		logger.Fatal("nats initiation failed", zap.Error(err))
-	}
-
-	if err := cmq.Streams(); err != nil {
-		logger.Fatal("nats stream creation failed", zap.Error(err))
-	}
-
-	cmq.Conn.Close()
+func main(logger *zap.Logger, _ *fiber.App) {
+	logger.Info("welcome to producer application")
 }
 
 // Register producer command.
-func Register(cfg config.Config, logger *zap.Logger) *cli.Command {
-	tele := telemetry.New(cfg.Telemetry)
-	tele.Run()
-
+func Register() *cli.Command {
 	// nolint: exhaustruct
 	return &cli.Command{
 		Name:        "producer",
 		Aliases:     []string{"p"},
-		Description: "gets events from http and produce them into nats",
+		Description: "gets events from http and produce them into the nats jetstream",
 		Action: func(_ *cli.Context) error {
-			main(cfg, logger)
-
-			return nil
-		},
-		After: func(ctx *cli.Context) error {
-			tele.Shutdown(ctx.Context)
+			fx.New(
+				fx.Provide(config.Provide),
+				fx.Provide(logger.Provide),
+				fx.Provide(telemetry.Provide),
+				fx.Provide(cmq.Provide),
+				fx.Provide(server.Provide),
+				fx.Invoke(main),
+			).Run()
 
 			return nil
 		},

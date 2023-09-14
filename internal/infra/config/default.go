@@ -1,14 +1,15 @@
 package config
 
 import (
-	"github.com/1995parham/saf/internal/infra/channel"
 	"github.com/1995parham/saf/internal/infra/cmq"
 	"github.com/1995parham/saf/internal/infra/logger"
+	"github.com/1995parham/saf/internal/infra/output"
 	"github.com/1995parham/saf/internal/infra/telemetry"
 )
 
 // Default return default configuration.
 func Default() Config {
+	// nolint: exhaustruct
 	return Config{
 		Logger: logger.Config{
 			Level: "debug",
@@ -21,18 +22,17 @@ func Default() Config {
 				Enabled: true,
 			},
 			Trace: telemetry.Trace{
-				Enabled:  false,
+				Enabled:  true,
 				Endpoint: "127.0.0.1:4317",
 			},
 		},
 		NATS: cmq.Config{
 			URL: "nats://127.0.0.1:4222",
 		},
-		Channels: channel.Config{
-			Enabled: []string{
-				"printer",
+		Channels: output.Config{
+			Configurations: map[string]any{
+				"printer": nil,
 			},
-			Configurations: map[string]interface{}{},
 		},
 	}
 }

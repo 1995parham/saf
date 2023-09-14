@@ -1,18 +1,6 @@
 [logger]
 level = "info"
 
-[telemetry]
-
-[telemetry.trace]
-enabled = true
-
-[telemetry.meter]
-address = ":8080"
-enabled = true
-
-[channels]
-enabled = ["printer", "mqtt"]
-
 [channels.configurations]
 printer = {}
 
