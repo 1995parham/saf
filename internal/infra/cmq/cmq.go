@@ -18,7 +18,7 @@ type CMQ struct {
 	logger    *zap.Logger
 }
 
-func New(lc fx.Lifecycle, cfg Config, logger *zap.Logger) (*CMQ, error) {
+func Provide(lc fx.Lifecycle, cfg Config, logger *zap.Logger) (*CMQ, error) {
 	nc, err := nats.Connect(cfg.URL)
 	if err != nil {
 		return nil, fmt.Errorf("nats connection failed %w", err)
