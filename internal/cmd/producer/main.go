@@ -27,30 +27,6 @@ func main(cfg config.Config, logger *zap.Logger) {
 		logger.Fatal("nats stream creation failed", zap.Error(err))
 	}
 
-	// nolint: exhaustruct
-	app := fiber.New(fiber.Config{
-		AppName: "saf",
-	})
-
-	handler.Healthz{
-		Logger: logger.Named("handler").Named("healthz"),
-		Tracer: otel.GetTracerProvider().Tracer("handler.healthz"),
-	}.Register(app.Group(""))
-
-	handler.Event{
-		CMQ:    cmq,
-		Logger: logger.Named("handler").Named("event"),
-		Tracer: otel.GetTracerProvider().Tracer("handler.event"),
-	}.Register(app.Group("api"))
-
-	if err := app.Listen(":1378"); !errors.Is(err, http.ErrServerClosed) {
-		logger.Fatal("echo initiation failed", zap.Error(err))
-	}
-
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
-
 	cmq.Conn.Close()
 }
 
