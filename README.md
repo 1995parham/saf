@@ -109,9 +109,8 @@ Channels are homemade concept of the Saf project. They are actually an interface
 
 ```go
 type Channel interface {
- Init(*zap.Logger, trace.Tracer, interface{})
+ Init(*zap.Logger, trace.Tracer, interface{}, <-chan model.ChanneledEvent)
  Run()
- SetChannel(<-chan model.ChanneledEvent)
  Name() string
 }
 ```
@@ -121,7 +120,7 @@ interface) and they must validate it in their initiation process. Each channel h
 be set by `SetChannel`. So we can describe a channel lifecycle as follows:
 
 ```
-Init() -> SetChannel() -> Run()
+Init() -> Run()
 ```
 
 ## Up and Running
