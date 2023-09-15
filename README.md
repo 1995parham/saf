@@ -39,7 +39,7 @@ Produce uses a same channel for all subjects and marshals data into JSON.
 On production, we need to handle two following scenarios when using a queue manager:
 
 1. We have event on the producer side, but there isn't any available server, so we need to send an error.
-2. There is no consumer available so events must be available on NATS until it gets back.
+2. There is no consumer available, so events must be available on NATS until it gets back.
 
 Jetstream stores messages for 1 hour in memory. So you can shut down the consumer
 and send events happily and then after consumer starts again consumes these events.
@@ -130,22 +130,14 @@ Everything you need to test the project and gather some results are available
 in a single docker-compose:
 
 ```bash
-cd deployment && docker compose up
-```
-
-Then you can build and run:
-
-```bash
-cd cmd/saf
-go build
-cp configs/config.example.toml config.toml
+just dev up
 ```
 
 ## on Kubernetes
 
 You can also deploy NATS on Kubernetes cluster using [NATS helm chart](https://github.com/nats-io/k8s).
 Values for deploying two clusters are available in `./deployments/k8s/`.
-Official chart support NATS exporter by default, and it can setup a ServiceMonitor too.
+Official chart support NATS exporter by default, and it can set up a `ServiceMonitor` too.
 
 Also, Saf itself has charts (for producer and consumer) in `./charts` that you
 can use to deploy it.
