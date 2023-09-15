@@ -10,6 +10,8 @@
   </a>
 </p>
 
+Learn more about NATS on [NATS101](https://1995parham-teaching.github.io/ie-lecture/lectures/nats101/#/1)
+
 ## Introduction
 
 One of the problems, that we face on projects with queues is deploying [RabbitMQ](https://www.rabbitmq.com/) on the cloud which brings us many challenges for CPU load, split brain, etc.
