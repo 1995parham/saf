@@ -28,6 +28,8 @@ func (suite *HealthzSuite) SetupSuite() {
 		fx.Provide(logger.Provide),
 		fx.Provide(telemetry.ProvideNull),
 		fx.Invoke(func(logger *zap.Logger, _ telemetry.Telemetery) {
+			suite.engine = fiber.New()
+
 			handler.Healthz{
 				Logger: logger,
 				Tracer: otel.GetTracerProvider().Tracer(""),
