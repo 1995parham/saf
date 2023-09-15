@@ -5,6 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/1995parham/saf/internal/infra/config"
 	"github.com/1995parham/saf/internal/infra/http/handler"
 	"github.com/1995parham/saf/internal/infra/logger"
 	"github.com/1995parham/saf/internal/infra/telemetry"
@@ -25,6 +26,7 @@ type HealthzSuite struct {
 
 func (suite *HealthzSuite) SetupSuite() {
 	suite.app = fxtest.New(suite.T(),
+		fx.Provide(config.Provide),
 		fx.Provide(logger.Provide),
 		fx.Provide(telemetry.ProvideNull),
 		fx.Invoke(func(logger *zap.Logger, _ telemetry.Telemetery) {
