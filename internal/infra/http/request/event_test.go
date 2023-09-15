@@ -6,6 +6,7 @@ import (
 	"github.com/1995parham/saf/internal/infra/http/request"
 )
 
+// nolint: funlen
 func TestEventValidation(t *testing.T) {
 	t.Parallel()
 
