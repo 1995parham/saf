@@ -2,6 +2,7 @@ package handler_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -11,9 +12,13 @@ import (
 	"github.com/1995parham/saf/internal/infra/config"
 	"github.com/1995parham/saf/internal/infra/http/handler"
 	"github.com/1995parham/saf/internal/infra/http/request"
+	"github.com/1995parham/saf/internal/infra/logger"
+	"github.com/1995parham/saf/internal/infra/telemetry"
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/suite"
-	"go.opentelemetry.io/otel/trace"
+	"go.opentelemetry.io/otel"
+	"go.uber.org/fx"
+	"go.uber.org/fx/fxtest"
 	"go.uber.org/zap"
 )
 
@@ -21,23 +26,25 @@ type EventSuite struct {
 	suite.Suite
 
 	engine *fiber.App
+	app    *fxtest.App
 }
 
 func (suite *EventSuite) SetupSuite() {
-	suite.engine = fiber.New()
+	suite.app = fxtest.New(suite.T(),
+		fx.Provide(config.Provide),
+		fx.Provide(logger.Provide),
+		fx.Provide(telemetry.ProvideNull),
+		fx.Provide(cmq.Provide),
+		fx.Invoke(func(cmq *cmq.CMQ, logger *zap.Logger, _ telemetry.Telemetery) {
+			suite.Require().NoError(cmq.Streams(context.Background()))
 
-	cfg := config.Provide()
-
-	cmq, err := cmq.Provide(nil, cfg.NATS, zap.NewNop())
-	suite.Require().NoError(err)
-
-	suite.Require().NoError(cmq.Streams())
-
-	handler.Event{
-		CMQ:    cmq,
-		Logger: zap.NewNop(),
-		Tracer: trace.NewNoopTracerProvider().Tracer(""),
-	}.Register(suite.engine.Group(""))
+			handler.Event{
+				CMQ:    cmq,
+				Logger: logger,
+				Tracer: otel.GetTracerProvider().Tracer(""),
+			}.Register(suite.engine.Group(""))
+		}),
+	).RequireStart()
 }
 
 func (suite *EventSuite) TestHandler() {
