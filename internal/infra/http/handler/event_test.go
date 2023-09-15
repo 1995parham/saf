@@ -37,6 +37,7 @@ func (suite *EventSuite) SetupSuite() {
 		fx.Provide(cmq.Provide),
 		fx.Invoke(func(cmq *cmq.CMQ, logger *zap.Logger, _ telemetry.Telemetery) {
 			suite.Require().NoError(cmq.Streams(context.Background()))
+			suite.engine = fiber.New()
 
 			handler.Event{
 				CMQ:    cmq,
