@@ -2,6 +2,8 @@
 <h6 align="center">Saf means Queue in Persian</h6>
 
 <p align="center">
+  <img src="./.github/assets/banner.jpg" />
+  <br>
   <img src="https://img.shields.io/github/actions/workflow/status/1995parham/saf/ci.yaml?label=ci&logo=github&style=for-the-badge&branch=main" alt="GitHub Workflow Status" />
   <a href="https://codecov.io/gh/1995parham/saf">
     <img src="https://img.shields.io/codecov/c/gh/1995parham/saf?logo=codecov&style=for-the-badge" alt="Codecov" />
