@@ -62,7 +62,7 @@ func Provide(lc fx.Lifecycle, cfg output.Config, logger *zap.Logger, _ telemetry
 
 // Setup registers the given channel. please note that you should add each channel here.
 func (m *Manager) Setup(ctx context.Context, enabled []string, cfg map[string]interface{}) {
-	for _, p := range channels {
+	for _, p := range channels() {
 		for _, e := range enabled {
 			if p.Name() == e {
 				m.logger.Info("register new plugin", zap.String("plugin", p.Name()))
