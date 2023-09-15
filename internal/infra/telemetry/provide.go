@@ -106,6 +106,7 @@ func Provide(lc fx.Lifecycle, cfg Config) Telemetery {
 	otel.SetMeterProvider(mp)
 
 	var tc propagation.TraceContext
+
 	otel.SetTextMapPropagator(tc)
 
 	tel := Telemetery{
