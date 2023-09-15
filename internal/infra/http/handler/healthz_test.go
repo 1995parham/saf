@@ -5,10 +5,14 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/1995parham/saf/internal/http/handler"
+	"github.com/1995parham/saf/internal/infra/http/handler"
+	"github.com/1995parham/saf/internal/infra/logger"
+	"github.com/1995parham/saf/internal/infra/telemetry"
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/suite"
-	"go.opentelemetry.io/otel/trace"
+	"go.opentelemetry.io/otel"
+	"go.uber.org/fx"
+	"go.uber.org/fx/fxtest"
 	"go.uber.org/zap"
 )
 
@@ -16,15 +20,20 @@ type HealthzSuite struct {
 	suite.Suite
 
 	engine *fiber.App
+	app    *fxtest.App
 }
 
 func (suite *HealthzSuite) SetupSuite() {
-	suite.engine = fiber.New()
-
-	handler.Healthz{
-		Logger: zap.NewNop(),
-		Tracer: trace.NewNoopTracerProvider().Tracer(""),
-	}.Register(suite.engine.Group(""))
+	suite.app = fxtest.New(suite.T(),
+		fx.Provide(logger.Provide),
+		fx.Provide(telemetry.ProvideNull),
+		fx.Invoke(func(logger *zap.Logger, _ telemetry.Telemetery) {
+			handler.Healthz{
+				Logger: logger,
+				Tracer: otel.GetTracerProvider().Tracer(""),
+			}.Register(suite.engine.Group(""))
+		}),
+	).RequireStart()
 }
 
 func (suite *HealthzSuite) TestHandler() {
