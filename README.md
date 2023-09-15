@@ -8,7 +8,9 @@
   <a href="https://codecov.io/gh/1995parham/saf">
     <img src="https://img.shields.io/codecov/c/gh/1995parham/saf?logo=codecov&style=for-the-badge" alt="Codecov" />
   </a>
-  <img alt="Static Badge" src="https://img.shields.io/badge/Presentation-nats101-orange?style=for-the-badge&link=https%3A%2F%2F1995parham-teaching.github.io%2Fie-lecture%2Flectures%2Fnats101%2F%23%2F1">
+  <a href="https://1995parham-teaching.github.io/ie-lecture/lectures/nats101/#/1">
+    <img alt="Static Badge" src="https://img.shields.io/badge/Presentation-nats101-orange?style=for-the-badge&logo=revealdotjs">
+  </a>
 </p>
 
 ## Introduction
