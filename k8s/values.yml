@@ -1,8 +1,0 @@
-# https://github.com/nats-io/k8s/tree/master/helm/charts
----
-natsbox:
-  enabled: true
-cluster:
-  enabled: true
-reloader:
-  enabled: false
