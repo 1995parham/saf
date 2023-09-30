@@ -64,6 +64,7 @@ func (c *CMQ) Streams(ctx context.Context) error {
 	case errors.Is(err, jetstream.ErrStreamNotFound):
 		// Each stream contains multiple topics, here we use a
 		// same name for stream and its topic.
+		// nolint: exhaustruct
 		stream, err := c.jetstream.CreateStream(ctx, jetstream.StreamConfig{
 			Name:                 EventsChannel,
 			Description:          "Saf's event channel which only contains events topic",
