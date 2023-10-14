@@ -98,9 +98,8 @@ State:
           Active Interest: Active using Queue Group saf
 ```
 
-Please note that we have the [Push consumer](https://natsbyexample.com/examples/jetstream/push-consumer/go)
-and [Pull Consumer](https://natsbyexample.com/examples/jetstream/pull-consumer/go) in code and,
-you can switch between them by commenting out the one you don't want.
+Please note that we have the [Pull Consumer](https://natsbyexample.com/examples/jetstream/pull-consumer/go) using
+new JetStream client API in code.
 
 In case of having not important consumers, you can use NATS core consume type from your subject
 (in this case, you don't need any stream). These consumers lose messages in their downtime
