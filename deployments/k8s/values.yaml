@@ -5,15 +5,6 @@ nats:
       app: jetstream
       team: 1995parham
 
-  podTemplate:
-    patch:
-      - op: add
-        path: /spec/securityContext
-        value:
-          sysctls:
-            - name: net.core.somaxconn
-              value: "16384"
-
   natsBox:
     enabled: false
 
