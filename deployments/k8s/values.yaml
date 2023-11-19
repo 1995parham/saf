@@ -1,77 +1,57 @@
 ---
 nats:
-  cluster:
-    noAdvertise: true
-    enabled: true
-    replicas: 3
-    name: nats-testing
+  global:
+    labels:
+      app: jetstream
+      team: 1995parham
 
-  commonLabels:
-    app: jetstream
+  podTemplate:
+    patch:
+      - op: add
+        path: /spec/securityContext
+        value:
+          sysctls:
+            - name: net.core.somaxconn
+              value: "16384"
 
-  securityContext:
-    sysctls:
-      - name: net.core.somaxconn
-        value: "16384"
-
-  natsbox:
+  natsBox:
     enabled: false
 
-  gateway:
-    enabled: false
+  config:
+    cluster:
+      noAdvertise: true
+      enabled: true
+      replicas: 3
 
-  nats:
-    serverNamePrefix: ts-2-
+    gateway:
+      enabled: false
 
     jetstream:
       enabled: true
-      memStorage:
+      memoryStore:
         enabled: true
-        size: 1Gi
-      fileStorage:
-        enabled: false
+        maxSize: 1Gi
+      fileStore:
+        enabled: true
         storageDirectory: /data
+        pvc:
+          enabled: true
+          size: 2Gi
 
-        # Set for use with existing PVC
-        # existingClaim: jetstream-pvc
-        # claimStorageSize: 1Gi
+  container:
+    merge:
+      resources:
+        requests:
+          cpu: 1
+          memory: 2Gi
+          ephemeral-storage: 1Gi
+        limits:
+          cpu: 1
+          memory: 2Gi
+          ephemeral-storage: 1Gi
 
-        # Use below block to create new persistent volume
-        # only used if existingClaim is not specified
-        size: 12Gi
-        # storageClassName: ""
-        accessModes:
-          - ReadWriteOnce
-        annotations:
-        # key: "value"
-
-    resources:
-      requests:
-        cpu: 500m
-        memory: 1500Mi
-        ephemeral-storage: 1Gi
-      limits:
-        cpu: 500m
-        memory: 1500Mi
-        ephemeral-storage: 1Gi
-
-  auth:
+  promExporter:
     enabled: true
-    systemAccount: admin
-    basic:
-      accounts:
-        admin:
-          users:
-            - user: parham
-              password: parham
-
-  exporter:
-    serviceMonitor:
+    podMonitor:
       enabled: true
 
-  # Define a Pod Disruption Budget for the stateful set
-  # ref: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
-  podDisruptionBudget:
-    enabled: false
-    maxUnavailable: 1
-    # minAvailable: 1
