@@ -51,7 +51,7 @@ nats:
           ephemeral-storage: 1Gi
 
   promExporter:
-    enabled: true
+    enabled: false
     podMonitor:
       enabled: true
 
