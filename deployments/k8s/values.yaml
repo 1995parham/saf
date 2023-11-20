@@ -9,6 +9,14 @@ nats:
     enabled: false
 
   config:
+    merge:
+      accounts:
+        admin:
+          users:
+            - user: parham
+              # gxywUAjjhnMAqx3ER1CgkX
+              password: $2a$11$dIctdLixla7v0eRP/JMA1O./qqcOt87OtXwSrSFQyzwTqf4B03xFy
+
     cluster:
       noAdvertise: true
       enabled: true
