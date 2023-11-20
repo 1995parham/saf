@@ -11,7 +11,8 @@ nats:
   config:
     merge:
       accounts:
-        admin:
+        # main account's users has their own tenant.
+        main:
           users:
             - user: parham
               # gxywUAjjhnMAqx3ER1CgkX
