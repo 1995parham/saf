@@ -1,0 +1,8 @@
+[logger]
+level = "info"
+
+[nats]
+url = "nats://parham:gxywUAjjhnMAqx3ER1CgkX@127.0.0.1:4222"
+
+[channels.configurations]
+printer = {}
