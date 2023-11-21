@@ -10,9 +10,16 @@ nats:
 
   config:
     merge:
+      no_auth_user: legacy
       accounts:
+        legacy:
+          users:
+            - user: legacy
+              # gxywUAjjhnMAqx3ER1CgkX
+              password: $2a$11$dIctdLixla7v0eRP/JMA1O./qqcOt87OtXwSrSFQyzwTqf4B03xFy
         # main account's users has their own tenant.
         main:
+          jetstream: enabled
           users:
             - user: parham
               # gxywUAjjhnMAqx3ER1CgkX
