@@ -169,7 +169,7 @@ There are three RAFT groups exist in a single Jetstream cluster:
 3. Consumer Group: each Consumer creates a RAFT group, this group synchronizes consumer state between its members.
    The group will live on the machines where the Stream Group is and handle consumption ACKs etc. Each Consumer will have their own group.
 
-## Super-Cluster
+## Super-Cluster (with Jetstream)
 
 First create a simple cluster without any gateway configuration and then create the following stream:
 
@@ -193,22 +193,25 @@ Last step is to create a new stream in the new cluster to see it will be synced 
 nats stream new murche --subjects 'ride.eta' --max-age '5m' --max-bytes '10m' --replicas 2 --storage memory --retention limits --discard old
 ```
 
-## How we can have a system account?
+## Enabling Authentication
 
-Check out the `cluster1.yaml` to see how we can have system account in Helm values.
-Please note that this doesn't affect applications, and they can continue working without authentication.
+In a scenario where the NATS cluster is already set up and users are actively producing and consuming from it,
+the goal is to enable authentication without causing any downtime.
 
-```yaml
-auth:
-  enabled: true
-  systemAccount: admin
-  basic:
-    accounts:
-      admin:
-        users:
-          - user: admin
-            password: amdin
-```
+To enable authentication with zero downtime in a NATS cluster that currently lacks any form of authentication,
+you can follow these steps:
+
+1. Define users and passwords: Begin by creating a list of users and their corresponding passwords.
+   Determine the access privileges and permissions for each user based on your requirements.
+   This step can be completed offline without affecting the existing cluster.
+2. Communicate new authentication requirements to clients: Once the user credentials are established,
+   inform all clients (producers and consumers) about the upcoming authentication process.
+   Request them to modify their configurations to include the username and password when connecting to the NATS cluster.
+   (They can send usernames and passwords into the cluster without having any issue before enabling the authentication)
+3. Enable authentication:
+4. Monitor and troubleshoot:
+
+By following these steps, you can effectively enable authentication on the NATS cluster without causing any downtime for the existing producers and consumers.
 
 ## Remove duplicate messages
 
