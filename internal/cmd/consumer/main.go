@@ -28,7 +28,7 @@ func Register() *cli.Command {
 		Name:        "consumer",
 		Aliases:     []string{"c"},
 		Description: "gets events from jetstream",
-		Action: func(_ *cli.Context) error {
+		Action: func(_ context.Context, _ *cli.Command) error {
 			fx.New(
 				fx.Provide(config.Provide),
 				fx.Provide(logger.Provide),

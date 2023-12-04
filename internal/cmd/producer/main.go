@@ -1,6 +1,8 @@
 package producer
 
 import (
+	"context"
+
 	"github.com/1995parham/saf/internal/infra/cmq"
 	"github.com/1995parham/saf/internal/infra/config"
 	"github.com/1995parham/saf/internal/infra/http/server"
@@ -23,7 +25,7 @@ func Register() *cli.Command {
 		Name:        "producer",
 		Aliases:     []string{"p"},
 		Description: "gets events from http and produce them into the nats jetstream",
-		Action: func(_ *cli.Context) error {
+		Action: func(_ context.Context, _ *cli.Command) error {
 			fx.New(
 				fx.Provide(config.Provide),
 				fx.Provide(logger.Provide),
