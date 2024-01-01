@@ -1,6 +1,6 @@
 group "default" {
   targets = [
-    "koochooloo"
+    "saf"
   ]
 }
 
@@ -8,7 +8,7 @@ variable "TAG" {
   default = "latest"
 }
 
-target "koochooloo" {
+target "saf" {
   dockerfile = "build/package/Dockerfile"
   tags = [
     "ghcr.io/1995parham/saf:${TAG}"

@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:experimental
 # Start from the latest golang base image
 FROM golang:alpine AS builder
 
