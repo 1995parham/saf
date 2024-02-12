@@ -2,7 +2,6 @@ package mqtt
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"runtime"
 	"time"
@@ -53,10 +52,10 @@ func (p *MQTT) options() *mqtt.ClientOptions {
 	opts.SetPingTimeout(PingTimeout)
 	opts.SetAutoReconnect(true)
 	opts.SetMaxReconnectInterval(ReconnectInterval)
-	opts.SetConnectionLostHandler(func(c mqtt.Client, err error) {
+	opts.SetConnectionLostHandler(func(_ mqtt.Client, err error) {
 		p.logger.Error("mqtt connection lost", zap.Error(err))
 	})
-	opts.SetReconnectingHandler(func(c mqtt.Client, options *mqtt.ClientOptions) {
+	opts.SetReconnectingHandler(func(_ mqtt.Client, _ *mqtt.ClientOptions) {
 		p.logger.Debug("mqtt reconnect")
 	})
 
@@ -111,7 +110,7 @@ func (p *MQTT) Run() {
 				ctx := trace.ContextWithSpanContext(context.Background(), e.SpanContext)
 				_, span := p.tracer.Start(ctx, "channels.mqtt")
 
-				p.client.Publish(fmt.Sprintf("saf/%s", e.Subject), 1, true, e.Payload)
+				p.client.Publish("saf/"+e.Subject, 1, true, e.Payload)
 
 				span.End()
 			}
