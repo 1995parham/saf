@@ -56,14 +56,13 @@ func (h Event) Receive(c *fiber.Ctx) error {
 
 	{
 		ctx, span := h.Tracer.Start(ctx, "handler.event.publish", trace.WithSpanKind(trace.SpanKindProducer))
+		defer span.End()
 
 		if err := h.CMQ.Publish(ctx, rq.ID, data); err != nil {
 			span.RecordError(err)
 
 			return fiber.NewError(http.StatusServiceUnavailable, err.Error())
 		}
-
-		span.End()
 	}
 
 	return c.Status(http.StatusOK).Send(nil)
