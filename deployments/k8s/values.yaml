@@ -11,7 +11,13 @@ nats:
   config:
     merge:
       no_auth_user: legacy
+      system_account: admin
       accounts:
+        # admin account have access into the system features.
+        admin:
+          users:
+            - user: admin
+              password: admin
         legacy:
           users:
             - user: legacy
