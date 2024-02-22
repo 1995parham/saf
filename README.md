@@ -56,7 +56,7 @@ The following description shows the stream that stores messages in memory:
 nats stream ls
 ```
 
-```
+```text
 ╭─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │                                                     Streams                                                     │
 ├────────┬────────────────────────────────────────────────┬─────────────────────┬──────────┬───────┬──────────────┤
@@ -72,7 +72,7 @@ Also, you can see the description of the consumer:
 nats consumer info events saf
 ```
 
-```
+```text
 Information for Consumer events > saf created 2023-03-22T14:46:02+03:30
 
 Configuration:
@@ -123,7 +123,7 @@ Each channel has a name by which is referenced in configuration. They can accept
 interface) and they must validate it in their initiation process. Each channel has a way to receive events, and it will
 be set by `SetChannel`. So we can describe a channel lifecycle as follows:
 
-```
+```go
 Init() -> Run()
 ```
 
@@ -212,6 +212,11 @@ you can follow these steps:
 4. Monitor and troubleshoot:
 
 By following these steps, you can effectively enable authentication on the NATS cluster without causing any downtime for the existing producers and consumers.
+
+### System Account
+
+By enabling authentication, you can define an account (again, accounts are like tenants to NATS) to be a system account.
+Using the system account you can read system events and APIs, so you can have access into the systematic commands of `natscli` too.
 
 ## Remove duplicate messages
 
