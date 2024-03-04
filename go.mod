@@ -5,7 +5,7 @@ go 1.22
 require (
 	github.com/eclipse/paho.mqtt.golang v1.4.3
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
-	github.com/gofiber/fiber/v2 v2.52.1
+	github.com/gofiber/fiber/v2 v2.52.2
 	github.com/knadh/koanf/parsers/toml v0.1.0
 	github.com/knadh/koanf/providers/env v0.1.0
 	github.com/knadh/koanf/providers/file v0.1.0
@@ -53,7 +53,6 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
-	github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 // indirect
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/nats-io/nkeys v0.4.7 // indirect
