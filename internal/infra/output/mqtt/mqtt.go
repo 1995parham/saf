@@ -104,7 +104,7 @@ func (p *MQTT) Init(logger *zap.Logger, tracer trace.Tracer, cfg interface{}, ch
 }
 
 func (p *MQTT) Run() {
-	for i := 0; i < 10*runtime.GOMAXPROCS(0); i++ {
+	for range 10 * runtime.GOMAXPROCS(0) {
 		go func() {
 			for e := range p.ch {
 				ctx := trace.ContextWithSpanContext(context.Background(), e.SpanContext)
