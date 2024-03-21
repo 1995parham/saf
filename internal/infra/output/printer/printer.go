@@ -24,7 +24,7 @@ func (p *Printer) Init(logger *zap.Logger, tracer trace.Tracer, _ interface{}, c
 }
 
 func (p *Printer) Run() {
-	for i := 0; i < 10*runtime.GOMAXPROCS(0); i++ {
+	for range 10 * runtime.GOMAXPROCS(0) {
 		go func() {
 			for e := range p.ch {
 				ctx := trace.ContextWithSpanContext(context.Background(), e.SpanContext)
