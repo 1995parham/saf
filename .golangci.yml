@@ -21,6 +21,8 @@ linters:
     - deadcode
     - ifshort
     - structcheck
+    - gomnd
+    - execinquery
 linters-settings:
   wrapcheck:
     ignoreSigs:
