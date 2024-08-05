@@ -3,7 +3,7 @@ module github.com/1995parham/saf
 go 1.22
 
 require (
-	github.com/eclipse/paho.mqtt.golang v1.4.3
+	github.com/eclipse/paho.mqtt.golang v1.5.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/knadh/koanf/parsers/toml v0.1.0
