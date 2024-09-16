@@ -208,10 +208,11 @@ you can follow these steps:
    inform all clients (producers and consumers) about the upcoming authentication process.
    Request them to modify their configurations to include the username and password when connecting to the NATS cluster.
    (They can send usernames and passwords into the cluster without having any issue before enabling the authentication)
-3. Enable authentication:
-4. Monitor and troubleshoot:
+3. Enable authentication
+4. Monitor and troubleshoot
 
-By following these steps, you can effectively enable authentication on the NATS cluster without causing any downtime for the existing producers and consumers.
+By following these steps, you can effectively enable authentication on the NATS cluster without causing any downtime
+for the existing producers and consumers.
 
 ### System Account
 
