@@ -9,7 +9,7 @@ import (
 
 // Default return default configuration.
 func Default() Config {
-	// nolint: exhaustruct
+	// nolint: exhaustruct, mnd
 	return Config{
 		Logger: logger.Config{
 			Level: "debug",
@@ -24,6 +24,7 @@ func Default() Config {
 			Trace: telemetry.Trace{
 				Enabled:  true,
 				Endpoint: "127.0.0.1:4317",
+				Ratio:    0.1,
 			},
 		},
 		NATS: cmq.Config{

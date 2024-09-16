@@ -98,7 +98,11 @@ func Provide(lc fx.Lifecycle, cfg Config) Telemetery {
 	}
 
 	bsp := trace.NewBatchSpanProcessor(exporter)
-	tp := trace.NewTracerProvider(trace.WithSpanProcessor(bsp), trace.WithResource(res))
+	tp := trace.NewTracerProvider(
+		trace.WithSpanProcessor(bsp),
+		trace.WithSampler(trace.ParentBased(trace.TraceIDRatioBased(cfg.Trace.Ratio))),
+		trace.WithResource(res),
+	)
 
 	mp := metric.NewMeterProvider(metric.WithResource(res), metric.WithReader(reader))
 

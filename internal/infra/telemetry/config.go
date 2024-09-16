@@ -13,6 +13,7 @@ type Meter struct {
 }
 
 type Trace struct {
-	Enabled  bool   `json:"enabled,omitempty"  koanf:"enabled"`
-	Endpoint string `json:"endpoint,omitempty" koanf:"endpoint"`
+	Enabled  bool    `json:"enabled,omitempty"  koanf:"enabled"`
+	Endpoint string  `json:"endpoint,omitempty" koanf:"endpoint"`
+	Ratio    float64 `json:"ratio,omitempty"    koanf:"ratio"`
 }
