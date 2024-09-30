@@ -23,7 +23,7 @@ dev cmd *flags:
     fi
 
 # run tests in the dev environment
-test $saf_telemetry__meter__enabled="false": (dev "up")
+test $saf_telemetry__meter__enabled="false": (dev "up --wait")
     go test -v ./... -covermode=atomic -coverprofile=coverage.out
 
 # run golangci-lint

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -64,7 +65,11 @@ func (suite *EventSuite) TestHandler() {
 
 	resp, err := suite.engine.Test(req)
 	require.NoError(err)
-	require.Equal(http.StatusOK, resp.StatusCode)
+
+	body, err := io.ReadAll(resp.Body)
+	require.NoError(err)
+
+	require.Equal(http.StatusOK, resp.StatusCode, string(body))
 	require.NoError(resp.Body.Close())
 }
 

@@ -197,7 +197,7 @@ func (c *CMQ) Publish(ctx context.Context, id string, data []byte) error {
 	msg.Header = make(nats.Header)
 	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(msg.Header))
 
-	if _, err := c.jetstream.PublishMsg(ctx, msg, jetstream.WithMsgID(id)); err != nil {
+	if _, err := c.jetstream.PublishMsg(context.Background(), msg, jetstream.WithMsgID(id)); err != nil {
 		return fmt.Errorf("jetstream publish message failed %w", err)
 	}
 
