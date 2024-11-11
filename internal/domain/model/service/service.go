@@ -12,4 +12,5 @@ ENUM(
 )
 */
 // Type indicates service type that sends request to saf.
+// nolint: recvcheck
 type Type int
