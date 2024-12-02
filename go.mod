@@ -16,7 +16,7 @@ require (
 	github.com/prometheus/client_golang v1.20.5
 	github.com/stretchr/testify v1.10.0
 	github.com/tidwall/pretty v1.2.1
-	github.com/urfave/cli/v3 v3.0.0-alpha9.6
+	github.com/urfave/cli/v3 v3.0.0-beta1
 	go.opentelemetry.io/otel v1.32.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.32.0
 	go.opentelemetry.io/otel/exporters/prometheus v0.54.0
