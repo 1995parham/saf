@@ -24,14 +24,14 @@ services:
     command: p
 
   nats:
-    image: nats
+    image: docker.io/library/nats
     entrypoint: /nats-server
     command: --name n1 --cluster_name elahe --js --sd /data -p 4222
     ports:
       - 4222:4222
 
   jaeger:
-    image: jaegertracing/all-in-one:latest
+    image: docker.io/jaegertracing/all-in-one:latest
     ports:
       - target: 4317
         published: 4317
@@ -44,7 +44,7 @@ services:
         protocol: tcp
 
   emqx:
-    image: emqx/emqx
+    image: docker.io/emqx/emqx
     ports:
       - 1883:1883
       - 18083:18083
