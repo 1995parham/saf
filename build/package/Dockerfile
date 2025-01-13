@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 # Start from the latest golang base image
-FROM golang:alpine AS builder
+FROM docker.io/library/golang:alpine AS builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
@@ -18,7 +18,7 @@ COPY . .
 WORKDIR /app/cmd/saf
 RUN go build -o /saf
 
-FROM alpine:latest
+FROM docker.io/library/alpine:latest
 
 # Add Maintainer Info
 LABEL maintainer="Parham Alvani <parham.alvani@gmail.com>"
