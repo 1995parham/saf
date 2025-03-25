@@ -1,6 +1,7 @@
 ---
+version: "2"
 linters:
-  enable-all: true
+  default: all
   disable:
     - depguard
     # we don't use json with camel-case
@@ -9,32 +10,21 @@ linters:
     # it should improve to support more known patterns
     - varnamelen
     - ireturn
-    - musttag
-    # deprecated linters
-    - maligned
-    - scopelint
-    - golint
-    - interfacer
-    - exhaustivestruct
-    - varcheck
-    - nosnakecase
-    - deadcode
-    - ifshort
-    - structcheck
-    - gomnd
-    - execinquery
-linters-settings:
-  wrapcheck:
-    ignoreSigs:
-      - .JSON
-      - .NewHTTPError
-      - .Redirect
-      - .NoContent
-      - .Errorf(
-      - errors.New(
-      - errors.Unwrap(
-      - .Wrap(
-      - .Wrapf(
-      - .WithMessage(
-      - .WithMessagef(
-      - .WithStack(
+    - revive
+    - wrapcheck
+
+  settings:
+    wrapcheck:
+      ignore-sigs:
+        - .JSON
+        - .NewHTTPError
+        - .Redirect
+        - .NoContent
+        - .Errorf(
+        - errors.New(
+        - errors.Unwrap(
+        - .Wrap(
+        - .Wrapf(
+        - .WithMessage(
+        - .WithMessagef(
+        - .WithStack(

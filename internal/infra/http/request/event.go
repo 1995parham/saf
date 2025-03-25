@@ -12,10 +12,10 @@ import (
 // By providing an identification for event request
 // you can remove duplicate events.
 type Event struct {
-	Subject string
-	ID      string
-	Service string
-	Payload []byte
+	Subject string `json:"subject,omitempty"`
+	ID      string `json:"id,omitempty"`
+	Service string `json:"service,omitempty"`
+	Payload []byte `json:"payload,omitempty"`
 }
 
 // Validate event request payload.
