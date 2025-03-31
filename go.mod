@@ -1,7 +1,6 @@
 module github.com/1995parham/saf
 
 go 1.24.0
-
 require (
 	github.com/eclipse/paho.mqtt.golang v1.5.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
@@ -29,7 +28,7 @@ require (
 	go.uber.org/automaxprocs v1.6.0
 	go.uber.org/fx v1.23.0
 	go.uber.org/zap v1.27.0
-	golang.org/x/net v0.37.0
+	golang.org/x/net v0.38.0
 )
 
 require (
