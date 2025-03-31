@@ -1,7 +1,6 @@
 module github.com/1995parham/saf
 
 go 1.24.0
-
 require (
 	github.com/eclipse/paho.mqtt.golang v1.5.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
@@ -12,7 +11,7 @@ require (
 	github.com/knadh/koanf/providers/structs v0.1.0
 	github.com/knadh/koanf/v2 v2.1.2
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/nats-io/nats.go v1.40.0
+	github.com/nats-io/nats.go v1.40.1
 	github.com/prometheus/client_golang v1.21.1
 	github.com/stretchr/testify v1.10.0
 	github.com/tidwall/pretty v1.2.1
