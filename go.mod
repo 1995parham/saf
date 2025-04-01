@@ -12,11 +12,11 @@ require (
 	github.com/knadh/koanf/providers/structs v0.1.0
 	github.com/knadh/koanf/v2 v2.1.2
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/nats-io/nats.go v1.40.0
+	github.com/nats-io/nats.go v1.40.1
 	github.com/prometheus/client_golang v1.21.1
 	github.com/stretchr/testify v1.10.0
 	github.com/tidwall/pretty v1.2.1
-	github.com/urfave/cli/v3 v3.0.0-beta1
+	github.com/urfave/cli/v3 v3.1.0
 	go.opentelemetry.io/otel v1.35.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.35.0
 	go.opentelemetry.io/otel/exporters/prometheus v0.57.0
@@ -29,7 +29,7 @@ require (
 	go.uber.org/automaxprocs v1.6.0
 	go.uber.org/fx v1.23.0
 	go.uber.org/zap v1.27.0
-	golang.org/x/net v0.37.0
+	golang.org/x/net v0.38.0
 )
 
 require (
