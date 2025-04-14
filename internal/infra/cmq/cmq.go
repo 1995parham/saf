@@ -14,6 +14,8 @@ import (
 	"go.uber.org/zap"
 )
 
+type Handler func(context.Context, []byte)
+
 type CMQ struct {
 	jetstream jetstream.JetStream
 	nats      *nats.Conn
@@ -54,29 +56,6 @@ func Provide(lc fx.Lifecycle, cfg Config, logger *zap.Logger) (*CMQ, error) {
 	)
 
 	return cmq, nil
-}
-
-// close handler is called when the connection is closed which means
-// we are not going to retry again for getting a live connection
-// to server anymore.
-func (c *CMQ) closeHandler(nc *nats.Conn) {
-	c.logger.Fatal("connection closed",
-		zap.Strings("urls", nc.DiscoveredServers()),
-		zap.Error(nc.LastError()),
-	)
-}
-
-// disconnection handler is called when we lost connection
-// and we are going to retry, so we may get connected in the future.
-func (c *CMQ) disconnectHandler(nc *nats.Conn, err error) {
-	c.logger.Error("got disconnected",
-		zap.Strings("urls", nc.DiscoveredServers()),
-		zap.Error(err),
-	)
-}
-
-func (c *CMQ) reconnectHandler(nc *nats.Conn) {
-	c.logger.Info("got reconnected", zap.String("url", nc.ConnectedUrl()))
 }
 
 // Streams creates required streams on jetstream.
@@ -133,7 +112,20 @@ func (c *CMQ) Streams(ctx context.Context) error {
 	return nil
 }
 
-type Handler func(context.Context, []byte)
+func (c *CMQ) Publish(ctx context.Context, id string, data []byte) error {
+	msg := new(nats.Msg)
+
+	msg.Subject = EventsChannel
+	msg.Data = data
+	msg.Header = make(nats.Header)
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(msg.Header))
+
+	if _, err := c.jetstream.PublishMsg(context.WithoutCancel(ctx), msg, jetstream.WithMsgID(id)); err != nil {
+		return fmt.Errorf("jetstream publish message failed %w", err)
+	}
+
+	return nil
+}
 
 // Only pull consumers are supported in jetstream package. However, unlike the JetStream API in nats package,
 // pull consumers allow for continuous message retrieval (similarly to how nats.Subscribe() works).
@@ -189,17 +181,25 @@ func (c *CMQ) handler(h Handler) jetstream.MessageHandler {
 	}
 }
 
-func (c *CMQ) Publish(ctx context.Context, id string, data []byte) error {
-	msg := new(nats.Msg)
+// close handler is called when the connection is closed which means
+// we are not going to retry again for getting a live connection
+// to server anymore.
+func (c *CMQ) closeHandler(nc *nats.Conn) {
+	c.logger.Fatal("connection closed",
+		zap.Strings("urls", nc.DiscoveredServers()),
+		zap.Error(nc.LastError()),
+	)
+}
 
-	msg.Subject = EventsChannel
-	msg.Data = data
-	msg.Header = make(nats.Header)
-	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(msg.Header))
+// disconnection handler is called when we lost connection
+// and we are going to retry, so we may get connected in the future.
+func (c *CMQ) disconnectHandler(nc *nats.Conn, err error) {
+	c.logger.Error("got disconnected",
+		zap.Strings("urls", nc.DiscoveredServers()),
+		zap.Error(err),
+	)
+}
 
-	if _, err := c.jetstream.PublishMsg(context.WithoutCancel(ctx), msg, jetstream.WithMsgID(id)); err != nil {
-		return fmt.Errorf("jetstream publish message failed %w", err)
-	}
-
-	return nil
+func (c *CMQ) reconnectHandler(nc *nats.Conn) {
+	c.logger.Info("got reconnected", zap.String("url", nc.ConnectedUrl()))
 }

@@ -27,41 +27,6 @@ const (
 	DisconnectTimeout = 250
 )
 
-func (p *MQTT) options() *mqtt.ClientOptions {
-	clientID := p.cfg.ClientID
-	if clientID == "" {
-		var err error
-
-		clientID, err = os.Hostname()
-		if err != nil {
-			p.logger.Fatal("hostname fetching failed, specify a client id", zap.Error(err))
-		}
-	}
-
-	opts := mqtt.NewClientOptions().AddBroker(p.cfg.URL).SetClientID(clientID)
-
-	if p.cfg.Username != "" {
-		opts.SetUsername(p.cfg.Username)
-	}
-
-	if p.cfg.Password != "" {
-		opts.SetPassword(p.cfg.Password)
-	}
-
-	opts.SetKeepAlive(p.cfg.KeepAlive)
-	opts.SetPingTimeout(PingTimeout)
-	opts.SetAutoReconnect(true)
-	opts.SetMaxReconnectInterval(ReconnectInterval)
-	opts.SetConnectionLostHandler(func(_ mqtt.Client, err error) {
-		p.logger.Error("mqtt connection lost", zap.Error(err))
-	})
-	opts.SetReconnectingHandler(func(_ mqtt.Client, _ *mqtt.ClientOptions) {
-		p.logger.Debug("mqtt reconnect")
-	})
-
-	return opts
-}
-
 // MQTT is a plugin for the saf app. this plugin consumes event
 // and publish them over mqtt.
 type MQTT struct {
@@ -120,4 +85,39 @@ func (p *MQTT) Run() {
 
 func (p *MQTT) Name() string {
 	return "mqtt"
+}
+
+func (p *MQTT) options() *mqtt.ClientOptions {
+	clientID := p.cfg.ClientID
+	if clientID == "" {
+		var err error
+
+		clientID, err = os.Hostname()
+		if err != nil {
+			p.logger.Fatal("hostname fetching failed, specify a client id", zap.Error(err))
+		}
+	}
+
+	opts := mqtt.NewClientOptions().AddBroker(p.cfg.URL).SetClientID(clientID)
+
+	if p.cfg.Username != "" {
+		opts.SetUsername(p.cfg.Username)
+	}
+
+	if p.cfg.Password != "" {
+		opts.SetPassword(p.cfg.Password)
+	}
+
+	opts.SetKeepAlive(p.cfg.KeepAlive)
+	opts.SetPingTimeout(PingTimeout)
+	opts.SetAutoReconnect(true)
+	opts.SetMaxReconnectInterval(ReconnectInterval)
+	opts.SetConnectionLostHandler(func(_ mqtt.Client, err error) {
+		p.logger.Error("mqtt connection lost", zap.Error(err))
+	})
+	opts.SetReconnectingHandler(func(_ mqtt.Client, _ *mqtt.ClientOptions) {
+		p.logger.Debug("mqtt reconnect")
+	})
+
+	return opts
 }
