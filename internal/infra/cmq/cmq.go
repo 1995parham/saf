@@ -151,12 +151,20 @@ func (c *CMQ) Subscribe(ctx context.Context, name string, handler Handler) (jets
 		return nil, fmt.Errorf("consumer creation failed %w", err)
 	}
 
-	conCtx, err := con.Consume(c.handler(handler)) // nolint: contextcheck
+	conCtx, err := con.Consume(
+		c.handler(handler), // nolint: contextcheck
+		jetstream.ConsumeErrHandler(c.errHandler),
+		jetstream.PullHeartbeat(1 * time.Second),
+	)
 	if err != nil {
 		return nil, fmt.Errorf("consume failed %w", err)
 	}
 
 	return conCtx, nil
+}
+
+func (c *CMQ) errHandler(_ jetstream.ConsumeContext, err error) {
+	c.logger.Error("consume has error", zap.Error(err))
 }
 
 func (c *CMQ) handler(h Handler) jetstream.MessageHandler {
