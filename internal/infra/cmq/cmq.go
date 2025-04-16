@@ -20,6 +20,8 @@ type CMQ struct {
 	jetstream jetstream.JetStream
 	nats      *nats.Conn
 	logger    *zap.Logger
+
+	artificialSleep time.Duration
 }
 
 func Provide(lc fx.Lifecycle, cfg Config, logger *zap.Logger) (*CMQ, error) {
@@ -27,6 +29,7 @@ func Provide(lc fx.Lifecycle, cfg Config, logger *zap.Logger) (*CMQ, error) {
 		nats:      nil,
 		logger:    logger,
 		jetstream: nil,
+		artificialSleep: cfg.ArtificialSleep,
 	}
 
 	nc, err := nats.Connect(cfg.URL)
@@ -154,7 +157,7 @@ func (c *CMQ) Subscribe(ctx context.Context, name string, handler Handler) (jets
 	conCtx, err := con.Consume(
 		c.handler(handler), // nolint: contextcheck
 		jetstream.ConsumeErrHandler(c.errHandler),
-		jetstream.PullHeartbeat(1 * time.Second),
+		jetstream.PullHeartbeat(1*time.Second),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("consume failed %w", err)
@@ -169,6 +172,10 @@ func (c *CMQ) errHandler(_ jetstream.ConsumeContext, err error) {
 
 func (c *CMQ) handler(h Handler) jetstream.MessageHandler {
 	return func(msg jetstream.Msg) {
+		if c.artificialSleep != 0 {
+			time.Sleep(c.artificialSleep)
+		}
+
 		ctx := otel.GetTextMapPropagator().Extract(context.Background(), propagation.HeaderCarrier(msg.Headers()))
 
 		metadata, _ := msg.Metadata()
