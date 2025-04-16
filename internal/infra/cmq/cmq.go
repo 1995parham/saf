@@ -22,6 +22,8 @@ type CMQ struct {
 	logger    *zap.Logger
 
 	artificialSleep time.Duration
+
+	events Stream
 }
 
 func Provide(lc fx.Lifecycle, cfg Config, logger *zap.Logger) (*CMQ, error) {
@@ -30,6 +32,7 @@ func Provide(lc fx.Lifecycle, cfg Config, logger *zap.Logger) (*CMQ, error) {
 		logger:    logger,
 		jetstream: nil,
 		artificialSleep: cfg.ArtificialSleep,
+		events: cfg.Events,
 	}
 
 	nc, err := nats.Connect(cfg.URL)
@@ -85,8 +88,8 @@ func (c *CMQ) Streams(ctx context.Context) error {
 			MaxAge:               1 * time.Hour,
 			MaxMsgsPerSubject:    0,
 			MaxMsgSize:           0,
-			Storage:              jetstream.MemoryStorage,
-			Replicas:             1,
+			Storage:              c.events.Storage,
+			Replicas:             c.events.Replicas,
 			NoAck:                false,
 			Template:             "",
 			Duplicates:           0,

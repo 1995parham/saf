@@ -5,6 +5,7 @@ import (
 	"github.com/1995parham/saf/internal/infra/logger"
 	"github.com/1995parham/saf/internal/infra/output"
 	"github.com/1995parham/saf/internal/infra/telemetry"
+	"github.com/nats-io/nats.go/jetstream"
 )
 
 // Default return default configuration.
@@ -30,6 +31,10 @@ func Default() Config {
 		NATS: cmq.Config{
 			URL: "nats://127.0.0.1:4222",
 			ArtificialSleep: 0,
+			Events: cmq.Stream{
+				Storage: jetstream.MemoryStorage,
+				Replicas: 1,
+			},
 		},
 		Channels: output.Config{
 			Configurations: map[string]any{
