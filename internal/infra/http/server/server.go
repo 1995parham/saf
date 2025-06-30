@@ -32,7 +32,8 @@ func Provide(lc fx.Lifecycle, cmq *cmq.CMQ, logger *zap.Logger, _ telemetry.Tele
 		Tracer: otel.GetTracerProvider().Tracer("handler.event"),
 	}.Register(app.Group("api"))
 
-	if err := app.Listen(":1378"); !errors.Is(err, http.ErrServerClosed) {
+	err := app.Listen(":1378")
+	if !errors.Is(err, http.ErrServerClosed) {
 		logger.Fatal("echo initiation failed", zap.Error(err))
 	}
 
@@ -40,7 +41,8 @@ func Provide(lc fx.Lifecycle, cmq *cmq.CMQ, logger *zap.Logger, _ telemetry.Tele
 		fx.Hook{
 			OnStart: func(_ context.Context) error {
 				go func() {
-					if err := app.Listen(":1378"); !errors.Is(err, http.ErrServerClosed) {
+					err := app.Listen(":1378")
+					if !errors.Is(err, http.ErrServerClosed) {
 						logger.Fatal("fiber initiation failed", zap.Error(err))
 					}
 				}()
@@ -48,7 +50,8 @@ func Provide(lc fx.Lifecycle, cmq *cmq.CMQ, logger *zap.Logger, _ telemetry.Tele
 				return nil
 			},
 			OnStop: func(_ context.Context) error {
-				if err := app.Shutdown(); err != nil {
+				err := app.Shutdown()
+				if err != nil {
 					return fmt.Errorf("fiber shutdown failed %w", err)
 				}
 

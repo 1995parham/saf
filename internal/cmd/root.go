@@ -60,7 +60,8 @@ func Execute() {
 		},
 	}
 
-	if err := root.Run(context.Background(), os.Args); err != nil {
+	err := root.Run(context.Background(), os.Args)
+	if err != nil {
 		log.Printf("failed to execute root command %s", err)
 
 		os.Exit(ExitFailure)

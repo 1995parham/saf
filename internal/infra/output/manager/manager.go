@@ -72,7 +72,7 @@ func (m *Manager) Setup(ctx context.Context, enabled []string, cfg map[string]in
 	}
 }
 
-// Register registers the given channel and passes its configration to it.
+// Register registers the given channel and passes its configuration to it.
 // Also runs it in new goroutine.
 func (m *Manager) Register(ctx context.Context, p output.Channel, cfg interface{}) {
 	m.logger.Info("channel started", zap.String("channel", p.Name()))
@@ -87,7 +87,8 @@ func (m *Manager) Register(ctx context.Context, p output.Channel, cfg interface{
 		ctx, span := m.tracer.Start(ctx, "manager.subscriber", trace.WithSpanKind(trace.SpanKindConsumer))
 		defer span.End()
 
-		if err := json.Unmarshal(data, &ev); err != nil {
+		err := json.Unmarshal(data, &ev)
+		if err != nil {
 			m.logger.Error("cannot parse the event", zap.Error(err))
 		}
 

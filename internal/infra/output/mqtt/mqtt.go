@@ -57,7 +57,8 @@ func (p *MQTT) Init(logger *zap.Logger, tracer trace.Tracer, cfg interface{}, ch
 		p.logger.Fatal("failed to create mapstructure decoder", zap.Error(err))
 	}
 
-	if err := d.Decode(cfg); err != nil {
+	err = d.Decode(cfg)
+	if err != nil {
 		p.logger.Fatal("failed to decode configuration", zap.Error(err))
 	}
 

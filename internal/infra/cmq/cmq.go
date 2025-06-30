@@ -28,11 +28,11 @@ type CMQ struct {
 
 func Provide(lc fx.Lifecycle, cfg Config, logger *zap.Logger) (*CMQ, error) {
 	cmq := &CMQ{
-		nats:      nil,
-		logger:    logger,
-		jetstream: nil,
+		nats:            nil,
+		logger:          logger,
+		jetstream:       nil,
 		artificialSleep: cfg.ArtificialSleep,
-		events: cfg.Events,
+		events:          cfg.Events,
 	}
 
 	nc, err := nats.Connect(cfg.URL)
@@ -126,7 +126,8 @@ func (c *CMQ) Publish(ctx context.Context, id string, data []byte) error {
 	msg.Header = make(nats.Header)
 	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(msg.Header))
 
-	if _, err := c.jetstream.PublishMsg(context.WithoutCancel(ctx), msg, jetstream.WithMsgID(id)); err != nil {
+	_, err := c.jetstream.PublishMsg(context.WithoutCancel(ctx), msg, jetstream.WithMsgID(id))
+	if err != nil {
 		return fmt.Errorf("jetstream publish message failed %w", err)
 	}
 
@@ -188,7 +189,8 @@ func (c *CMQ) handler(h Handler) jetstream.MessageHandler {
 			zap.ByteString("payload", msg.Data()),
 		)
 
-		if err := msg.Ack(); err != nil {
+		err := msg.Ack()
+		if err != nil {
 			c.logger.Error("cannot ack message",
 				zap.String("timestamp", metadata.Timestamp.String()),
 				zap.Error(err),

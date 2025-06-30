@@ -65,7 +65,6 @@ func TestEventValidation(t *testing.T) {
 		rq := c.request
 
 		err := rq.Validate()
-
 		if c.isValid && err != nil {
 			t.Fatalf("valid request %+v has error %s", rq, err)
 		}

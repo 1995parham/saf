@@ -29,13 +29,15 @@ func (h Event) Receive(c *fiber.Ctx) error {
 
 	var rq request.Event
 
-	if err := c.BodyParser(&rq); err != nil {
+	err := c.BodyParser(&rq)
+	if err != nil {
 		span.RecordError(err)
 
 		return fiber.NewError(http.StatusBadRequest, err.Error())
 	}
 
-	if err := rq.Validate(); err != nil {
+	err = rq.Validate()
+	if err != nil {
 		span.RecordError(err)
 
 		return fiber.NewError(http.StatusBadRequest, err.Error())
@@ -62,7 +64,8 @@ func (h Event) Receive(c *fiber.Ctx) error {
 		)
 		defer span.End()
 
-		if err := h.CMQ.Publish(ctx, rq.ID, data); err != nil {
+		err := h.CMQ.Publish(ctx, rq.ID, data)
+		if err != nil {
 			span.RecordError(err)
 
 			return fiber.NewError(http.StatusServiceUnavailable, err.Error())

@@ -16,7 +16,8 @@ import (
 func main(cmq *cmq.CMQ, logger *zap.Logger, _ *manager.Manager) {
 	logger.Info("welcome to consumer application")
 
-	if err := cmq.Streams(context.Background()); err != nil {
+	err := cmq.Streams(context.Background())
+	if err != nil {
 		logger.Fatal("stream creation failed", zap.Error(err))
 	}
 }

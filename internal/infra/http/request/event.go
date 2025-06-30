@@ -25,10 +25,11 @@ func (r Event) Validate() error {
 		services = append(services, t)
 	}
 
-	if err := validation.ValidateStruct(&r,
+	err := validation.ValidateStruct(&r,
 		validation.Field(&r.Subject, is.Alphanumeric, validation.Required),
 		validation.Field(&r.Service, is.Alphanumeric, validation.Required, validation.In(services...)),
-	); err != nil {
+	)
+	if err != nil {
 		return fmt.Errorf("event request validation failed: %w", err)
 	}
 
