@@ -3,7 +3,7 @@ module github.com/1995parham/saf
 go 1.25
 
 require (
-	github.com/eclipse/paho.mqtt.golang v1.5.0
+	github.com/eclipse/paho.mqtt.golang v1.5.1
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/gofiber/fiber/v2 v2.52.9
 	github.com/knadh/koanf/parsers/toml v0.1.0
@@ -67,7 +67,7 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.66.0 // indirect
-	go.opentelemetry.io/auto/sdk v1.2.0 // indirect
+	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.38.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.8.0 // indirect
 	go.uber.org/dig v1.19.0 // indirect
