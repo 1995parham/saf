@@ -134,6 +134,7 @@ func (c *CMQ) Publish(ctx context.Context, id string, data []byte) error {
 	return nil
 }
 
+// Subscribe creates cosumer on given topic and passes the message to handler.
 // Only pull consumers are supported in jetstream package. However, unlike the JetStream API in nats package,
 // pull consumers allow for continuous message retrieval (similarly to how nats.Subscribe() works).
 // Because of that, push consumers can be easily replace by pull consumers for most of the use cases.

@@ -5,6 +5,9 @@ default:
 build:
     go build -o saf ./cmd/saf
 
+generate:
+    go generate internal/domain/model/service/service.go
+
 # update go packages
 update:
     @cd ./cmd/saf && go get -u

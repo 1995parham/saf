@@ -2,6 +2,7 @@ package service
 
 //go:generate go-enum -f=$GOFILE --marshal --names
 
+// Type indicates service type that sends request to saf.
 /*
 ENUM(
 
@@ -11,6 +12,5 @@ ENUM(
 
 )
 */
-// Type indicates service type that sends request to saf.
 // nolint: recvcheck
 type Type int
