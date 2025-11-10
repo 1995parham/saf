@@ -27,10 +27,10 @@ const (
 type Config struct {
 	fx.Out
 
-	Logger    logger.Config    `json:"logger,omitempty"    koanf:"logger"`
-	Telemetry telemetry.Config `json:"telemetry,omitempty" koanf:"telemetry"`
-	NATS      cmq.Config       `json:"nats,omitempty"      koanf:"nats"`
-	Channels  output.Config    `json:"channels,omitempty"  koanf:"channels"`
+	Logger    logger.Config    `json:"logger"    koanf:"logger"`
+	Telemetry telemetry.Config `json:"telemetry" koanf:"telemetry"`
+	NATS      cmq.Config       `json:"nats"      koanf:"nats"`
+	Channels  output.Config    `json:"channels"  koanf:"channels"`
 }
 
 func Provide() Config {

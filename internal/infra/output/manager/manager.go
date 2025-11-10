@@ -61,7 +61,7 @@ func Provide(lc fx.Lifecycle, cfg output.Config, logger *zap.Logger, _ telemetry
 }
 
 // Setup registers the given channel. please note that you should add each channel here.
-func (m *Manager) Setup(ctx context.Context, enabled []string, cfg map[string]interface{}) {
+func (m *Manager) Setup(ctx context.Context, enabled []string, cfg map[string]any) {
 	for _, p := range channels() {
 		for _, e := range enabled {
 			if p.Name() == e {
@@ -74,7 +74,7 @@ func (m *Manager) Setup(ctx context.Context, enabled []string, cfg map[string]in
 
 // Register registers the given channel and passes its configuration to it.
 // Also runs it in new goroutine.
-func (m *Manager) Register(ctx context.Context, p output.Channel, cfg interface{}) {
+func (m *Manager) Register(ctx context.Context, p output.Channel, cfg any) {
 	m.logger.Info("channel started", zap.String("channel", p.Name()))
 
 	m.Plugins = append(m.Plugins, p)

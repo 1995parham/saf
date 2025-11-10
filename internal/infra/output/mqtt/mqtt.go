@@ -37,7 +37,7 @@ type MQTT struct {
 	client mqtt.Client
 }
 
-func (p *MQTT) Init(logger *zap.Logger, tracer trace.Tracer, cfg interface{}, ch <-chan output.TracedEvent) {
+func (p *MQTT) Init(logger *zap.Logger, tracer trace.Tracer, cfg any, ch <-chan output.TracedEvent) {
 	p.logger = logger
 	p.tracer = tracer
 	p.ch = ch

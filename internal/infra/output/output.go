@@ -13,7 +13,7 @@ type TracedEvent struct {
 }
 
 type Channel interface {
-	Init(logger *zap.Logger, tracer trace.Tracer, config interface{}, eventChan <-chan TracedEvent)
+	Init(logger *zap.Logger, tracer trace.Tracer, config any, eventChan <-chan TracedEvent)
 	Run()
 	Name() string
 }

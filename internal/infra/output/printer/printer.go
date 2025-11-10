@@ -17,7 +17,7 @@ type Printer struct {
 	tracer trace.Tracer
 }
 
-func (p *Printer) Init(logger *zap.Logger, tracer trace.Tracer, _ interface{}, ch <-chan output.TracedEvent) {
+func (p *Printer) Init(logger *zap.Logger, tracer trace.Tracer, _ any, ch <-chan output.TracedEvent) {
 	p.logger = logger
 	p.tracer = tracer
 	p.ch = ch
