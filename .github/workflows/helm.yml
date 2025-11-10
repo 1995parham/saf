@@ -18,7 +18,7 @@ jobs:
           python-version: 3.13
 
       - name: set up chart-testing
-        uses: helm/chart-testing-action@v2.7.0
+        uses: helm/chart-testing-action@v2.8.0
 
       - name: run chart-testing (lint)
         run: ct lint --all
