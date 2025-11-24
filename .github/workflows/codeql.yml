@@ -45,7 +45,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       # Go should be installed before init phase.
       - uses: actions/setup-go@v6
@@ -65,7 +65,7 @@ jobs:
           # queries: security-extended,security-and-quality
 
       # Autobuild is failed, so it is replaced by the following stages.
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: extractions/setup-just@v3
       - run: just build
         name: Autobuild
