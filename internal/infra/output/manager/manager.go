@@ -35,7 +35,7 @@ func Provide(lc fx.Lifecycle, cfg output.Config, logger *zap.Logger, _ telemetry
 		consumers: make([]jetstream.ConsumeContext, 0),
 	}
 
-	enabled := []string{}
+	enabled := make([]string, 0, len(cfg.Configurations))
 	for name := range cfg.Configurations {
 		enabled = append(enabled, name)
 	}

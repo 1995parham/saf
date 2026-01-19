@@ -20,9 +20,9 @@ type Event struct {
 
 // Validate event request payload.
 func (r Event) Validate() error {
-	services := make([]any, 0)
-	for _, t := range service.TypeNames() {
-		services = append(services, t)
+	services := make([]any, len(service.TypeNames()))
+	for i, t := range service.TypeNames() {
+		services[i] = t
 	}
 
 	err := validation.ValidateStruct(&r,
