@@ -29,10 +29,10 @@ func Default() Config {
 			},
 		},
 		NATS: cmq.Config{
-			URL: "nats://127.0.0.1:4222",
+			URL:             "nats://127.0.0.1:4222",
 			ArtificialSleep: 0,
 			Events: cmq.Stream{
-				Storage: jetstream.MemoryStorage,
+				Storage:  jetstream.MemoryStorage,
 				Replicas: 1,
 			},
 		},
