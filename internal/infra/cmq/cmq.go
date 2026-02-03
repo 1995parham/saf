@@ -183,22 +183,26 @@ func (c *CMQ) handler(h Handler) jetstream.MessageHandler {
 
 		ctx := otel.GetTextMapPropagator().Extract(context.Background(), propagation.HeaderCarrier(msg.Headers()))
 
-		metadata, _ := msg.Metadata()
+		metadata, err := msg.Metadata()
+		if err != nil {
+			c.logger.Error("cannot get message metadata", zap.Error(err))
+		}
 
 		c.logger.Info("receive new message",
 			zap.String("timestamp", metadata.Timestamp.String()),
 			zap.ByteString("payload", msg.Data()),
 		)
 
-		err := msg.Ack()
-		if err != nil {
+		// Process the message before acknowledging to avoid message loss
+		// if handler fails
+		h(ctx, msg.Data())
+
+		if err := msg.Ack(); err != nil {
 			c.logger.Error("cannot ack message",
 				zap.String("timestamp", metadata.Timestamp.String()),
 				zap.Error(err),
 			)
 		}
-
-		h(ctx, msg.Data())
 	}
 }
 

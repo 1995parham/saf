@@ -97,10 +97,16 @@ func (m *Manager) Register(ctx context.Context, p output.Channel, cfg any) {
 		select {
 		case c <- cev:
 		default:
+			m.logger.Warn("output channel full, event dropped",
+				zap.String("subject", ev.Subject),
+				zap.Time("created_at", ev.CreatedAt),
+			)
 		}
 	})
 	if err != nil {
 		m.logger.Error("cannot create subscription", zap.Error(err))
+
+		return
 	}
 
 	m.consumers = append(m.consumers, con)
