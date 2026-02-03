@@ -7,6 +7,8 @@ linters:
     # we don't use json with camel-case
     - tagliatelle
     - nolintlint
+    # we prefer inline error handling
+    - noinlineerr
     # it should improve to support more known patterns
     - varnamelen
     - ireturn
