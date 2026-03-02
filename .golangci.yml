@@ -16,6 +16,7 @@ linters:
     - wrapcheck
     # temporary until fix happen in otel exporters
     - gomoddirectives
+    - gosec
 
   settings:
     wrapcheck:
