@@ -8,7 +8,7 @@ import (
 	"github.com/1995parham/saf/internal/infra/http/server"
 	"github.com/1995parham/saf/internal/infra/logger"
 	"github.com/1995parham/saf/internal/infra/telemetry"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/urfave/cli/v3"
 	"go.uber.org/fx"
 	"go.uber.org/zap"

@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
@@ -15,11 +15,11 @@ type Healthz struct {
 
 // Handle shows server is up and running.
 // nolint: wrapcheck
-func (h Healthz) Handle(c *fiber.Ctx) error {
+func (h Healthz) Handle(c fiber.Ctx) error {
 	_, span := h.Tracer.Start(c.Context(), "handler.healthz")
 	defer span.End()
 
-	return c.Status(http.StatusNoContent).Send(nil)
+	return c.SendStatus(http.StatusNoContent)
 }
 
 // Register registers the routes of healthz handler on given fiber group.

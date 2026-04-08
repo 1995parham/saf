@@ -10,7 +10,7 @@ import (
 	"github.com/1995parham/saf/internal/infra/http/handler"
 	"github.com/1995parham/saf/internal/infra/logger"
 	"github.com/1995parham/saf/internal/infra/telemetry"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/stretchr/testify/suite"
 	"go.opentelemetry.io/otel"
 	"go.uber.org/fx"

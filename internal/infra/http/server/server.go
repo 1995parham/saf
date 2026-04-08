@@ -9,7 +9,7 @@ import (
 	"github.com/1995parham/saf/internal/infra/cmq"
 	"github.com/1995parham/saf/internal/infra/http/handler"
 	"github.com/1995parham/saf/internal/infra/telemetry"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"go.opentelemetry.io/otel"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -31,11 +31,6 @@ func Provide(lc fx.Lifecycle, cmq *cmq.CMQ, logger *zap.Logger, _ telemetry.Tele
 		Logger: logger.Named("handler").Named("event"),
 		Tracer: otel.GetTracerProvider().Tracer("handler.event"),
 	}.Register(app.Group("api"))
-
-	err := app.Listen(":1378")
-	if !errors.Is(err, http.ErrServerClosed) {
-		logger.Fatal("echo initiation failed", zap.Error(err))
-	}
 
 	lc.Append(
 		fx.Hook{

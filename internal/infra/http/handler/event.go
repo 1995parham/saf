@@ -8,7 +8,7 @@ import (
 	"github.com/1995parham/saf/internal/domain/model/event"
 	"github.com/1995parham/saf/internal/infra/cmq"
 	"github.com/1995parham/saf/internal/infra/http/request"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
@@ -21,7 +21,7 @@ type Event struct {
 
 // Receive receives event from api and publish them to jetstream.
 // nolint: wrapcheck
-func (h Event) Receive(c *fiber.Ctx) error {
+func (h Event) Receive(c fiber.Ctx) error {
 	ctx, span := h.Tracer.Start(c.Context(), "handler.event",
 		trace.WithSpanKind(trace.SpanKindServer),
 	)
@@ -29,7 +29,7 @@ func (h Event) Receive(c *fiber.Ctx) error {
 
 	var rq request.Event
 
-	err := c.BodyParser(&rq)
+	err := c.Bind().Body(&rq)
 	if err != nil {
 		span.RecordError(err)
 
@@ -72,7 +72,7 @@ func (h Event) Receive(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.Status(http.StatusOK).Send(nil)
+	return c.SendStatus(http.StatusOK)
 }
 
 // Register registers the routes of event handler on given fiber group.
