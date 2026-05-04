@@ -10,6 +10,8 @@ import (
 func TestEventValidation(t *testing.T) {
 	t.Parallel()
 
+	const subject = "hello"
+
 	cases := []struct {
 		request request.Event
 		isValid bool
@@ -25,7 +27,7 @@ func TestEventValidation(t *testing.T) {
 		},
 		{
 			request: request.Event{
-				Subject: "hello",
+				Subject: subject,
 				ID:      "",
 				Service: "OfferService",
 				Payload: []byte{},
@@ -34,7 +36,7 @@ func TestEventValidation(t *testing.T) {
 		},
 		{
 			request: request.Event{
-				Subject: "hello",
+				Subject: subject,
 				ID:      "",
 				Service: "",
 				Payload: []byte{},
@@ -43,7 +45,7 @@ func TestEventValidation(t *testing.T) {
 		},
 		{
 			request: request.Event{
-				Subject: "hello",
+				Subject: subject,
 				ID:      "",
 				Service: "NewService",
 				Payload: []byte{},
@@ -52,7 +54,7 @@ func TestEventValidation(t *testing.T) {
 		},
 		{
 			request: request.Event{
-				Subject: "hello",
+				Subject: subject,
 				ID:      "",
 				Payload: []byte("Hello World"),
 				Service: "RideLifeCycleService",

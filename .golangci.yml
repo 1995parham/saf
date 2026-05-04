@@ -3,18 +3,16 @@ version: "2"
 linters:
   default: all
   disable:
+    - gomodguard
+    - wsl
     - depguard
-    # we don't use json with camel-case
     - tagliatelle
     - nolintlint
-    # we prefer inline error handling
     - noinlineerr
-    # it should improve to support more known patterns
     - varnamelen
     - ireturn
     - revive
     - wrapcheck
-    # temporary until fix happen in otel exporters
     - gomoddirectives
     - gosec
 
