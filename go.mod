@@ -13,7 +13,7 @@ require (
 	github.com/knadh/koanf/v2 v2.3.5
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/nats-io/nats.go v1.52.0
-	github.com/prometheus/client_golang v1.24.0
+	github.com/prometheus/client_golang v1.24.1
 	github.com/stretchr/testify v1.11.1
 	github.com/tidwall/pretty v1.2.1
 	github.com/urfave/cli/v3 v3.10.1
@@ -61,7 +61,7 @@ require (
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
-	github.com/prometheus/common v0.70.0 // indirect
+	github.com/prometheus/common v0.70.1 // indirect
 	github.com/prometheus/otlptranslator v1.0.0 // indirect
 	github.com/prometheus/procfs v0.21.1 // indirect
 	github.com/tinylib/msgp v1.6.4 // indirect
