@@ -24,7 +24,7 @@ func main(cmq *cmq.CMQ, logger *zap.Logger, _ *manager.Manager) {
 
 // Register consumer command.
 func Register() *cli.Command {
-	// nolint: exhaustruct
+	// nolint: exhaustruct_v5
 	return &cli.Command{
 		Name:        "consumer",
 		Aliases:     []string{"c"},

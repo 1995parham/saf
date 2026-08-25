@@ -16,7 +16,7 @@ import (
 )
 
 func Provide(lc fx.Lifecycle, cmq *cmq.CMQ, logger *zap.Logger, _ telemetry.Telemetery) *fiber.App {
-	// nolint: exhaustruct
+	// nolint: exhaustruct_v5
 	app := fiber.New(fiber.Config{
 		AppName: "saf",
 	})

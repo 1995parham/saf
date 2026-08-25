@@ -20,7 +20,7 @@ func main(logger *zap.Logger, _ *fiber.App) {
 
 // Register producer command.
 func Register() *cli.Command {
-	// nolint: exhaustruct
+	// nolint: exhaustruct_v5
 	return &cli.Command{
 		Name:        "producer",
 		Aliases:     []string{"p"},

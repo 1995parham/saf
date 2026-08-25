@@ -3,6 +3,8 @@ version: "2"
 linters:
   default: all
   disable:
+    # deprecated since golangci-lint v2.13.0, replaced by exhaustruct_v5
+    - exhaustruct
     - gomodguard
     - wsl
     - depguard

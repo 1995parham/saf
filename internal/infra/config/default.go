@@ -10,7 +10,7 @@ import (
 
 // Default return default configuration.
 func Default() Config {
-	// nolint: exhaustruct, mnd
+	// nolint: exhaustruct_v5, mnd
 	return Config{
 		Logger: logger.Config{
 			Level: "debug",

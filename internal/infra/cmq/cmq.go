@@ -74,7 +74,7 @@ func (c *CMQ) Streams(ctx context.Context) error {
 	case errors.Is(err, jetstream.ErrStreamNotFound):
 		// Each stream contains multiple topics, here we use a
 		// same name for stream and its topic.
-		// nolint: exhaustruct
+		// nolint: exhaustruct_v5
 		stream, err := c.jetstream.CreateStream(ctx, jetstream.StreamConfig{
 			Name:                 EventsChannel,
 			Description:          "Saf's event channel which only contains events topic",
@@ -146,7 +146,7 @@ func (c *CMQ) Publish(ctx context.Context, id string, data []byte) error {
 // By default, durables will remain even when there are periods
 // of inactivity (unless InactiveThreshold is set explicitly).
 func (c *CMQ) Subscribe(ctx context.Context, name string, handler Handler) (jetstream.ConsumeContext, error) {
-	// nolint: exhaustruct
+	// nolint: exhaustruct_v5
 	con, err := c.jetstream.CreateOrUpdateConsumer(ctx, EventsChannel, jetstream.ConsumerConfig{
 		Name:              fmt.Sprintf("%s-%s", QueueName, name),
 		Durable:           fmt.Sprintf("%s-%s", DurableName, name),

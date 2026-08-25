@@ -42,7 +42,7 @@ func (p *MQTT) Init(logger *zap.Logger, tracer trace.Tracer, cfg any, ch <-chan 
 	p.tracer = tracer
 	p.ch = ch
 
-	// nolint: exhaustruct
+	// nolint: exhaustruct_v5
 	dc := &mapstructure.DecoderConfig{
 		DecodeHook: mapstructure.ComposeDecodeHookFunc(
 			mapstructure.StringToTimeDurationHookFunc()),
